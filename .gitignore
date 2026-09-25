@@ -1,0 +1,32 @@
+# Obsidian — personal workspace state (keep shared config, ignore local state)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.obsidian/plugins/*/data.json
+.trash/
+
+# Generated output
+*.pdf
+Marketing_Cloud_Next_Study_Guide.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Raw source material is intentionally NOT published (see README disclaimer)
+sources/
+inbox/

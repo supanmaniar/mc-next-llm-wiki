@@ -1,0 +1,154 @@
+# Marketing Cloud Next — LLM Wiki
+
+> A structured, cross-linked knowledge base for Salesforce Marketing Cloud Next,
+> built for both human study and LLM ingestion.
+
+This file follows the llms.txt convention: a curated, machine-readable index of the
+vault. Each entry links to a self-contained Markdown page that front-loads its core
+idea, lists prerequisites, and ends with active-recall questions.
+
+## How to use this index
+
+- **For retrieval:** each concept page is atomic and self-contained. Chunk on `##` headings.
+- **For traversal:** pages cross-link with `[[wiki links]]`; follow them to expand context.
+- **For study order:** see `_index/study-roadmap.md` (10 sequential tracks).
+- **For exam weighting:** see `_index/exam-revision-summary.md`.
+
+## Exam blueprint
+
+| # | Section | Weight |
+|---|---|---:|
+| 1 | Platform Setup & Governance | 13% |
+| 2 | Consent | 13% |
+| 3 | Data Modeling, Identity Resolution & Segmentation | 25% |
+| 4 | Campaign Design, Flow Orchestration & Content | 30% |
+| 5 | Agentforce & AI Innovation | 11% |
+| 6 | Analytics & Performance Insights | 8% |
+
+Exam facts: 60 scored questions + up to 5 unscored, 105 minutes, 72% to pass,
+Summer '26 release, no prerequisite, no reference materials allowed.
+
+## Entry points
+
+- [Study Roadmap](_index/study-roadmap.md): 10 sequential learning tracks, basic to advanced
+- [Exam Revision Summary](_index/exam-revision-summary.md): consolidated revision, ordered by exam weight
+- [Exam Q&A Study Guide](Exam%20Q%26A%20Study%20Guide/README.md): 292 scenario questions with reasoning
+- [Exam Section Based Flashcards](Exam%20Section%20Based%20Flashcards/README.md): recall decks by exam section
+- [Topic Flashcards](flashcards/): 11 topic-organized recall decks
+
+## Concepts
+
+70 atomic concept pages, alphabetically. Each is a standalone reference.
+
+- [Activation-Triggered Flows](concepts/activation-triggered-flows.md): An activation-triggered flow runs **when a Data 360 activation is published** — connecting segment data to external systems automatically via MuleSoft connectors or HTTP callouts, or sending to other marketing destinations.
+- [Agentic Marketing](concepts/agentic-marketing.md): Agentic marketing uses autonomous AI agents to turn one-way marketing broadcasts into two-way conversations — marketers define the *strategy* (e.g., "increase loyalty among at-risk customers") while AI agents handle the heavy lifting of building audiences, drafting content, personalizing messages, and optimizing performance.
+- [AI Features (Einstein & Agentforce)](concepts/ai-features.md): Marketing Cloud Next ships with generative AI (Agentforce) and predictive AI (Einstein) features that draft campaigns, optimize send times, filter bot clicks, and score engagement — all protected by the Einstein Trust Layer.
+- [Allocations, Limits & Page Customization](concepts/allocations-limits-page-customization.md): Marketing Cloud Next has hard limits on flows, scoring, message credits, and CMS storage that differ between Growth and Advanced editions — and a few recommended Lightning components you should add to record pages for marketers.
+- [Audience Flows](concepts/audience-flows.md): An **audience flow** is the unified flow creation experience for all audience-based, scheduled marketing flows. It runs on a schedule and sends messages to a specified audience, chosen from **four audience sources**: Segment, List, Record, or Campaign.
+- [Business Units in Marketing Cloud Next](concepts/business-units.md): Business units create isolated "divisions" inside a single org — each with its own data space, content workspaces, and campaigns — so a global company can run separate brands/regions with data isolation while leadership keeps global visibility.
+- [Campaign Record & Workflow](concepts/campaign-record-workflow.md): The **campaign record** is the centralized hub for a marketing effort — it shows flow summaries, performance insights, and content across flows, and it's where you create the first flow (via flow trigger, template, or quick start). Campaigns and flows are distinct objects: one campaign can relate to many flows, but each flow relates to only one campaign.
+- [Campaign Reporting & Monitoring Tools](concepts/campaign-reporting-tools.md): Marketing Cloud Next offers several tools to monitor campaign success: **Marketing Performance Intelligence** dashboards, **on-canvas flow analytics**, the **Campaign Stage** field (derived from all flows in the campaign), **Opportunity Influence**, the **Marketing Calendar**, the **Email Not Sent Reasons** table, and **Agentforce** for campaign generation and performance insights.
+- [Campaigns & Marketing Flows](concepts/campaigns-and-flows.md): A **campaign** organizes the assets, audience, and metrics of a marketing effort; a **flow** is the automation engine (a flow chart on a canvas) that actually distributes content. One campaign can contain many flows, but each flow belongs to one campaign.
+- [Channels Overview (SMS, WhatsApp, Mobile App)](concepts/channels-overview.md): Marketing Cloud Next is multichannel — email, landing pages, SMS, WhatsApp, and mobile push — but each non-email channel requires its own add-on and specific setup steps before you can send.
+- [Consent & Compliance](concepts/consent-and-compliance.md): Consent is the gatekeeper of marketing: a strict, subscription-based opt-in model ties consent to specific contact points (email/phone) and channels, so each preference is tracked independently and enforced at send time to keep you compliant with GDPR, CAN-SPAM, and CASL.
+- [Consent Audit Trail](concepts/consent-audit-trail.md): The Consent Audit Trail is an **append-only** Data Cloud object that records a row for every consent change — the historical record of all opt-in/opt-out events — unlike the CSC DMO, which stores only current status and is updated in place.
+- [Consent Cache (Send-Time Source of Truth)](concepts/consent-cache.md): At send time, Marketing Cloud Next does **not** read the Communication Subscription Consent (CSC) DMO directly — it reads a **consent cache** keyed by the recipient's email address, populated on demand, valid for **90 days**, and only refreshed by **supported write paths**.
+- [Consent Channels & Troubleshooting](concepts/consent-channels-troubleshooting.md): Consent behaves differently per channel (transactional email, SMS, WhatsApp) and per unsubscribe method — and when consent "isn't working," a systematic 5-step troubleshooting path isolates whether the write ever reached the CSC DMO and whether it was written through a supported path.
+- [Consent Data Model](concepts/consent-data-model.md): Consent is stored in Data Cloud in the **Communication Subscription Consent (CSC) Data Model Object (DMO)**, keyed on the **Contact Point value + Communication Subscription Channel Type (CSCT) ID** — deliberately independent of PartyID — so a single address's preference is enforced conservatively at send time.
+- [Consent Double Opt-In](concepts/consent-double-opt-in.md): Double opt-in (DOI) is a **two-step subscription confirmation** process: after a prospect submits a sign-up form, they receive a transactional confirmation email, and only after they click the confirmation link is their consent officially recorded — providing verifiable proof of consent for GDPR and CAN-SPAM.
+- [Consent Preference Pages](concepts/consent-preference-pages.md): Preference Pages let subscribers manage their own consent, but the out-of-the-box pages have real limits (limited branding, no multi-channel, no coding) — for deeper control you build a custom experience with Forms + Form-Triggered Flows + Landing Pages.
+- [Consent Segmentation](concepts/consent-segmentation.md): Segmenting **directly** on consent data isn't supported out of the box — the supported workaround is to build a **Calculated Insight** on consent data and use it in your segment filter (a metered, credit-consuming operation).
+- [Consent Setup & Billing](concepts/consent-setup-billing.md): Setting up consent requires enabling Data Protection and the right Data Cloud connector permissions before the consent packages install cleanly, and consent data has specific (mostly zero-cost) billing characteristics — but segmentation, Calculated Insights, and Identity Resolution on consent are metered.
+- [Consent Sync: The 3-Flow Architecture](concepts/consent-sync-3-flow.md): Salesforce CRM, Data 360 and Marketing Cloud Next stay in sync through **three dedicated flows** — because consent can only be written to MC Next via the native **Create Consent** action (Data Cloud-Triggered or Automation Event-Triggered), never by mapping fields straight into the CSC DMO.
+- [Consent Sync & Hybrid](concepts/consent-sync-hybrid.md): The standard Salesforce `Email Opt Out` field (`HasOptedOutOfEmail`) does **not** automatically sync with the Marketing Cloud Next Consent layer — you bridge the gap with a **two-Flow solution** (one CRM→MC Next, one MC Next→CRM), and use Consent Mapping tools to run Account Engagement / Marketing Cloud Engagement side by side.
+- [Consent Write Paths](concepts/consent-write-paths.md): Only a handful of **supported methods** correctly write consent so it's honored at send time — everything else (direct DLO/DMO writes, legacy MessagingConsent actions) can silently produce stale or wrong consent.
+- [Contact Points & Activation Source Priority](concepts/contact-points-activation.md): When you publish a segment to an **activation target**, contact point selection decides *which* fields (email, phone, MAID, etc.) get sent, and **source priority order** decides *which value* wins when a contact has that data from multiple sources.
+- [Content & Personalization in Marketing Cloud Next](concepts/content-and-personalization.md): The Content tab (powered by Salesforce CMS) is where you create emails, landing pages, forms, SMS/MMS, RCS, WhatsApp, and push messages. Personalization lets you swap content per-recipient using merge fields and dynamic content powered by personalization points, decisions, and targeting rules.
+- [Conversational Marketing (Agentforce)](concepts/conversational-marketing.md): Conversational marketing shifts channels from one-way "broadcast" (do-not-reply) to two-way conversation, using Agentforce AI agents to understand intent, retrieve context, and respond to customers across SMS, email, and WhatsApp.
+- [Data Architecture Layers (DLO, DMO, Data Graph, Data Lags)](concepts/data-architecture-layers.md): Data in Marketing Cloud Next flows through distinct layers — raw **DLO** → standardized **DMO** → unified profile via **identity resolution** → exposed to personalization via the **data graph** — and each layer runs on its own schedule, so not all data is available everywhere instantly.
+- [Data Kits & Data Streams](concepts/data-kits-and-data-streams.md): Data kits are pre-built packages of Data Model Objects (DMOs), fields, and data connections that make Marketing Cloud Next work. You install them, and their data streams auto-deploy in Data Cloud — like plugging in the wiring before you turn on the lights.
+- [Data 360 Billing & Usage Types](concepts/data360-billing-usage.md): Data 360 features consume credits based on **records processed, queried, or analyzed** — but some usage (internal Salesforce ingestion) is free, and the exact billing depends on your license type (Data Services vs. Flex Credits vs. Data 360 Profiles).
+- [Data 360 Segment Types](concepts/data360-segment-types.md): Data 360 supports five segment types — **standard**, **real-time**, **waterfall**, **dynamic**, and **data-kit** — each optimized for a different job: scheduled audience refreshes, millisecond on-demand evaluation, mutually-exclusive multi-offer priority lists, parameterized query-driven lists, and ready-made segments from prebuilt packages.
+- [Decision Branching & Path Experiments](concepts/decision-branching-path-experiments.md): Flows route each customer to the right path using **Decision elements** (first-match-wins branching on data-graph attributes), and **Path Experiments** bring A/B testing *into* the flow so the winning variation can go out to the remaining audience automatically.
+- [Distributed Marketing & Alerts](concepts/distributed-marketing.md): Distributed Marketing and Alerts lets marketers share **approved email templates** with non-marketing users (sales reps) so they can send on-brand, compliant one-to-one or bulk emails — with locked brand content and approved phrases/images.
+- [Domain Settings](concepts/domain-settings.md): Marketing Cloud Next uses several domains for different jobs (login, email links, images, landing pages, SMS links), and you can configure My Domain, tracker domains, sending domains, and custom domains to brand and control your URLs.
+- [Domain Warming & IP Sending Infrastructure](concepts/domain-warming-ip-infrastructure.md): Marketing Cloud Next starts email sends on **shared IPs** and **automatically assigns dedicated IPs based on volume**, continuously rebalancing traffic for optimal delivery — but you still must **warm your sending domain** because major mailbox providers now treat **domain reputation** as the primary signal (with IP reputation as fallback for unknown domains).
+- [Dynamic Content, Variations & Personalization Points](concepts/dynamic-content-variations.md): Dynamic content swaps whole components (subject line, image, CTA) per audience using **variations** governed by **targeting rules**. Each component with variations is tied to a **personalization point**; each variation maps to a **decision** (same name). Link multiple components to one personalization point to control them together — and personalize more than 25 components per item.
+- [Dynamic From & Reply Addresses](concepts/dynamic-from-reply-addresses.md): Instead of one mailbox for every email, **Dynamic From and Reply addresses** resolve the sender, display name, and reply-to from related CRM or Data 360 records at send time — so subscribers see and reply to a specific person (contact owner, account manager, customer success manager) or a brand/region address. The right configuration depends on how you authenticate your sending domain.
+- [Einstein Segments (Generative AI) & Data Prism](concepts/einstein-segments.md): Einstein Segment Creation uses generative AI to turn a natural-language description into a suggested segment (attributes and values), grounded by **Einstein Data Prism** which maps your metadata to the semantic meaning of objects and fields so the AI understands your actual data.
+- [Building & Personalizing Emails](concepts/email-building-personalization.md): The email editor lets you build structure on a canvas, add components, and layer personalization through rule-based dynamic content and merge fields — so a single email adapts its structure *and* its details to each recipient.
+- [Creating & Editing Emails (Visual, Code View & Templates)](concepts/email-creation-editing.md): Emails are built in the Content Builder (visual canvas) or in **Code View** (HTML/CSS + Handlebars), previewed/tested against a segment, and **published** before a campaign flow can send them. Reusable **email templates** lock brand elements while letting authors edit within boundaries, and promotional emails must carry CAN-SPAM consent details via merge fields.
+- [Email Domain Authentication (DKIM, SPF, DMARC)](concepts/email-domain-authentication.md): To send email, you must authenticate a sending domain (and verify a From address) so receiving servers trust your messages aren't spoofed — improving deliverability and protecting your domain's reputation.
+- [Email Sending Setup (Trust & Compliance)](concepts/email-sending-setup.md): Before sending trusted, compliant email you must establish a trusted sending identity (physical address, authenticated domain, from addresses, branded tracking links), configure consent, enable reply handling, and protect engagement metrics — building trust in both the email *and* the results.
+- [Engagement Signals](concepts/engagement-signals.md): Engagement signals are configured using a **primary engagement DMO** and mapped fields to identify and track individual engagements — they power Salesforce Personalization features like custom recommender objectives, custom attribution models, and personalization experiments.
+- [External Forms & Form Handlers](concepts/external-forms-form-handlers.md): Forms built in Marketing Cloud Next can be **embedded on your own external website** (via embedding code + CORS/clickjack/trusted-site configuration), or you can keep your existing site forms and use a **form handler** to capture their submissions into Salesforce — mapping your form's field names to Salesforce fields and triggering a flow.
+- [Flow Builder Elements for Marketing](concepts/flow-builder-elements.md): Flow Builder elements are the actions a flow can run (decisions, sends, record operations). Some elements are **marketing-specific** (Send Email/SMS, Create Consent, Path Experiment) and are available only in certain flow types.
+- [Flow Data Operations (Records, Collections & Transform)](concepts/flow-data-operations.md): Flows aren't connected to your data by default — **Get Records** pulls data *into* the flow, and **Create/Update/Delete Records** push it *back* to Salesforce. **Assignment, Loop, Collection Filter/Sort, and Transform** manipulate variables and collections, and **flow operators** define how filter conditions compare values.
+- [Flow Elements Deep Dive (Messaging, Decision, Path Experiment, Subflow, Wait)](concepts/flow-elements-deep-dive.md): Flow Builder elements are the building blocks of a marketing flow. This page deep-dives the **messaging elements** (Send Email/SMS/RCS/Mobile/In-App), the **Decision element** (manual vs. AI logic), **Path Experiments** (A/B/N testing with automated winner selection), the **Subflow element** (calling other flows), and the **Wait elements** (pausing for time, dates, conditions, or events).
+- [Flow Sharing & Campaign Management](concepts/flow-sharing.md): Marketing flows related to a campaign **inherit the campaign's sharing settings**; standalone flows are **private by default**. You can share flows dynamically (via categories + sharing rules) or manually (per user/group).
+- [Forms & Form Data Sources](concepts/forms-data-sources.md): Forms capture user information and are added as a component on a landing page (one form per landing page). A form has two parts — the **fields/settings** and the **flow** that processes submissions — and uses **data providers** to bridge form fields to Salesforce objects: a **write data provider** saves submissions, while **read data providers** pre-fill fields and drive progressive profiling.
+- [Identity Resolution Match Rules](concepts/identity-resolution-match-rules.md): Match rules tell Data 360 **which profiles to unify** during identity resolution. Each rule contains one or more criteria; profiles match when **all** criteria in a rule are satisfied, and a unified profile is created if **any single** match rule is activated.
+- [Identity Resolution Reconciliation Rules](concepts/identity-resolution-reconciliation-rules.md): Reconciliation rules select **a single value** to save to a unified field that can't hold multiple values (like a name) during identity resolution — they determine what's *shown* in the unified profile, not a "best" value, and they **don't apply to contact points**.
+- [Identity Resolution Rulesets](concepts/identity-resolution-rulesets.md): Identity resolution matches duplicate and related records (from different systems) into a single **Unified Individual** record, so marketers can target real people instead of fragmented data fragments.
+- [Landing Pages (Create, Templates, SEO & URLs)](concepts/landing-pages.md): Landing pages host introductory/brand content and forms for lead generation. They're built with components/templates (hosted on the auto-generated **Marketing Landing Pages** Experience Cloud site) or in **code view** (hosted on a marketing site), configured with SEO properties and URL aliases, and published to activate their URLs and any related form + flow.
+- [Marketing Cloud Next — Overview & Setup](concepts/marketing-cloud-next-overview.md): Marketing Cloud Next is Salesforce's multichannel marketing platform that sits on top of **Data Cloud**, so before you can market to anyone you must first wire up the data foundation, identity resolution, channels, and consent.
+- [Marketing Objects, AMPscript & Handlebars](concepts/marketing-objects-ampscript-handlebars.md): Beyond the data graph, you can store marketer-owned data in **marketing objects** (like legacy data extensions) and read it into messages using **AMPscript** or **Handlebars**, and you can reach fixed lists of known individuals with **actionable lists** — giving marketers autonomy without admin dependencies.
+- [Marketing Sites](concepts/marketing-sites.md): A **marketing site** hosts landing pages created in **code view** (component/template pages live on the auto-generated **Marketing Landing Pages** site instead). Each org has a default marketing site that publishes automatically when a landing page goes live, and its settings control public access, languages, integrations, security, and site-wide head markup.
+- [Marketing Triggers (Behavioral Automation Events)](concepts/marketing-triggers.md): Marketing triggers detect key customer behaviors (abandoned carts, product views, price drops, low inventory) and start automation event-triggered flows so marketers can respond with personalized, timely messages across channels.
+- [Marketing Cloud Engagement Journeys & Campaigns](concepts/mce-journeys-campaigns.md): Use the **campaign object as a shared workspace** across Marketing Cloud Engagement and Marketing Cloud Next — associate MCE journeys to a campaign to streamline workflows and enable in-depth reporting.
+- [Merge Fields & Saved Expressions](concepts/merge-fields-and-expressions.md): **Merge fields** insert a single customer value (name, city, product) into content; **saved expressions** are reusable filter+sort criteria that pick *which single value* a data-graph merge field returns when many are possible (e.g., the most recent opportunity). Both live in the Salesforce CMS and are reusable across email, SMS, and WhatsApp.
+- [Opportunity Influence & B2B Analytics](concepts/opportunity-influence-b2b-analytics.md): Opportunity Influence ties campaign engagement back to revenue (attribution), and B2B Analytics for Marketers connects CRM + engagement data to pipeline and revenue via ready-made dashboards — together they answer "which campaigns actually make money?"
+- [People Records: Prospects, Leads, Contacts & Unified Individuals](concepts/people-records-prospects.md): Marketing Cloud Next tracks people through distinct lifecycle stages — Prospect (unqualified) → Lead (qualified) → Contact (customer) — while Identity Resolution merges their records into a **Unified Individual** used for segmentation. Each stage maps to DMOs in Data 360, and records can be created, imported, converted, and automated via flows.
+- [Personalization Data Sources in Marketing Cloud Next](concepts/personalization-data-sources.md): A **data source** is any org object or element whose fields become available for personalization — merge fields, expressions, repeater components, and dynamic content. The Data Sources tab in Content Builder is where you add, view, and manage them, and the **data graph** (usually a profile graph on the Unified Individual DMO) is the backbone that most personalization depends on.
+- [Repeaters & Personalization Recommenders](concepts/repeaters-and-recommenders.md): A **repeater** shows a series of items (products, order updates, events) in an email, fed by a data source (event, data graph attribute, or a **Personalization recommender**). Recommenders pick the best item per contact at send time — no hand-written rules — and improve over time as they learn from engagement.
+- [Reporting & Analytics Setup](concepts/reporting-analytics-setup.md): Marketing Cloud Next uses **Marketing Performance** (Data Cloud + Tableau Next) and preconfigured analytics packages to give you embedded dashboards and reporting — but you must install the right packages, connect analytics objects, and share folders first.
+- [Reporting Metrics & Dashboards (Measure Success)](concepts/reporting-metrics-dashboards.md): Marketing Cloud Next reporting (powered by Data Cloud/Data 360 + Tableau Next) provides dashboards across every channel — email, SMS, RCS, WhatsApp, push, in-app, landing pages, forms, tracked links — with well-defined metric formulas for measuring campaign success.
+- [Starting Flows from REST API & Apex](concepts/rest-api-flow-integration.md): Autolaunched flows can be started programmatically via a **REST API call** (invocable action endpoint) or from **Apex** (`Invocable.Action` or `Flow.Interview` classes) — enabling external systems and custom code to trigger flows with input variables and read output values.
+- [Sandbox & Deployment](concepts/sandbox-and-deployment.md): Sandboxes are safe copies of your production org for testing, training, and development. Marketing Cloud Next supports all sandbox types, but you must handle Data Cloud objects, sender codes, and content replication carefully before deploying back to production.
+- [Scoring Models (People & Accounts)](concepts/scoring-models.md): Scoring assigns a 0–100 value to leads, contacts, prospects, and accounts based on **engagement** (how they interact) and **fit** (how closely they match your ideal customer), so you can build segments and target content.
+- [Segment Canvas & Filters](concepts/segment-canvas-and-filters.md): The Segment Canvas lets you build audiences by dragging **direct** (1:1, N:1) and **related** (1:N) attributes into containers, applying aggregation, AND/OR nesting, and advanced grouping/ranking/limiting — with population counts to validate each filter's impact.
+- [Segments & Audiences](concepts/segments-and-audiences.md): A **segment** is a group of Unified Individual IDs filtered by rules you define, and a **Unified Individual** is the consolidated record that merges multiple lead/contact records for the same person — the foundation of targeted marketing.
+- [User Access & Permission Sets](concepts/user-access-and-permission-sets.md): Marketing Cloud Next ships with two main permission sets — **Marketing Cloud Admin** and **Marketing Cloud Manager** — plus granular permissions and content roles that control who can build, publish, and manage campaigns, content, and flows.
+- [Web Tracking (Landing Pages & External Sites)](concepts/web-tracking.md): Marketing Cloud Next can track page views, form submissions, link clicks, and button clicks on both hosted landing pages AND your external website — using cookies and an optional consent banner — to feed engagement data into Data Cloud for better segmentation.
+
+## Flashcards (by topic)
+
+- [Flashcards — Agentic, Conversational, Data Architecture & Email](flashcards/agentic-conversational-data-email.md)
+- [Flashcards — Business Units, Campaigns, Content & Beyond](flashcards/campaigns-content-beyond.md)
+- [Flashcards — Campaigns, Flows & Flow Elements Deep Dive](flashcards/campaigns-flows-deep-dive.md)
+- [Flashcards — Channels, Consent & Reporting](flashcards/channels-consent-reporting.md)
+- [Flashcards — Consent Cache & Subscription Model (MC Next Deep Dive #022)](flashcards/consent-cache-and-subscription-model.md)
+- [Flashcards — Consent Management Deep Dive](flashcards/consent-management-deep-dive.md)
+- [Flashcards — Data 360 Segmentation](flashcards/data360-segmentation.md)
+- [Flashcards — Identity Resolution, Billing & Flow Orchestration](flashcards/identity-billing-flow-orchestration.md)
+- [Flashcards — Marketing Cloud Next Setup & Data Foundation](flashcards/marketing-cloud-next-setup.md)
+- [Flashcards — Personalization Data Sources, Merge Fields, Dynamic Content & Repeaters](flashcards/personalization-data-sources-deep-dive.md)
+- [Flashcards — Landing Pages, Forms, External Forms & Marketing Sites](flashcards/web-content-forms-deep-dive.md)
+
+## Exam Q&A Study Guide (by section)
+
+- [Exam Q&A Study Guide](Exam%20Q%26A%20Study%20Guide/README.md)
+- [Q&A Study Guide — Section 1: Platform Setup & Governance (13%)](Exam%20Q%26A%20Study%20Guide/section-1-platform-setup-governance.md)
+- [Q&A Study Guide — Section 2: Consent (13%)](Exam%20Q%26A%20Study%20Guide/section-2-consent.md)
+- [Q&A Study Guide — Section 3: Data Modeling, Identity Resolution & Segmentation (25%)](Exam%20Q%26A%20Study%20Guide/section-3-data-identity-segmentation.md)
+- [Q&A Study Guide — Section 4: Campaign Design, Flow Orchestration & Content (30%)](Exam%20Q%26A%20Study%20Guide/section-4-campaign-flow-content.md)
+- [Q&A Study Guide — Section 5: Agentforce & AI Innovation (11%)](Exam%20Q%26A%20Study%20Guide/section-5-agentforce-ai.md)
+- [Q&A Study Guide — Section 6: Analytics & Performance Insights (8%)](Exam%20Q%26A%20Study%20Guide/section-6-analytics-insights.md)
+
+## Exam Section Based Flashcards
+
+- [Exam Section Based Flashcards](Exam%20Section%20Based%20Flashcards/README.md)
+- [Flashcards — High-Frequency "Gotcha" Facts (Cram Deck)](Exam%20Section%20Based%20Flashcards/gotcha-facts-cram-deck.md)
+- [Flashcards — Section 1: Platform Setup & Governance (13%)](Exam%20Section%20Based%20Flashcards/section-1-platform-setup-governance.md)
+- [Flashcards — Section 2: Consent (13%)](Exam%20Section%20Based%20Flashcards/section-2-consent.md)
+- [Flashcards — Section 3: Data Modeling, Identity Resolution & Segmentation (25%)](Exam%20Section%20Based%20Flashcards/section-3-data-identity-segmentation.md)
+- [Flashcards — Section 4: Campaign Design, Flow Orchestration & Content (30%)](Exam%20Section%20Based%20Flashcards/section-4-campaign-flow-content.md)
+- [Flashcards — Section 5: Agentforce & AI Innovation (11%)](Exam%20Section%20Based%20Flashcards/section-5-agentforce-ai.md)
+- [Flashcards — Section 6: Analytics & Performance Insights (8%)](Exam%20Section%20Based%20Flashcards/section-6-analytics-insights.md)
+
+## Notes
+
+- Raw vendor documentation is intentionally not redistributed in this repository.
+- Content reflects the Summer '26 / Spring '26 releases and may change.
+- Unofficial study resource; not affiliated with or endorsed by Salesforce, Inc.
+- Licensed CC BY 4.0.

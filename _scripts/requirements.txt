@@ -1,0 +1,2 @@
+# Dependencies for _scripts/generate_pdf.py
+fpdf2>=2.7.0
