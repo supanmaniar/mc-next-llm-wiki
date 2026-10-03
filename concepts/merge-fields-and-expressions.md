@@ -23,6 +23,8 @@ Use merge fields to personalize marketing content with customer data — a name 
 3. Select the **data source type**, then the **attribute** to insert.
 4. If you select data graph attributes, **select or create an expression** to filter and sort data as needed.
 
+**Fallback values:** when inserting a merge field you can define a **fallback value** to use when the customer's data is missing (e.g., use "Friend" when the first name is absent). The merge field menu shows the configured data providers alongside other options like **global strings**.
+
 > **SMS/WhatsApp:** merge fields use the **default data graph** configured in Setup (it doesn't appear in the Data Sources panel, but its data works).
 
 ### Saved Expressions
@@ -56,6 +58,7 @@ Build an expression with filter and sort conditions to find accounts with **annu
 ⚠️ **An unpublished expression isn't available in content** — publish to use, unpublish to retire.
 ⚠️ **SMS/WhatsApp merge fields silently use the default data graph** — you don't add it as a data source.
 ⚠️ **Changing a data source** after attributes are used in merge fields → delete the merge fields first, then recreate them.
+⚠️ **Always set a fallback value** for merge fields that may be empty — otherwise the recipient sees a blank.
 
 ## Active Recall Questions
 1. Where can you add merge fields in an email?
@@ -63,6 +66,7 @@ Build an expression with filter and sort conditions to find accounts with **annu
 3. What permissions are needed to create vs. publish an expression?
 4. What's the prerequisite for creating an expression?
 5. How does Erin's example use filter + sort to return the most recent opportunity?
+6. What is a fallback value, and when would you use one?
 
 ## Related Concepts
 - [[personalization-data-sources]]
@@ -73,3 +77,4 @@ Build an expression with filter and sort conditions to find accounts with **annu
 
 ## Source References
 - `sources/Content_Personalization_Data_Sources_Deep_Dive.txt` — "Personalize Content with Merge Fields", "Create an Expression for a Personalized Merge Field"
+- `sources/MCNext_Consultant_Exam_Masterclass_Session3.txt` — Elliot Harper, "Marketing Cloud Next Consultant Exam Masterclass" Session 3 (Salesforce, Summer '26)

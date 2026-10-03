@@ -19,6 +19,26 @@ Business units partition an org by marketing goal. Examples: separate brands, ge
 - A business unit maps to **exactly one data space**, and that data space can't be related to any other business unit (one-to-one).
 - This keeps data isolated between business units.
 
+### Content Isolation via CMS Workspaces
+Business units also separate **content**, not just data. All marketing content (images, landing pages, forms, brand assets, emails) is stored in **CMS content workspaces**, and **each workspace is associated with a specific business unit**.
+
+| Relationship | Cardinality |
+|--------------|-------------|
+| **Data space → business unit** | No business units **or one** business unit |
+| **Business unit → content workspaces** | **One or more** content workspaces |
+
+- When marketers create an asset, the system shows **only content available to the associated business unit**.
+- The same filtering applies when selecting content from a **campaign or flow**.
+- ⚠️ **Content cannot be accessed directly across business units.** The workaround is **common assets** — post content as a common asset (available to all business units), then users in other units **copy it into their own workspace**. See [[marketing-workspaces-and-cms]].
+
+### Business Unit Roles and Content Access
+| Role | Access |
+|------|--------|
+| **Marketing Standard** | Both the **data space and CMS content** |
+| **Marketing Read-Only** | **Data space only** (no CMS content) |
+
+> ⚠️ Users **without** the Marketing Manager or Marketing Admin permission sets can **only** be assigned the **Marketing Read-Only** role.
+
 ### The Initial Business Unit
 - To turn on business units, you create the **first two** business units consecutively.
 - Your current marketing config (data space + default content workspace) becomes the **first** business unit.
@@ -51,6 +71,8 @@ After creating business units, some settings are per-unit, others org-wide:
 - Scoring models
 - Einstein features (STO, Engagement Frequency, Scoring)
 
+**From the business unit setup page you can also:** associate **CMS workspaces**, assign **authenticated email domains** and other channel-specific settings, configure **preference pages for each domain**, enable specific **AI features**, add **members** (Business Unit Members → Add Users → assign role), and enable **common assets** (Business Unit Settings).
+
 > **Note:** Einstein Metrics Guard is NOT supported with business units.
 
 ### Example Use Case (Welo)
@@ -59,6 +81,9 @@ US ecommerce company expanding to Latin America creates a "Welo Latam" business 
 ## Common Pitfalls / Misconceptions
 ⚠️ Business units are **Advanced edition only**.
 ⚠️ A business unit ↔ data space is a strict **one-to-one** — no sharing.
+⚠️ **Content can't be accessed directly across business units** — use **common assets** (post, then copy).
+⚠️ **Marketing Read-Only** role = data space only, **no CMS content**.
+⚠️ Users without Marketing Manager/Admin permission sets can **only** be Marketing Read-Only.
 ⚠️ You can't deactivate the **last** remaining business unit.
 ⚠️ Deactivation is **permanent** — no reactivation.
 ⚠️ Only Marketer-Standard members can **activate flows**.
@@ -69,11 +94,16 @@ US ecommerce company expanding to Latin America creates a "Welo Latam" business 
 3. What's the maximum number of business units?
 4. Can you deactivate the last business unit? Can you reactivate a deactivated unit?
 5. Which Einstein feature is NOT supported with business units?
+6. What are the cardinalities between data spaces, business units, and content workspaces?
+7. How is content shared across business units, and which role gets CMS content access?
 
 ## Related Concepts
 - [[data-kits-and-data-streams]]
 - [[identity-resolution-rulesets]]
 - [[campaigns-and-flows]]
+- [[marketing-workspaces-and-cms]]
+- [[user-access-and-permission-sets]]
 
 ## Source References
 - `sources/Marketing Cloud Next Salesforce Help Information.txt` — "Business Units in Marketing Cloud Next"
+- `sources/MCNext_Consultant_Exam_Masterclass_Session3.txt` — Elliot Harper, "Marketing Cloud Next Consultant Exam Masterclass" Session 3 (Salesforce, Summer '26)

@@ -39,6 +39,8 @@ If a recipient doesn't match any targeting rule, they get the **default variatio
 7. (Optional) Add a **group of conditions** for a more flexible/restrictive rule.
 8. Save, then customize the variation's content and style per audience (Copilot can generate content).
 
+**Demo pattern (US West States):** select the header image → in the **dynamic content** section of the image properties panel click **New Variation** → name it (e.g., "US West States") → define the targeting rule by selecting the **State/Province** field from the individual's **related contact point address** data → choose the **isIn** operator → enter the state values → save → assign a different header image. You can then **preview** each variation to see exactly what qualifying individuals will see, create additional variations, and set **priority order** when a recipient qualifies for more than one.
+
 ### Clone a Personalization Point
 Reuse an existing personalization point (from the same campaign, or created in Salesforce Personalization) to create variations quickly.
 - You can clone **only when the component has no variations**.
@@ -115,3 +117,4 @@ A marketer creates a summer email for hiking and trail-running audiences:
 
 ## Source References
 - `sources/Content_Personalization_Data_Sources_Deep_Dive.txt` — "Create and Manage Variations", "Link Components to an Existing Personalization Point", "How Dynamic Content and Salesforce Personalization Work Together", "Linked Personalization Points in Dynamic Content"
+- `sources/MCNext_Consultant_Exam_Masterclass_Session3.txt` — Elliot Harper, "Marketing Cloud Next Consultant Exam Masterclass" Session 3 (Salesforce, Summer '26)

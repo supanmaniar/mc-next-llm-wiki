@@ -22,21 +22,46 @@
 | **AMPscript** | Legacy scripting; `Lookup()` function | Reading marketing objects |
 | **Saved expressions** | Filter+sort to return ONE value (e.g., most recent purchase) | Reusable across channels |
 
+**Marketer vs. developer:** merge fields, repeaters, and dynamic content = **marketer configuration**; Handlebars and AMPscript = **developer flexibility**. ⚠️ **Not every MCE AMPscript function is supported in MC Next.**
+
+**MCE vs. MC Next:** MCE personalization relies primarily on **data extensions** (sendable or non-sendable); MC Next offers **data providers, content variables, and marketing objects**. Exam scope = **email** personalization only.
+
 **Key limits:** 25 personalization points per item · 15 variations per component · linking components shares one personalization point · subject line + preheader = **one** component · content with variations **can't be exported/imported**.
 
 **Deep dives:** [[personalization-data-sources]] · [[merge-fields-and-expressions]] · [[dynamic-content-variations]] · [[repeaters-and-recommenders]].
 
 **Identifiers (memorize):** marketing object = `__mo` · field = `__c` · data graph = `$dataGraph.Field`. AMPscript uses `Lookup()`, Handlebars uses `queryFirst type="MO"`.
 
+### The Eight Data Providers
+1. **Data graph** — pre-assembled view from a primary DMO (Individual/Unified Individual) + related objects, prepared as a **single read-only record** (no joins at render time).
+2. **Event** — data from an event-triggered flow; schema matches the triggering engagement DMO. ⚠️ **Direct attributes only, no related collections.**
+3. **Activation** — direct + related attributes configured in the activation; supports Individual or Unified Individual segments.
+4. **Salesforce record** — current CRM object data (cases, leads).
+5. **Apex class** — custom schema for personalization; designed for on-demand/broadcast flows.
+6. **Personalization recommender** — recommendations from Salesforce Personalization; displayed via a repeater.
+7. **Lookup graph** — non-profile data; uses a value from the primary data graph as a key into a second, smaller graph.
+8. **Offer** — Salesforce Loyalty Management promotions; merge fields + dynamic content by loyalty tier.
+
+⚠️ **A message can't use both an activation and an event data provider** — the flow orchestration patterns conflict.
+
+**Content variables:** custom placeholders defined in the email, populated at runtime from **Salesforce Flow** (any flow data source incl. MuleSoft/HTTP). Types: boolean, text, date, dateTime, number, **recordId**. The **content defines the placeholders; the flow supplies the values**.
+
+**Marketing objects:** marketer-managed tables (MCE data-extension equivalent) for catalogs, reference tables, rewards balances, promo codes; queried at runtime with Handlebars/AMPscript; text/number/decimal fields; full refresh replaces records.
+
 ### Flow Types & Triggers
+
+> **Flow is the single orchestration engine for outbound messaging in MC Next** (unlike MCE's many send contexts). Marketing flows are **high-scale flows** that run **off-core** on a separate engine — governor limits and transaction-scaling concerns don't apply the same way. Deep dive → [[marketing-flow-types]].
 
 | Flow type | Trigger | Notes |
 |-----------|---------|-------|
-| **Audience/Segment flow** | Schedule (or immediate); segment must be published first | 4 audience sources: **Segment, List, Record, Campaign**; recurring up to every hour; can republish segment before run |
-| **Automation event-triggered flow** | Customer action (click, form submit, record update) | Runs within ~15 min; Create Consent element available here only |
-| **Activation-triggered flow** | A Data 360 activation publishes | **Only Data 360 target type**; refresh 10 min (incremental) / 24 hr (standard); MuleSoft or HTTP callout |
-| **Broadcast flow** | API/Apex call | Uses **dynamic segments** (membership after start); can run async |
-| **On-demand flow** | API/Apex call (high-priority, order confirmations) | Can include event info (order ID, amount) |
+| **Audience flow** (segment/list/CRM record/campaign member) | Schedule (or immediate); segment must be published first | **Summer '26** — unifies 4 audience sources: **Segment, List, Record, Campaign**; recurring up to every hour; can republish segment before run; **re-entry conditions** mirror Journey Builder's 3 entry modes |
+| **Automation event-triggered flow** | Customer action (click, form submit, record update) | Runs within ~15 min; Create Consent element available here only; sources = standard engagement events, **engagement signals**, **CRM record-triggered events** (Spring '26) |
+| **Activation-triggered flow** | A Data 360 activation publishes | **Winter '26**; **only Data 360 target type**; refresh 10 min (incremental) / 24 hr (standard); MuleSoft or HTTP callout; **activation can be the personalization source** |
+| **Broadcast flow** | API/Apex call | Targets **all members of a dynamic segment** (fan-out); membership evaluated at execution time; sync or async |
+| **On-demand flow** | API/Apex call (high-priority, order confirmations) | Targets an **individual**; personalization via **Apex-defined schema** in the payload (no Data Cloud ingestion); ~**1–3 s** latency |
+| **Data Cloud-triggered flow** | A DMO/CIO record created or updated | ⚠️ **Not technically a marketing flow**; used for **consent automation** (Create Consent) |
+
+⚠️ **Record-triggered flows and Data Cloud-triggered flows cannot send emails** from Marketing Cloud Next.
 
 **Campaign ↔ Flow cardinality:** 1 campaign = many flows; 1 flow = 1 campaign.
 
@@ -116,6 +141,17 @@
 - ⚠️ **Reconciliation rules don't govern contact points** — only source priority does.
 - Removing "Any Source/Any Type" → smaller population.
 
+### Contact Point Resolution at Send Time
+In Data 360 an individual can have **multiple email addresses** (unlike MCE's single address). ⚠️ **Reconciliation rules don't resolve contact points** — all contact points are retained in the unified profile. **Different addresses → separate messages; duplicate addresses → one send.**
+
+**Four ways contact point selection is determined:**
+1. **Data graph** selected in the flow's automation properties (must have the required structure/field set).
+2. **On-demand flow API payload** — but a configured data graph **takes precedence**.
+3. **Activation source priority order** (activation-triggered flows).
+4. **Activation template** (audience flows using a segment).
+
+**Activation template:** define source priority order + filter rules; select it in the send message element. ⚠️ **Required when the segment-on object is NOT Unified Individual.** For phone, select the field from the **Contact Point Phone DMO**. → [[contact-point-resolution]]
+
 ### Email Content & Sending
 
 - **Create/edit:** Content tab (Add → Content → Email), campaign record, or flow's Send Email Message element. Permissions: Marketing Cloud Manager + any CMS contributor role (create/edit); + content admin/manager (publish/unpublish).
@@ -188,6 +224,9 @@
 
 ## Section 3 — Data Modeling, Identity Resolution & Segmentation (25%)
 
+### Data 360 Capabilities Checklist (exam expects familiarity)
+MC Next is a **Lightning app built on Data 360**. Know **what each does and where it fits** (deep expertise not required): **object model** (DLO/DMO) · **data streams** & DLO→DMO mapping · **data spaces** · **data kits** · **calculated insights** · **data graphs** · **segmentation** · **activations** · **identity resolution**. The exam guide recommends the **Salesforce Certified Data 360 Consultant** certification first (not a prerequisite).
+
 ### Data Object Concepts (Layers)
 
 1. **DLO** (Data Lake Object) — raw intake, unprocessed.
@@ -257,7 +296,8 @@
   - **Field mapping:** Company → Account Name (Contact/Account); City/State/Zip → Mailing (Contact) / Billing (Account); Email/Phone → same; Industry → Account only; Prospect Currency → Lead/Contact/Account Currency.
 - **Prospect restrictions:** can't add as campaign member; not in Data Import Wizard; can't clone/bulk delete; converted prospects don't show in list view; status values = lead status values; CSV import needs **opt-in consent values** before sending marketing email.
 - **Lead Assignment Rules** (Setup → Assignment Rules) determine the record owner after conversion; each rule entry = processing order + condition + assigned user.
-- **Actionable list** = static collection (leads OR contacts, never both); use list-triggered flow.
+- **Actionable list** = static collection (leads OR contacts, never both); use list-triggered flow. ⚠️ **Adding new leads/contacts does NOT create consent records** — load consent separately or the audience is suppressed. → [[crm-integration-and-actionable-lists]]
+- **CRM integration:** **Spring '26** = CRM records as an audience source (scheduled or event); **Summer '26** = campaign members + actionable lists. **Sales Data Kit** = pre-configured streams/mappings for leads, contacts, accounts, prospects (optional; Opportunity Influence requires it).
 - **Marketing objects** = data-extension-like storage (Text≤255/Number≤18digits/Decimal; Growth 10GB/25, Advanced 40GB/100; 100 columns/object). Deep dive → [[marketing-objects-ampscript-handlebars]].
   - Created by **CSV import** (data types inferred; object = only the file's columns); multiple primary key fields allowed but **no composite keys**.
   - ⚠️ **Field API name, data type, and primary key designation are immutable** after creation — delete + recreate the field (deletes its data).
@@ -288,8 +328,14 @@
 
 ## Section 1 — Platform Setup & Governance (13%)
 
+### The Agentforce Marketing Portfolio
+- **Agentforce Marketing is a portfolio, not a product.** It contains four products: **Marketing Cloud Next** (evolution of Marketing Cloud Engagement) · **Salesforce Personalization** (real-time, evolution of MC Personalization) · **Marketing Intelligence** (AI analytics, evolution of MC Intelligence) · **Loyalty Management** (no-code B2B/B2C loyalty). → [[agentforce-marketing-portfolio]]
+- **Editions:** Growth vs. Advanced (Advanced = all of Growth + extras). ⚠️ **Account scoring, Engagement Scoring, Engagement Frequency, Business Units, Path Experiments, On-Canvas Insights** are **Advanced only**; **people scoring** is in both.
+
 ### Environment Setup
 - **Editions:** Enterprise & Unlimited with **Growth** or **Advanced**.
+- **Configuration, not implementation** — MC Next + Data 360 enable in a few clicks. **Six key configuration steps** minimum; the first three are driven by the **Setup Assistant**: set up Data 360 → enable Marketing Cloud → deploy required data streams. Then add the **physical address** (Company Information) and create an **authenticated domain**.
+- **Two permission sets required before configuration** (assigned by a System Administrator-profile user): **Data Cloud Architect** (Data 360 setup, data modelling, data kits, streams, identity resolution) + **Marketing Admin** (most marketing Setup settings, publish/activate campaigns & segments). ⚠️ **Data Cloud Architect replaced Data Cloud Admin in Spring '26**; **System Administrator is a profile, not a permission set**.
 - **Data kits** install first (data plumbing); data streams auto-deploy.
 - **Permission sets:** Marketing Cloud Admin (Setup access) vs. Marketing Cloud Manager (campaigns/segments/flows only).
 
@@ -301,9 +347,14 @@
 ### Enhanced CMS Workspaces
 - Share workspaces (source → target); **sharing is non-transitive** (share source to each target).
 - Roles: Content Admin / Manager / Author (separate from permission sets).
+- **Business unit content isolation:** all content lives in **CMS content workspaces**, each tied to a **specific business unit**. A **data space** maps to **no business unit or one**; a **business unit** maps to **one or more workspaces**. ⚠️ **Content can't be accessed directly across business units** — post as a **common asset**, then copy into the target workspace. → [[marketing-workspaces-and-cms]]
+- **Role access:** **Marketing Standard** = data space + CMS content; **Marketing Read-Only** = data space only. Users without Marketing Manager/Admin permission sets can **only** be Read-Only.
+- **Workspaces:** organise by campaign/initiative/brand/team; folders; share with a general workspace; export/import between orgs (production ↔ sandbox); roles at workspace level too. ⚠️ **Content must be published** before use; **publishing a form activates its flow**.
 
 ### Domain Authentication & IP
 - Authenticate **sending subdomain** (DKIM/SPF/DMARC); DNS up to **48 hrs**.
+- **MCE vs. MC Next:** MCE uses a **sender authentication package**; MC Next uses an **authenticated domain** + published DNS records (Setup → Authenticated Domains → Add Domain → subdomain → default From username → DNS zone file/records → Activate My Domain).
+- ⚠️ **Authorized email domain ≠ authenticated domain.** Authorized verifies **ownership only** (one verification record, no DKIM/DNS sending config) and is required for **dynamic From/Reply-to addresses**. A **personal email on the root domain** as the From address can cause **DMARC alignment failures**.
 - **Functional subdomains:** `reply` (replies) · `bounce` (bounces) · `leave` (unsubscribes) — each needs a CNAME.
 - **Managed dedicated IPs:** auto-assigned by volume; continuous rebalancing.
 - **Domain warming:** domain reputation is PRIMARY signal; start a few hundred/day; bounce <2%, complaint <0.1%.
@@ -316,15 +367,25 @@
 ### Core Model
 - **Strict opt-in** — absence of "Yes" = blocked.
 - **Composite key:** Subscription + Contact Point + Channel Type.
+- **Four levels of consent granularity:** **L1** = entire individual record (all channels/subscriptions/points) · **L2** = a channel as a whole (all email) · **L3** = a specific contact point value (email/phone) · **L4** = a specific contact point **+** a specific subscription type. ⚠️ **MC Next enforces Level 4.**
 - Consent tied to **contact point** (not the person).
 - **Keyed on Contact Point value + CSCT ID, NOT PartyID** (PartyId blank by design). Shared address → opt-out affects everyone on it.
+- **Three consent models coexist** in one org: Salesforce Consent Data Model (legal basis) · Data 360 consent objects (activation eligibility) · Communication Subscription Consent (MC Next sends). **MC Next reads only the third**, through the cache. → [[consent-objects-and-models]]
 
 ### Consent Objects (DMOs)
 - **Contact Point** (address) · **Communication Subscription** (topic) · **Engagement Channel Type** (medium) · **Communication Subscription Channel Type** (delivery method) · **Communication Subscription Consent** (the opt-in/opt-out record).
-- **Consent Audit Trail** — append-only history of every consent change (fields: TimeStamp, ConsentStatus, ContactPointValue, CSCT ID, caller-provided source attribution). No actor/user field. GDPR delete via Consent API **ShouldForget** (30/60/90-day reprocessing).
+- **Id prefixes:** Communication Subscription `0Xl` · Engagement Channel Type `0eF` · Communication Subscription Channel Type `0eB`. First three are **CRM objects** (API 48.0, Spring '20); the consent record lives in **Data 360 only**. ⚠️ **Engagement Channel Type has no DMO.**
+- **Subscription governance (fixed at creation):** scope can't change (single BU or all BUs); deleting a subscription deletes all its consent data; a new subscription doesn't appear on the preference page by default; **no frequency capping** (`CommSubscriptionTiming` exists but isn't mapped).
+- **Consent Audit Trail** — append-only history of every consent change (fields: TimeStamp, ConsentStatus, **PassedConsentStatus**, ContactPointValue, CSCT ID, caller-provided source attribution). No actor/user field. GDPR delete via Consent API **ShouldForget** (30/60/90-day reprocessing). It's a **DLO not mapped to any DMO** — use Query Editor, not Data Explorer.
+
+### Consent Data Streams
+- Data kit **`UnifiedMessagingConsent`** installs **two** streams: consent records (`MessagingConsentV2`) + audit trail (`ConsentAuditTrailV2`).
+- **Two ways to get duplicate records** for the same contact point + subscription: (1) the documented pre-Summer '25 generation switch (`MessagingConsent` → `MessagingConsentV2`); (2) the **org-ID naming quirk** — Salesforce appended the org ID to stream names, both spellings stayed active, so even a V2-only org gets duplicates. Send-time is fine (**latest record wins**); queries are not (naive `SELECT` returns both rows).
+- ⚠️ **No consent DLO name is portable** — the org ID is in the name. Always read the actual stream name in your org before copying any query/transform.
+- V2 mapping: `ConsentId` = primary key (contact point value + CSCT Id); `ConsentCapturedDateTime` (when the person decided) ≠ `UpdatedTime` (when the row changed); `PartyId` mapped to `Party` but empty. → [[consent-data-streams]]
 
 ### Methods to Create/Manage Consent
-1. **Preference Pages** — subscriber self-service. ⚠️ Unsubscribe via Preference Page = **consent update, not an Email Engagement event** → skews Email Opt-Out Rate lower.
+1. **Preference Pages** — subscriber self-service. ⚠️ Unsubscribe via Preference Page = **consent update, not an Email Engagement event** → skews Email Opt-Out Rate lower. **Spring '26** added custom pages; **Summer '26** added **multiple pages** (e.g., per brand). Configure a **brand** (colours/typography/buttons/spacing/borders), **content blocks** (dividers/headings/lists/paragraphs), **layouts**, **image blocks**, and a **default page**. ⚠️ Channel determines the page (email → email preference manager; SMS → SMS-specific page); no unified cross-channel page, no native multilingual, no custom code (AMPscript/Apex/server-side JS), no URL-parameter pre-population. Standard subscription block can't edit button labels/headings/subheadings or reorder the list (rename subscriptions from the Consent tab as a workaround).
 2. **Consent Status LWC** — admin drops on record layouts.
 3. **Consent Imports** — CSV (one channel + subscription + status per import; max 50k rows, one-time loads).
 4. **Salesforce Flow** — `Create Consent` (Data Cloud Record-Triggered) or `Consent Request` (Automation Event/On-Demand). ⚠️ **Never** `MessagingConsent`.
@@ -344,10 +405,16 @@
 | SMS | Per **sender code** |
 | WhatsApp | Per contact point (block in-app) |
 
+- **Consent-check applicability:** promotional email **required** · transactional email **not required** · promotional SMS/WhatsApp/RCS **required** · transactional SMS/WhatsApp/RCS **required**. Separate switches under Setup → email channel settings.
+- **Disabling consent checks** requires an explicit written affirmation of responsibility, and ⚠️ **doesn't affect active flows** — anything already running keeps checking.
+- **SMS/WhatsApp/RCS granularity:** each code/number/agent maps to one or more subscriptions; opting out of the channel opts out of **all** mapped subscriptions (no per-subscription opt-out over SMS). **RCS exception:** can reuse existing SMS consent when the use case matches.
+- **Compliance BCC** is excluded from consent checks; **CC recipients** are suppressed if the primary recipient lacks consent.
 - "Unsubscribe from all" does **not** persist as a permanent block.
 - **Never delete** a Communication Subscription (destroys audit trail).
 - **Transactional email:** consent check off by default, but selecting a Communication Subscription turns it on. **Transactional SMS (OTP/2FA) still requires consent** (TCPA).
 - **Spam complaint (FBL) + Reply Mail Management** opt out of **all** current subscriptions (no channel/account-level opt-out today).
+- **Consent read latency:** changes take **minutes** to appear in the DMO (up to a couple of hours with Consent Changes in flows).
+- **What you can't see:** the cache · who changed a record · consent history on the record · anything in the Party field · more than the 100 most recent records on the component.
 
 ### Consent Banner
 - Landing pages + external sites via **Web Tracking**.
@@ -362,6 +429,8 @@
 - **Campaign Creation agent** — draft brief, create campaign from brief, summarize, insights.
 - **Content Builder agent** — draft content, create sections.
 - **Einstein Segments** — natural language → segment (requires Unified Individual DMO ≥10 records).
+
+**The five out-of-the-box agents (memorize the pairing):** **Segment Creation** (natural language → editable segment criteria) · **Campaign Creation** (briefs, flows, multi-channel content) · **Content Creation** (drafts/refines email, LP, SMS content) · **Journey Decisioning** (picks journey/flow + personalizes) · **Account Discovery** (account insights + buying group members). → [[marketing-agents]]
 
 ### Conversational Messaging
 - **Channel = pipe** (delivery), **Agent = brain** (LLM + Data 360).
@@ -379,6 +448,11 @@
 
 - **Metrics Guard** score is counterintuitive: **lower = more likely real**.
 - STO/Scoring/Frequency require identity resolution ruleset with **Individual** primary.
+- **All three predictive models analyse up to 90 days** of data.
+- **Engagement Frequency:** goal = optimal send frequency (reduce fatigue/unsubscribes); trained **only on your org's data**, refreshed **weekly**; classifications = **Saturated / Almost Saturated / On Target / Under Saturated**.
+- **Engagement Scoring:** predicts likelihood to **open / click / remain subscribed**; emphasises **recent activity**; personas = **Loyalists** (high/high) · **Selective Subscribers** (low open/high click) · **Window Shoppers** (high open/low click) · **Win Back/Dormant** (low/low); tiers = **Most/More/Less/Least Likely**.
+- **STO:** needs the **Send Time Optimization DMO** in the data graph (**Hourly Scores by Week** field); optimization window **2 hours to 1 week**; predictions refresh **~weekly**; available in **both editions**.
+- Use insights as **segment criteria** or in a **Decision element** (requires the data graph).
 
 ### Einstein Trust Layer
 Toxicity detection · dynamic grounding (anti-hallucination) · PII masking · zero data retention · encryption · audit trail · human escalation.
@@ -396,6 +470,16 @@ Toxicity detection · dynamic grounding (anti-hallucination) · PII masking · z
 | **Email Engagement** | Email KPIs |
 | **SMS/Forms/Landing Page Engagement** | Channel-specific |
 | **B2B Analytics** (Account-Based Marketing, Pipeline, Marketing Manager, B2B Attribution) | Revenue attribution |
+
+### The Three Out-of-the-Box Reporting Capabilities
+All included with **no additional license or SKU**:
+1. **Campaign Performance Dashboard** — end-to-end view of an individual campaign (sends, opens, clicks, bounces, **contact progression**).
+2. **Marketing Performance Dashboard** — broader **cross-channel view over time** (audience growth, program-level engagement trends); available from the **Marketing Analytics tab** and **embedded in campaign records**.
+3. **Semantic Data Model** — the **Marketing Intelligence Semantic Data Model** (Tableau Next) combines multiple Data 360 objects and defines relationships/metrics **centrally** for consistent calculation; use it for **custom reports**, stakeholder sharing outside CRM, and external tools.
+
+- **Content performance dashboards** are accessed from the **Analytics tab in the flow messaging element** (select element → Analytics tab → **Details** → pulse cards + row-level data).
+- **Deliverability dashboards** cover **SMS, WhatsApp, and mobile app** messaging.
+- **Unified Engagement History** — shared sales/marketing view of lead/contact activity on an account; embed the component on **account, lead, and contact page layouts**.
 
 ### Key Metric Formulas
 - **Open Rate** = unique opens / (sends − bounces)
@@ -415,6 +499,22 @@ Toxicity detection · dynamic grounding (anti-hallucination) · PII masking · z
 
 ## High-Frequency "Gotcha" Facts (cram list)
 
+- **60 / 105 / 72% / 44** — scored questions / minutes / pass mark / minimum correct (plus up to **5 unscored**; **1 min 45 s** per question; **Summer '26** release).
+- **4 products** — Agentforce Marketing portfolio = MC Next + Salesforce Personalization + Marketing Intelligence + Loyalty Management.
+- **6 configuration steps** — Setup Assistant does the first three (Data 360, enable Marketing Cloud, deploy streams).
+- **Data Cloud Architect** — permission set renamed from Data Cloud Admin in Spring '26 (System Administrator is a *profile*).
+- **Authorized ≠ authenticated domain** — authorized = ownership only (dynamic From/Reply); authenticated = DKIM/DNS sending.
+- **Level 4** — the consent granularity MC Next enforces (contact point + subscription type).
+- **Off-core** — marketing flows run on a separate high-scale engine (governor limits don't apply the same way).
+- **1–3 seconds** — typical on-demand flow latency.
+- **Data 360 capabilities** — object model (DLO/DMO), data streams, data spaces, data kits, calculated insights, data graphs, segmentation, activations, identity resolution.
+- **8 data providers** — data graph, event, activation, Salesforce record, Apex class, recommender, lookup graph, offer.
+- **5 AI agents** — Segment Creation, Campaign Creation, Content Creation, Journey Decisioning, Account Discovery.
+- **4 contact point selection methods** — flow data graph, on-demand API payload, activation source priority, activation template.
+- **90 days** — the analysis window for all three predictive AI models.
+- **2 hours to 1 week** — STO optimization window.
+- **Activation + event can't combine** — a message can't use both data providers.
+- **Common assets** — the only way to share content across business units (post, then copy).
 - **1:1** Business Unit ↔ Data Space.
 - **48 hours** — DNS propagation.
 - **95% confidence** — Path Experiment auto-winner.
@@ -448,8 +548,15 @@ Toxicity detection · dynamic grounding (anti-hallucination) · PII masking · z
 - **0.7** — fuzzy match AI confidence threshold.
 - **Aug 7, 2025** — internal Data Pipeline became free.
 - **Sept 4, 2025** — Segmentation/Activation card retired.
-- **Create Consent** = Automation Event-Triggered flows only.
+- **Create Consent** = Data Cloud-Triggered, Automation Event-Triggered, On-Demand flows (+ Record-Triggered from Winter '27).
 - **3-flow consent sync** — all MC Next consent writes must use Create Consent (Data Cloud or Automation Event-triggered); direct DMO field mapping is ignored at send time.
+- **0Xl / 0eF / 0eB** — Id prefixes for Communication Subscription / Engagement Channel Type / Communication Subscription Channel Type.
+- **API 48.0 (Spring '20)** — since when `CommSubscription`/`CommSubscriptionConsent` existed (5 years before MC Next).
+- **UnifiedMessagingConsent** — the data kit that installs the two consent streams.
+- **90 days** — consent cache TTL (send-time source of truth; invisible, can't be flushed).
+- **50,000 rows** — max consent CSV import per file (one channel + subscription + status each).
+- **100** — max consent records shown by the Privacy Consent Status component (most recent only).
+- **Party field** — wired end to end but always empty; never build on it.
 - **Path Experiment** = Advanced + Personalization.
 - **10** — max exit rules per flow (evaluated on start/resume).
 - **40 chars** — max Subflow variable API name.
@@ -466,4 +573,4 @@ Toxicity detection · dynamic grounding (anti-hallucination) · PII masking · z
 - [[study-roadmap]] — full learning tracks & progress dashboard
 - **Exam Q&A Study Guide** (scenario questions + reasoning): [[Exam Q&A Study Guide/README|README]] · [[section-1-platform-setup-governance]] · [[section-2-consent]] · [[section-3-data-identity-segmentation]] · [[section-4-campaign-flow-content]] · [[section-5-agentforce-ai]] · [[section-6-analytics-insights]]
 - **Exam Section Based Flashcards** (drill by exam section): [[Exam Section Based Flashcards/README|README]] · [[section-1-platform-setup-governance]] · [[section-2-consent]] · [[section-3-data-identity-segmentation]] · [[section-4-campaign-flow-content]] · [[section-5-agentforce-ai]] · [[section-6-analytics-insights]] · [[gotcha-facts-cram-deck]]
-- Flashcards: [[flashcards/marketing-cloud-next-setup]], [[flashcards/channels-consent-reporting]], [[flashcards/campaigns-content-beyond]], [[flashcards/agentic-conversational-data-email]], [[flashcards/data360-segmentation]], [[flashcards/consent-management-deep-dive]], [[flashcards/consent-cache-and-subscription-model]], [[flashcards/identity-billing-flow-orchestration]], [[flashcards/personalization-data-sources-deep-dive]], [[flashcards/web-content-forms-deep-dive]], [[flashcards/campaigns-flows-deep-dive]]
+- Flashcards: [[flashcards/marketing-cloud-next-setup]], [[flashcards/channels-consent-reporting]], [[flashcards/campaigns-content-beyond]], [[flashcards/agentic-conversational-data-email]], [[flashcards/data360-segmentation]], [[flashcards/consent-management-deep-dive]], [[flashcards/consent-cache-and-subscription-model]], [[flashcards/identity-billing-flow-orchestration]], [[flashcards/personalization-data-sources-deep-dive]], [[flashcards/web-content-forms-deep-dive]], [[flashcards/campaigns-flows-deep-dive]], [[flashcards/exam-masterclass-session1]], [[flashcards/exam-masterclass-session2]], [[flashcards/exam-masterclass-session3]], [[flashcards/exam-masterclass-session4]]

@@ -493,6 +493,74 @@
 
 ---
 
+## Flow Taxonomy, Data Providers & Personalization Methods
+
+## Card: Flow as the Orchestration Engine
+**Q:** What is the single orchestration engine for outbound messaging in MC Next?
+**A:** **Flow** — these are **marketing flows** (high-scale flows) that run **off-core**, so governor limits and transaction-scaling concerns don't apply the same way.
+
+## Card: The Six Flow Types
+**Q:** Name the six flow types and their triggers.
+**A:** **Audience** (schedule/immediate) · **Activation-triggered** (activation publishes) · **Automation event-triggered** (event occurs) · **On-demand** (REST API, individual) · **Broadcast** (REST API, dynamic segment) · **Data Cloud-triggered** (DMO/CIO record changes).
+
+## Card: Which Flows Can't Send Email
+**Q:** Which two flow types cannot send emails from MC Next?
+**A:** ⚠️ **Record-triggered flows** (CRM flows) and **Data Cloud-triggered flows**.
+
+## Card: Audience Flow Re-entry
+**Q:** What re-entry options do audience flows offer?
+**A:** Three, mirroring Journey Builder's contact entry mode: **no re-entry**, **re-entry at any time**, **re-entry only after exiting**.
+
+## Card: Activation as Personalization Source
+**Q:** Why can an activation be used as the personalization source?
+**A:** Because you can **append related-object attributes** to the activation — merge fields and repeaters reference enriched activation attributes **without additional send-time lookups**.
+
+## Card: On-Demand Flow API Requirements
+**Q:** What two values are required for an on-demand flow API call?
+**A:** **Email address** and **individual ID**. ⚠️ The ID needn't match a Data 360 Individual record — it just **can't be null**. No Individual DMO record is created, but engagement lands in the **Email Engagement DMO**.
+
+## Card: On-Demand Flow Latency
+**Q:** What is the typical latency of an on-demand flow?
+**A:** **~1–3 seconds** — ideal for one-time passcodes, order confirmations, password resets, real-time service alerts.
+
+## Card: Broadcast Flow Segment Type
+**Q:** What segment type must a broadcast flow use?
+**A:** A **dynamic segment**, evaluated at **execution time** using variables passed into the flow. Static and parameterized criteria can be combined.
+
+## Card: The Eight Data Providers
+**Q:** Name the eight data providers.
+**A:** **Data graph · Event · Activation · Salesforce record · Apex class · Personalization recommender · Lookup graph · Offer.**
+
+## Card: Activation + Event Conflict
+**Q:** Can a message use both an activation and an event data provider?
+**A:** ⚠️ **No** — each requires a specific flow orchestration pattern, so using both creates a conflict in how data is bound to the message.
+
+## Card: Event Data Provider Limitation
+**Q:** What does an event data provider NOT support?
+**A:** **Related collections** — it supports **direct attributes from the event DMO only** (e.g., Sales Order yes, Sales Order Product no).
+
+## Card: Content Variables
+**Q:** What are content variables, and what types do they support?
+**A:** Custom placeholders defined in the email, populated at runtime from **Salesforce Flow** (any flow data source incl. MuleSoft/HTTP). Types: **boolean, text, date, dateTime, number, recordId**. The **content defines the placeholders; the flow supplies the values**.
+
+## Card: Marketing Objects
+**Q:** What is a marketing object, and what's the MCE comparison?
+**A:** A **marketer-managed table of data** queried at runtime to personalize content. Closest MCE comparison = a **data extension**. Supports **text, number, decimal**; full refresh replaces records.
+
+## Card: MCE vs MC Next Personalization
+**Q:** How does MC Next personalization differ from MCE?
+**A:** MCE relies primarily on **data extensions** (sendable/non-sendable). MC Next offers **data providers, content variables, and marketing objects**. ⚠️ Not every MCE AMPscript function is supported.
+
+## Card: Marketer vs Developer Methods
+**Q:** Which personalization methods are marketer-friendly vs developer-oriented?
+**A:** **Marketer:** merge fields, repeaters, dynamic content. **Developer:** Handlebars, AMPscript.
+
+## Card: Merge Field Fallback
+**Q:** What can you define when inserting a merge field?
+**A:** A **fallback value** used when the customer's data is missing (e.g., "Friend" for a missing first name).
+
+---
+
 ## Related
 
 - [[exam-revision-summary]] — Section 4 summary

@@ -51,6 +51,33 @@ Data sources determine which data is available for merge fields. **Deep dive →
 - **Activation** (Data Cloud segment data; max 1 per message)
 - **Marketing Object / Prospect** (landing pages & forms only)
 
+### Three Ways to Bring Data In (MC Next)
+MC Next offers a **broad range of options** for personalization. The three mechanisms are:
+1. **Data providers** — the eight providers listed above (data graph, event, activation, Salesforce record, Apex class, recommender, lookup graph, offer).
+2. **Content variables** — custom placeholders defined in the email, populated at runtime from Salesforce Flow.
+3. **Marketing objects** — marketer-managed tables queried at runtime with Handlebars or AMPscript.
+
+### MCE vs. MC Next Personalization
+| | Marketing Cloud Engagement | Marketing Cloud Next |
+|-|---------------------------|----------------------|
+| **Primary source** | **Data extensions** (sendable — personalization strings reference subscriber data; or non-sendable — AMPscript retrieves fields) | **Data providers, content variables, marketing objects** |
+| **Range** | Narrow (data extensions, with some exceptions) | Broad (eight data providers + scripting) |
+
+> **Exam scope:** for this exam you only need to know **email** content personalization, not other channels.
+
+### Personalization Methods (point-and-click → scripting)
+| Method | What it does | Level |
+|--------|-------------|-------|
+| **Merge fields** | Insert a **single value** from the selected data source | Simplest, marketer-friendly |
+| **Repeaters** | Display a **collection of related items** (recent purchases, upcoming events, recommended products); design one item, MC Next repeats the layout per record | Marketer config |
+| **Dynamic content** | Change an **entire component or field** based on targeting rules (different images/offers/messages by location, interests, loyalty status); prioritise when multiple variations qualify | Marketer config |
+| **Handlebars** | Templating language — access **nested data**, apply **conditional logic**, **format values**, **iterate collections** | Developer |
+| **AMPscript** | Complex personalization logic and data operations | Developer |
+
+> ⚠️ **Not every AMPscript function available in Marketing Cloud Engagement is supported in Marketing Cloud Next.**
+
+**In summary:** merge fields, repeaters, and dynamic content provide **marketer configuration** options, while Handlebars and AMPscript offer **greater flexibility for developers** and more sophisticated personalization requirements.
+
 ### Merge Fields vs. Expressions
 - **Merge field**: insert customer data (e.g., name) into subject/preheader/text. **Deep dive → [[merge-fields-and-expressions]]**.
 - **Expression**: saved filter+sort criteria for selecting a data-graph attribute; reusable across email/SMS/WhatsApp. Requires a data graph; publish to use in content.
@@ -98,6 +125,9 @@ Data sources determine which data is available for merge fields. **Deep dive →
 ⚠️ Email subject + preheader count as **one** component for variations.
 ⚠️ Only short/long codes support SMS opt-out keywords (alphanumeric IDs don't).
 ⚠️ Merge fields in landing page preview are unresolved.
+⚠️ **Not every MCE AMPscript function is supported in MC Next.**
+⚠️ **A message can't use both an activation and an event data provider.**
+⚠️ MCE relies primarily on **data extensions**; MC Next uses **data providers, content variables, and marketing objects**.
 
 ## Active Recall Questions
 1. What three Salesforce Personalization concepts power dynamic content?
@@ -105,6 +135,9 @@ Data sources determine which data is available for merge fields. **Deep dive →
 3. What's the difference between GSM-7 and UCS-2 SMS encoding limits?
 4. Which five SMS opt-out keywords are always reserved?
 5. What's the difference between a merge field and an expression?
+6. What are the three ways to bring data into MC Next content?
+7. How does MCE's personalization source differ from MC Next's?
+8. Which personalization methods are marketer-friendly vs. developer-oriented?
 
 ## Related Concepts
 - [[personalization-data-sources]]
@@ -116,7 +149,9 @@ Data sources determine which data is available for merge fields. **Deep dive →
 - [[consent-and-compliance]]
 - [[engagement-signals]]
 - [[data360-billing-usage]]
+- [[marketing-workspaces-and-cms]]
 
 ## Source References
 - `sources/Marketing Cloud Next Salesforce Help Information.txt` — "Manage Content in Marketing Cloud Next", "Content Personalization in Marketing Cloud Next"
 - `sources/Content_Personalization_Data_Sources_Deep_Dive.txt` — user-provided personalization articles (Data Sources, Merge Fields, Expressions, Variations, Linked Personalization Points, Repeaters, Recommenders, Set Up Personalization)
+- `sources/MCNext_Consultant_Exam_Masterclass_Session3.txt` — Elliot Harper, "Marketing Cloud Next Consultant Exam Masterclass" Session 3 (Salesforce, Summer '26)

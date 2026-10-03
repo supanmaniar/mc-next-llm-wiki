@@ -50,6 +50,15 @@ Each functional subdomain requires a **CNAME record** mapping it to `…inbound.
 
 Status: **Pending** → (up to 48 hrs for DNS) → **Active**. Can't delete a Pending or Active domain.
 
+### Authenticate a Domain (MC Next — step by step)
+1. Setup → Quick Find **"Authenticated Domains"** → **Add Domain**
+2. Click **Continue**, then define the **subdomain** to use
+3. Create a **default From email username** (used when sending emails)
+4. Download a **DNS zone file** *or* view the individual DNS records to add via your DNS provider
+5. Once the DNS changes are done, select the **confirmation checkbox** → **Activate My Domain**
+
+> **MCE vs. MC Next:** Marketing Cloud Engagement uses a **sender authentication package** to configure the sending domain and other branded account domains. Marketing Cloud Next instead has you add an **authenticated domain**, generate the required DNS records, and publish them through your DNS provider.
+
 **DNS provider behaviors** (avoid config errors):
 - **Guided experience** — auto-appends the root domain; confirm the final saved record matches the full CNAME Name Salesforce gave you.
 - **Verified experience** — requires the full CNAME Name; validates it.
@@ -75,6 +84,21 @@ To use a branded tracking domain (links reflect your brand, not a generic redire
 
 > Prerequisite: your sending domain must be **fully authenticated** before creating a branded tracking domain.
 
+### Authorized Email Domain (vs. Authenticated Domain)
+An **authorized email domain** is a *different* thing from an authenticated domain, and the exam tests the distinction directly:
+
+| | Authenticated Domain | Authorized Email Domain |
+|-|----------------------|-------------------------|
+| **Verifies** | Full sending configuration | Ownership only |
+| **Mechanism** | DKIM + SPF/DNS sending records | A single **simple verification record** |
+| **Provides DKIM/DNS sending config?** | ✅ Yes | ❌ No |
+| **Required for** | All sending from the domain | **Dynamic From or Reply-to addresses only** |
+
+- You may need to configure an **authorized email domain** if you want to use **dynamic From or Reply-to addresses**.
+- ⚠️ **DMARC alignment:** for DMARC to align, the domain in the **From address must align with the authenticated sending domain**. Using a **personal email address on the root domain** as the From address may result in **DMARC alignment failures**.
+
+> **Memory hook:** *Authenticated* = you can send from it (DKIM/DNS). *Authorized* = you're allowed to put it in the From/Reply-to of a dynamic address, but it doesn't set up sending.
+
 ### Reply Mail Management (RMM)
 Filters automatic replies, routes real messages to a monitored inbox, and processes opt-out keywords. Three options:
 - **Delete Auto-Responses** — removes out-of-office/bounce messages.
@@ -91,6 +115,9 @@ RMM automatically processes common opt-out keywords (stop, unsubscribe, remove) 
 ⚠️ **`p=reject` DMARC at the root domain affects all corporate mail** — apply carefully, coordinate with IT.
 ⚠️ Each **functional subdomain** (reply/bounce/leave) needs its own CNAME record.
 ⚠️ CNAME Name handling differs by DNS provider (guided vs. verified vs. WYSIWYG) — verify the final saved record matches.
+⚠️ **Authorized ≠ authenticated domain.** An authorized domain only proves ownership (one verification record) and does **not** provide DKIM/DNS sending configuration. It's required for **dynamic From/Reply** addresses.
+⚠️ A **personal email on the root domain** as the From address can cause **DMARC alignment failures** — the From domain must align with the authenticated sending domain.
+⚠️ MCE uses a **sender authentication package**; MC Next uses an **authenticated domain** + published DNS records.
 
 ## Active Recall Questions
 1. What three things are required before you can send email?
@@ -98,14 +125,18 @@ RMM automatically processes common opt-out keywords (stop, unsubscribe, remove) 
 3. What happens when a reply contains "unsubscribe" in the first 200 characters?
 4. Why use a subdomain instead of the root domain?
 5. What are the three functional subdomains, and what inbound purpose does each serve?
+6. What is the difference between an **authorized** and an **authenticated** email domain?
+7. What is the practical difference between MCE sender authentication and MC Next domain authentication?
 
 ## Related Concepts
 - [[channels-overview]]
 - [[domain-settings]]
 - [[consent-and-compliance]]
 - [[contact-points-activation]]
+- [[dynamic-from-reply-addresses]]
 
 ## Source References
 - `sources/mktg_implementation_guide.pdf` — "Configure Required Email Settings", "Authenticate a Domain for Unified Messaging"
 - `sources/Salesforce_Trails.txt` — "Configure Trusted and Compliant Email Sending"
 - `sources/Contact_Points_and_Domains.txt` — "Authenticate and Configure Domains in Unified Messaging", "Functional Subdomains", "Set Up and Authenticate a Sending Domain"
+- `sources/MCNext_Consultant_Exam_Masterclass_Session1.txt` — Elliot Harper, "Marketing Cloud Next Consultant Exam Masterclass" Session 1 (Salesforce, Summer '26)

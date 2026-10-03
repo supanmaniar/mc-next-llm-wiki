@@ -25,8 +25,17 @@ The **Create Consent** action element updates the consent status for the contact
 - Data Cloud-Triggered Flows
 - Automation Event-Triggered Flows
 - On-Demand Flows
+- Record-Triggered Flows (from **Winter '27 Release** — some orgs received this option before the official release window)
 
 For a Lead/Contact create-or-update use case, use an Automation Event-Triggered Flow with the "Prospect, Lead, Contact or Related Record Change" event.
+
+### The Consent Service (why the route matters)
+One rule governs every write: **only writes that go through the consent service count.** Every supported write goes through Marketing Cloud Next's own consent service, which:
+
+1. writes into a **data lake object (DLO)**, which is mapped to the CSC DMO, and
+2. **updates the cache** as a side effect.
+
+Everything else produces a row and changes nothing in the consent cache. The data kit carrying this is **`UnifiedMessagingConsent`** — see [[consent-data-streams]].
 
 ### Supported Methods for Creating/Updating Consent
 **1) Manually**
@@ -55,6 +64,8 @@ Avoid these — they can result in consent not honored at send time:
 - An email may not send even though the address appears opted in (or may send inadvertently when opted out)
 - The CSC DMO may not align with the Consent Status component on individual records
 - Possible additional Data Cloud Data Services Credits charges from incorrectly mapped fields
+
+**There is no cache flush.** To fix a bad write, re-issue every affected consent change through a supported method and let the service update the cache as a side effect. For a handful of records the Privacy Consent Status component is fine; for anything larger, Salesforce recommends a **Data Cloud-Triggered Flow calling Create Consent** across the affected population. The CSV import is the other practical replay tool, under the same per-file rules as the initial load.
 
 ### Consent at Scale (Millions of Records)
 The CSV import tool is limited to 50,000 rows/file — not suited to enterprise-scale loads. Recommended 2-step process:
@@ -94,6 +105,8 @@ The CSV import tool is limited to 50,000 rows/file — not suited to enterprise-
 
 ## Related Concepts
 - [[consent-data-model]]
+- [[consent-objects-and-models]]
+- [[consent-data-streams]]
 - [[consent-double-opt-in]]
 - [[consent-sync-hybrid]]
 - [[consent-sync-3-flow]]
@@ -106,3 +119,4 @@ The CSV import tool is limited to 50,000 rows/file — not suited to enterprise-
 - User-provided "Consent Management: How Consent is Stored and Written" article
 - User-provided "Consent Management: Consent at Scale and Data Ingestion" article
 - User-provided "Troubleshooting Marketing Flows That Contain the Create Consent Action" article
+- `sources/Consent_Management_MCNext_SzymonLewandowski.md` — "Consent Management in Marketing Cloud Next" (Szymon Lewandowski, 20 Sep 2026)

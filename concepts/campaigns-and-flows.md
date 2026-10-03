@@ -32,6 +32,9 @@ A **campaign** organizes the assets, audience, and metrics of a marketing effort
 | **Activation-Triggered Flow** | An activation publishes | Based on segment publish schedule |
 | **Broadcast Flow** | API/Apex call | Dynamic segment, membership determined at start |
 | **On-Demand Flow** | API/Apex call | For high-priority (order confirmations) |
+| **Data Cloud-Triggered Flow** | A DMO/CIO record changes | ⚠️ Not technically a marketing flow; used for consent automation |
+
+> **Deep dive:** [[marketing-flow-types]] covers the full taxonomy, the off-core high-scale engine, and which flows can (and can't) send email.
 
 ### Flow Status Reference
 
@@ -91,7 +94,10 @@ Centralized hub for campaigns + flows. Daily/weekly/monthly views, drag campaign
 - [[flow-sharing]]
 - [[mce-journeys-campaigns]]
 - [[rest-api-flow-integration]]
+- [[marketing-flow-types]]
+- [[crm-integration-and-actionable-lists]]
 
 ## Source References
 - `sources/Marketing Cloud Next Salesforce Help Information.txt` — "Get Started with Marketing Campaigns and Flows", "Comparison of Marketing-Oriented Flow Types", "Flow Status Reference"
 - User-provided campaign/flow articles (Work with Campaigns, Work with Marketing Flows, Marketing Calendar, MCE Journeys)
+- `sources/MCNext_Consultant_Exam_Masterclass_Session2.txt` — Elliot Harper, "Marketing Cloud Next Consultant Exam Masterclass" Session 2 (Salesforce, Summer '26)

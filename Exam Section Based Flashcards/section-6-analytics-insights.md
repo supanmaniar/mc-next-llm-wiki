@@ -93,6 +93,42 @@
 
 ---
 
+## Reporting Capabilities & Semantic Model
+
+## Card: The Three Reporting Capabilities
+**Q:** Name the three out-of-the-box reporting capabilities.
+**A:** **Campaign Performance Dashboard** (individual campaign end-to-end) · **Marketing Performance Dashboard** (cross-channel over time) · **Semantic Data Model** (consistent business layer). ⚠️ All included with **no additional license**.
+
+## Card: Campaign vs Marketing Performance
+**Q:** What's the difference between the Campaign Performance and Marketing Performance dashboards?
+**A:** **Campaign Performance** = one campaign, end to end (sends, opens, clicks, bounces, contact progression). **Marketing Performance** = broader **cross-channel view over time** (audience growth, program-level trends).
+
+## Card: Embedded Campaign Dashboards
+**Q:** Where else do performance dashboards appear?
+**A:** **Embedded directly in each campaign record** — no need to navigate to a separate reporting tab.
+
+## Card: Content Performance Access
+**Q:** How do you access content performance dashboards?
+**A:** Select the element in the **active flow** (e.g., Send Email Message) → **Analytics tab** → **Details** → pulse card metrics + row-level data.
+
+## Card: Deliverability Dashboards
+**Q:** Which channels do the deliverability dashboards cover?
+**A:** **SMS, WhatsApp, and mobile app** messaging — showing delivery health and why messages failed to reach recipients.
+
+## Card: Semantic Data Model
+**Q:** What is the semantic data model?
+**A:** Powered by **Tableau Next**, the **Marketing Intelligence Semantic Data Model** combines multiple **Data 360 objects** and defines relationships/metrics **centrally** so metrics calculate consistently.
+
+## Card: Semantic Model Uses
+**Q:** What can you do with the semantic data model?
+**A:** Build **custom reports**, combine them as **dashboard widgets**, **customise** standard dashboards (widgets/labels/layouts/filters), **extend** to other Data 360 objects, share with stakeholders **outside CRM**, or connect **external tools**.
+
+## Card: Unified Engagement History
+**Q:** What is the Unified Engagement History dashboard, and how is it deployed?
+**A:** A pre-built dashboard giving sales and marketing a **shared view** of lead/contact activity on an account. Embed by adding the component to **account, lead, and contact page layouts**.
+
+---
+
 ## Related
 
 - [[exam-revision-summary]] — Section 6 summary

@@ -1153,6 +1153,186 @@
 
 ---
 
+## Q105 — Flow as the Orchestration Engine
+
+**Question:** A consultant migrating from Marketing Cloud Engagement asks how outbound messaging is orchestrated in Marketing Cloud Next. What should they explain?
+
+**Answer:** **In MC Next, Flow is the single orchestration engine for outbound messaging. These are called marketing flows (or high-scale flows), and they run off-core on a separate high-scale processing engine.**
+
+**Why:** In MCE, messages could be sent from many tools and contexts — journeys, automations, triggered sends, UI-based sends, Salesforce sends, Content Builder sends. In MC Next, **all outbound messaging is orchestrated through Flow**. Because marketing flows run **off-core** (outside the core Salesforce transactional runtime), traditional concerns around **governor limits, transaction management, and scaling patterns don't apply in the same way**.
+
+> ⚠️ **Distractor logic:** "Marketing flows are the same as core flows" is the plausible-but-wrong answer — they run on a different engine with different constraints.
+
+---
+
+## Q106 — The Six Flow Types
+
+**Question:** A consultant is documenting the flow types available in Marketing Cloud Next. Which types exist, and what triggers each?
+
+**Answer:** **Audience flow** (schedule or immediate) · **Activation-triggered flow** (a Data 360 activation publishes) · **Automation event-triggered flow** (a predefined event occurs) · **On-demand flow** (REST API call, targets an individual) · **Broadcast flow** (REST API call, targets all members of a dynamic segment) · **Data Cloud-triggered flow** (a DMO or Calculated Insight object record is created/updated).
+
+**Why:** Audience flows (**Summer '26**) unify segments, actionable lists, CRM records, and campaign members into one experience. Activation-triggered flows (**Winter '26**) use the Data 360 activation target type. Data Cloud-triggered flows are ⚠️ **technically not marketing flows** but are still high-scale flow types.
+
+> ⚠️ **Distractor logic:** "There are only three flow types" is the plausible-but-wrong answer — it omits the API-driven and data-triggered types.
+
+---
+
+## Q107 — Which Flows Can't Send Email
+
+**Question:** A consultant wants to send a promotional email from a Data Cloud-triggered flow. Is this possible?
+
+**Answer:** **No. Record-triggered flows and Data Cloud-triggered (Data 360-triggered) flows cannot send emails from Marketing Cloud Next.**
+
+**Why:** Record-triggered flows are **CRM flows**, and Data Cloud-triggered flows are used for **data and consent automation** (most commonly the Create Consent action). Neither is a marketing send path. This is a directly tested distinction from the masterclass quiz.
+
+> ⚠️ **Distractor logic:** "Any high-scale flow can send email" is the plausible-but-wrong answer — being a high-scale flow type doesn't make it a send path.
+
+---
+
+## Q108 — Audience Flow Re-entry
+
+**Question:** A marketer configures a recurring audience flow and wants to control when an individual can rejoin. What options are available?
+
+**Answer:** **Three re-entry options, mirroring Journey Builder's contact entry mode: no re-entry, re-entry at any time, and re-entry only after exiting.**
+
+**Why:** Audience flows feel familiar to anyone with Journey Builder experience. When you choose a **recurring schedule**, you configure both the **execution schedule** and the **re-entry conditions**. Journey Builder's contact entry mode controls when a contact is eligible to enter a journey — the same concept now applies to audience flows.
+
+> ⚠️ **Distractor logic:** "Re-entry is unlimited by default" is the plausible-but-wrong answer — you must configure the condition explicitly.
+
+---
+
+## Q109 — Activation as Personalization Source
+
+**Question:** A client wants their back-in-stock email to include product details from a related DMO without additional lookups at send time. How should the consultant configure this?
+
+**Answer:** **Append the related attributes to the activation, then use the activation directly as the personalization source — email merge fields and repeaters can reference the enriched Data 360 activation attributes without additional lookups at send time.**
+
+**Why:** When creating an activation you can add filters to the activation membership, add contact point filters, limit audience size based on attributes, and **append additional attributes from related objects** associated with a segment member. In Email Builder you add an **activation data provider** and use those attributes to personalize the message.
+
+> ⚠️ **Distractor logic:** "Use a lookup data graph instead" is the plausible-but-wrong answer — it works but adds a send-time lookup the activation approach avoids.
+
+---
+
+## Q110 — On-Demand Flow API Requirements
+
+**Question:** A developer is triggering an on-demand flow via REST to send a one-time password email. What values are required, and what are the rules about the individual ID?
+
+**Answer:** **Both the email address and the individual ID are required. The individual ID does not need to correspond to an Individual record in Data 360 — it simply cannot be null. The request won't create an Individual DMO record, but the resulting engagement activity will still appear in the Email Engagement DMO.**
+
+**Why:** On-demand flows let external systems trigger transactional messaging instantly, with real-time personalization passed **directly in the API payload** using an **Apex-defined data schema** — no need to ingest or hydrate data into Data Cloud first. Typical latency is **~1–3 seconds**, ideal for one-time passcodes, order confirmations, password resets, and real-time service alerts.
+
+> ⚠️ **Distractor logic:** "The individual ID must match an existing Data 360 Individual" is the plausible-but-wrong answer — it only needs to be non-null.
+
+---
+
+## Q111 — Broadcast vs On-Demand Flow
+
+**Question:** A utility company needs to send an SMS alert to everyone in an affected area when an outage occurs. Which flow type applies, and what segment type is required?
+
+**Answer:** **A broadcast flow — it targets all members of a dynamic segment. The segment must use the dynamic segment type, evaluated at execution time using variables passed into the flow.**
+
+**Why:** Broadcast flows are designed for **fan-out processing** — a single event triggers communication to a large group simultaneously. Both broadcast and on-demand flows are triggered via REST API, but **on-demand targets an individual** while **broadcast targets all members of a segment**. You can combine **static and parameterized criteria** in the same segment definition. Broadcast flows can run **synchronously or asynchronously**.
+
+> ⚠️ **Distractor logic:** "An on-demand flow, called once per recipient" is the plausible-but-wrong answer — it works but ignores the fan-out design and multiplies API calls.
+
+---
+
+## Q112 — The Eight Data Providers
+
+**Question:** A consultant is cataloguing the personalization data providers available in Marketing Cloud Next. How many are there, and what are they?
+
+**Answer:** **Eight: data graph, event, activation, Salesforce record, Apex class, personalization recommender, lookup graph, and offer.**
+
+**Why:** Each supports different personalization and orchestration use cases. The **data graph** is a pre-assembled view from a primary DMO plus related objects, prepared as a **single read-only record** so MC Next retrieves customer data without joining underlying objects at render time. The **lookup graph** takes a value from the recipient's primary data graph and uses it as a key into a second, smaller graph.
+
+> ⚠️ **Distractor logic:** "Six providers" is the plausible-but-wrong answer — it typically omits the offer or lookup graph providers.
+
+---
+
+## Q113 — Activation + Event Conflict
+
+**Question:** A marketer builds an email that needs both segment attributes from a Data 360 activation and order details from the order-confirmation event that triggered the flow. They try to add both an activation data provider and an event data provider. What happens?
+
+**Answer:** **The same message cannot use both an activation data provider and an event data provider. Each requires a specific flow orchestration pattern, so using both creates a conflict in how the data is bound to the message.**
+
+**Why:** The two providers bind data to the message through different orchestration patterns. The solution is to restructure — for example, enrich the activation with the needed attributes (activation can append related-object attributes) or pass the values through a content variable instead.
+
+> ⚠️ **Distractor logic:** "Add both and let the platform resolve precedence" is the plausible-but-wrong answer — the conflict is structural, not a precedence question.
+
+---
+
+## Q114 — Event Data Provider Limitation
+
+**Question:** A consultant wants an order event to provide both Sales Order attributes and related product details from the Sales Order Product DMO. Is this supported?
+
+**Answer:** **No. Event data providers support direct attributes from the event DMO, but not related collections. An order event can provide attributes from the Sales Order DMO, but not related products from the Sales Order Product DMO.**
+
+**Why:** Each event has a defined schema corresponding to the underlying engagement DMO that triggers the flow. The limitation to **direct attributes only** is the tested detail — related collections require a different approach (such as a lookup graph or an enriched activation).
+
+> ⚠️ **Distractor logic:** "Add the related DMO as a second event provider" is the plausible-but-wrong answer — the restriction is on related collections, not on provider count.
+
+---
+
+## Q115 — Content Variables
+
+**Question:** A client needs an email to include an order number, delivery date, and tracking URL that are calculated during a flow and retrieved from an external order management system. Which mechanism applies?
+
+**Answer:** **Content variables — custom placeholders defined within the email and populated at runtime from Salesforce Flow. They can be mapped to any data source available to Flow, including Salesforce data, MuleSoft integrations, and HTTP connectors.**
+
+**Why:** Unlike a data graph, content variables **don't retrieve data from predefined customer data structures**. The email defines the information it expects, and the flow supplies the values at send time. They support **Boolean, Text, Date, DateTime, and Number** values, plus a **Record ID** value referencing a Salesforce record. In simple terms: **the content defines the placeholders, and the flow supplies their values**.
+
+> ⚠️ **Distractor logic:** "A data graph merge field" is the plausible-but-wrong answer — the data comes from outside Data 360 and is calculated at runtime.
+
+---
+
+## Q116 — Marketing Objects vs Data Extensions
+
+**Question:** A marketer wants to store a product catalogue and rewards balances for use in emails, without asking an admin to create a Salesforce object or modify the Data 360 data model. What should the consultant recommend?
+
+**Answer:** **A marketing object — a marketer-managed table of data that can be queried at runtime to personalize content. The closest MCE comparison is a data extension.**
+
+**Why:** Marketing objects give marketers **autonomy**: an admin doesn't need to create a Salesforce object or modify the Data 360 data model. A marketer creates one by importing a CSV, defining fields, and identifying a primary key. Data is queried with **Handlebars or AMPscript**. They support **text, number, and decimal** fields, and data can be **fully refreshed** by uploading a new CSV, which replaces existing records.
+
+> ⚠️ **Distractor logic:** "A custom DMO" is the plausible-but-wrong answer — it requires admin/Data 360 work, which the requirement explicitly excludes.
+
+---
+
+## Q117 — MCE vs MC Next Personalization
+
+**Question:** A consultant migrating from Marketing Cloud Engagement asks what changes about content personalization. What should they explain?
+
+**Answer:** **MCE personalization relies primarily on data extensions (sendable or non-sendable). MC Next offers a broad range of options: data providers, content variables, and marketing objects.**
+
+**Why:** In MCE, a **sendable** data extension lets personalization strings reference subscriber data directly, while a **non-sendable** one requires AMPscript to retrieve fields. MC Next replaces this single-source model with three mechanisms. Note also that ⚠️ **not every AMPscript function available in MCE is supported in MC Next**.
+
+> ⚠️ **Distractor logic:** "MC Next still uses data extensions" is the plausible-but-wrong answer — marketing objects are the closest analogue, not data extensions.
+
+---
+
+## Q118 — Marketer vs Developer Personalization Methods
+
+**Question:** A client's marketing team wants point-and-click personalization, while their developer wants scripting control. Which methods suit each?
+
+**Answer:** **Marketer configuration: merge fields, repeaters, and dynamic content. Developer flexibility: Handlebars and AMPscript.**
+
+**Why:** **Merge fields** insert a single value (simplest field-level personalization). **Repeaters** display a collection of related items — you design one item and MC Next repeats the layout per record. **Dynamic content** changes an entire component or field based on targeting rules. **Handlebars** can access nested data, apply conditional logic, format values, and iterate collections. **AMPscript** handles complex personalization logic and data operations.
+
+> ⚠️ **Distractor logic:** "Dynamic content is a developer feature" is the plausible-but-wrong answer — it's marketer-configured, despite being more advanced than merge fields.
+
+---
+
+## Q119 — Merge Field Fallback
+
+**Question:** A marketer personalizes an email with the recipient's first name but some records have no first name. What should they configure?
+
+**Answer:** **A fallback value on the merge field — for example, "Friend" — used when the customer's data is missing.**
+
+**Why:** When inserting a merge field you can define a fallback value. The merge field menu shows the configured data providers alongside other options like **global strings**. Without a fallback, recipients with missing data see a blank.
+
+> ⚠️ **Distractor logic:** "Use a dynamic content variation for missing names" is the plausible-but-wrong answer — it's over-engineered when a fallback value solves it.
+
+---
+
 ## Related
 
 - [[exam-revision-summary]] — Section 4 summary

@@ -217,6 +217,90 @@
 
 ---
 
+## Q20 — The Three Reporting Capabilities
+
+**Question:** A consultant is documenting the reporting capabilities included with Marketing Cloud Next. How many are there out of the box, and what does each provide?
+
+**Answer:** **Three, all included with no additional license or SKU: the Campaign Performance Dashboard (end-to-end view of an individual campaign — sends, opens, clicks, bounces, contact progression), the Marketing Performance Dashboard (broader cross-channel view over time — audience growth and program-level engagement trends), and the Semantic Data Model (a consistent business layer for custom reports, stakeholder sharing, and external tool connections).**
+
+**Why:** The distinction between the two dashboards is the tested skill: **Campaign Performance** is *one campaign, end to end*; **Marketing Performance** is *cross-channel, over time*. The semantic data model is the layer beneath both, used for custom reporting.
+
+> ⚠️ **Distractor logic:** "The semantic data model requires an additional license" is the plausible-but-wrong answer — all three are included.
+
+---
+
+## Q21 — Marketing Performance Dashboard Location
+
+**Question:** A marketer wants a consolidated view of performance across campaigns, channels, content, and audience segments. Where do they find it, and what does it cover?
+
+**Answer:** **The Marketing Performance dashboards, available from the Marketing Analytics tab. They bring together activity across web, email, SMS, WhatsApp, and mobile — and the same dashboards are embedded directly in each campaign record.**
+
+**Why:** From the Marketing Analytics tab you can review overall campaign engagement and identify top-performing campaigns, audience segments, content, and channels. The **embedded campaign record** version lets you evaluate an individual campaign's results in context without navigating to a separate reporting tab.
+
+> ⚠️ **Distractor logic:** "You must navigate to a separate reporting tab for campaign results" is the plausible-but-wrong answer — the dashboards are embedded in the campaign record.
+
+---
+
+## Q22 — Content Performance Dashboard Access
+
+**Question:** A marketer wants to see how a specific email element is performing within an active flow. How do they access content performance insights?
+
+**Answer:** **Select the corresponding element in the active flow (such as a Send Email Message element), then from the Analytics tab click the Details button to review pulse card metrics for the content type plus row-level data.**
+
+**Why:** Content performance dashboards help marketers identify top-performing content **directly in their flow of work**. The access path — flow element → Analytics tab → Details — is the tested detail, because it's not a standalone reporting tab.
+
+> ⚠️ **Distractor logic:** "Open the Content Performance dashboard from the Analytics tab" is the plausible-but-wrong answer — content performance is accessed from the flow messaging element itself.
+
+---
+
+## Q23 — Deliverability Dashboards
+
+**Question:** A client reports that some SMS and WhatsApp messages aren't reaching recipients. Which dashboard helps, and what does it show?
+
+**Answer:** **The deliverability dashboards for SMS, WhatsApp, and mobile app messaging. They provide visibility into message delivery health and campaign performance, and help you understand why a particular message failed to reach specific recipients.**
+
+**Why:** The deliverability dashboards are channel-specific for non-email channels. Their diagnostic value is the point — they don't just report failure rates, they help you **resolve delivery issues and improve future reach**.
+
+> ⚠️ **Distractor logic:** "The Email Engagement dashboard" is the plausible-but-wrong answer — it covers email, not SMS/WhatsApp/mobile.
+
+---
+
+## Q24 — Semantic Data Model
+
+**Question:** A client wants to build custom reports, share marketing data with stakeholders outside Salesforce CRM, and connect an external BI tool. What should the consultant recommend?
+
+**Answer:** **The semantic data model — powered by Tableau Next, it provides the foundation for reports and dashboards in Marketing Cloud Next and is available from the Analytics tab.**
+
+**Why:** MC Next includes the **Marketing Intelligence Semantic Data Model**, a reporting layer that combines data from multiple **Data 360 objects** and defines the **relationships and metrics** needed to report on campaign performance, engagement, and deliverability. Because those definitions are applied **centrally**, reports and dashboards calculate key metrics **consistently**. It can be **extended to other Data 360 objects** for org-specific requirements.
+
+> ⚠️ **Distractor logic:** "Build a custom Data 360 DMO for reporting" is the plausible-but-wrong answer — the semantic model already provides the business layer.
+
+---
+
+## Q25 — Customising Standard Dashboards
+
+**Question:** A client wants to adjust the standard dashboards to show different metrics and layouts. What can they change?
+
+**Answer:** **Standard dashboards can be used as provided or customised by changing their widgets, labels, layouts, and filters.**
+
+**Why:** The semantic model underpins the standard dashboards, so customisation happens at the presentation layer (widgets, labels, layouts, filters) rather than by rebuilding the data layer. You can also create **reports** answering specific business questions and combine them as **widgets in a dashboard**.
+
+> ⚠️ **Distractor logic:** "Standard dashboards are read-only" is the plausible-but-wrong answer — they're customisable.
+
+---
+
+## Q26 — Unified Engagement History
+
+**Question:** A sales team wants visibility into which contacts at an account are most engaged with marketing. What should the consultant recommend, and how is it deployed?
+
+**Answer:** **The Unified Engagement History dashboard — a pre-built dashboard giving sales and marketing a shared view of activities performed by the leads and contacts associated with an account. Embed it by adding the Unified Engagement History dashboard component to the account, lead, and contact page layouts.**
+
+**Why:** Sales reps use the insights to identify the **most engaged people**, understand their **interests**, and determine **who to contact next**. It's powered by **Data 360 and Tableau Next**. The deployment detail — adding the component to **page layouts** — is the tested skill.
+
+> ⚠️ **Distractor logic:** "It's a standalone dashboard in the Analytics tab" is the plausible-but-wrong answer — it's designed to be embedded on record pages.
+
+---
+
 ## Related
 
 - [[exam-revision-summary]] — Section 6 summary

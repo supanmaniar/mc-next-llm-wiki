@@ -4,8 +4,8 @@
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![Obsidian](https://img.shields.io/badge/Obsidian-vault-7C3AED.svg)](https://obsidian.md)
-[![Pages](https://img.shields.io/badge/concept%20pages-70-blue.svg)](#whats-inside)
-[![Questions](https://img.shields.io/badge/practice%20questions-292-green.svg)](#whats-inside)
+[![Pages](https://img.shields.io/badge/concept%20pages-78-blue.svg)](#whats-inside)
+[![Questions](https://img.shields.io/badge/practice%20questions-353-green.svg)](#whats-inside)
 
 ---
 
@@ -22,7 +22,7 @@ It is not a dump of documentation. Every page is **synthesized for learning**: e
 | 🧑‍🎓 **Studying for the exam** | [`_index/study-roadmap.md`](_index/study-roadmap.md) — 10 sequential tracks, basic → advanced |
 | ⏰ **Cramming** | [`_index/exam-revision-summary.md`](_index/exam-revision-summary.md) — organized by exam weight |
 | 🤖 **An LLM / RAG pipeline** | [`llms.txt`](llms.txt) — a machine-readable index of the whole vault |
-| 🛠️ **A consultant** | [`concepts/`](concepts/) — 70 reference pages on how MC Next actually works |
+| 🛠️ **A consultant** | [`concepts/`](concepts/) — 78 reference pages on how MC Next actually works |
 
 ---
 
@@ -30,9 +30,9 @@ It is not a dump of documentation. Every page is **synthesized for learning**: e
 
 ```
 mc-next-llm-wiki/
-├── concepts/                        # 70 atomic concept pages (the core of the vault)
-├── flashcards/                      # 11 topic-organized recall decks
-├── Exam Q&A Study Guide/            # 292 scenario questions with reasoning
+├── concepts/                        # 78 atomic concept pages (the core of the vault)
+├── flashcards/                      # 16 topic-organized recall decks
+├── Exam Q&A Study Guide/            # 353 scenario questions with reasoning
 ├── Exam Section Based Flashcards/   # 8 decks organized by exam section + cram deck
 ├── _index/                          # Study roadmap & exam revision summary
 ├── _templates/                      # Page template for adding new concepts
@@ -42,10 +42,10 @@ mc-next-llm-wiki/
 
 | Folder | Pages | What it's for |
 |---|---:|---|
-| [`concepts/`](concepts/) | 70 | Deep conceptual explanations with prerequisites, pitfalls, and recall questions |
-| [`flashcards/`](flashcards/) | 11 | Fast recall drilling, organized by topic/source |
+| [`concepts/`](concepts/) | 78 | Deep conceptual explanations with prerequisites, pitfalls, and recall questions |
+| [`flashcards/`](flashcards/) | 16 | Fast recall drilling, organized by topic/source |
 | [`Exam Q&A Study Guide/`](Exam%20Q%26A%20Study%20Guide/) | 7 | Scenario questions in Salesforce's exam house style — **Question / Answer / Why** |
-| [`Exam Section Based Flashcards/`](Exam%20Section%20Based%20Flashcards/) | 9 | Recall decks weighted to match the real exam blueprint |
+| [`Exam Section Based Flashcards/`](Exam%20Section%20Based%20Flashcards/) | 8 | Recall decks weighted to match the real exam blueprint |
 | [`_index/`](_index/) | 2 | The roadmap and the revision summary |
 
 ### Exam blueprint coverage

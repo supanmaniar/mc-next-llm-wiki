@@ -34,6 +34,8 @@ A **contact point** is a communication identifier (email address, phone number, 
 ### Source Priority Order
 Used to determine **which contact point value is selected** when multiple values are available (or to reorder which value is chosen for segment members with data from multiple sources). Change priority by adding, reordering, or deleting sources.
 
+> **Send-time resolution:** source priority is one of **four ways** MC Next decides which contact point to use at send time. See [[contact-point-resolution]] for the full picture (data graph in flow properties, on-demand API payload, activation source priority, activation templates).
+
 **Key architectural fact:** after Identity Resolution, all contact points remain part of the Unified Individual DMO. **Reconciliation rules only reconcile Unified Individual object fields — NOT unified contact point objects.** So source priority (not reconciliation rules) determines which source delivers the contact point.
 
 ### Priority Value Options
@@ -82,6 +84,9 @@ A segment sources data from **MC Engagement and Amazon S3**, with the Email cont
 - [[identity-resolution-rulesets]]
 - [[data-architecture-layers]]
 - [[consent-and-compliance]]
+- [[contact-point-resolution]]
+- [[activation-triggered-flows]]
 
 ## Source References
 - `sources/Contact_Points_and_Domains.txt` — "Contact Points and Source Priority Order", "Default Source Priority Order"
+- `sources/MCNext_Consultant_Exam_Masterclass_Session4.txt` — Elliot Harper, "Marketing Cloud Next Consultant Exam Masterclass" Session 4 (Salesforce, Summer '26)

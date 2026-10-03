@@ -24,6 +24,16 @@ Data kits contain the "plumbing" for Marketing Cloud Next. They include DMOs (Da
 | **WhatsApp Channel Data Kit** | `UnifiedWhatsAppPackage` | Contains `MessagingEventsWhatsApp` data stream (WhatsApp add-on only) |
 | **Sales** | — | Contains data streams for **accounts, leads, and contacts**. Install from Data Cloud Setup. |
 
+### The Sales Data Kit (optional but recommended)
+The **Sales Data Kit** creates **pre-configured data streams and mappings** for common Salesforce CRM objects — **leads, contacts, accounts, and prospects**, along with other related objects.
+
+- It's the **fastest path** to building Identity Resolution rulesets and enabling features that track engagement, because it saves you from mapping those objects yourself.
+- It's **optional**: if you manage customer identity outside Salesforce, or want more control over which CRM data enters Data 360, you can skip it.
+- ⚠️ If you **don't** deploy it, certain features (like reporting dashboards) require **extra configuration**, and **Opportunity Influence requires the Sales Data Kit**.
+- Deploy/update via Setup → **Deploy the Sales Data Kit** → **Deploy or Update** (the page shows deployment status).
+
+See [[crm-integration-and-actionable-lists]] for how CRM data is used as an audience source.
+
 ### Permissions Needed
 - **Install data kits:** System Administrator profile + Marketing Cloud Admin permission sets
 - **Deploy data streams:** Data Cloud admin permission set
@@ -63,6 +73,9 @@ Data streams consume **Data Cloud credits** based on batch data processed. See D
 - [[identity-resolution-rulesets]]
 - [[consent-and-compliance]]
 - [[reporting-analytics-setup]]
+- [[crm-integration-and-actionable-lists]]
 
 ## Source References
 - `sources/mktg_implementation_guide.pdf` — "Install and Deploy Data Streams for Marketing Cloud Next"
+- `sources/Marketing Cloud Next Salesforce Help Information.txt` — "Deploy or Update the Sales Data Kit"
+- `sources/MCNext_Consultant_Exam_Masterclass_Session2.txt` — Elliot Harper, "Marketing Cloud Next Consultant Exam Masterclass" Session 2 (Salesforce, Summer '26)

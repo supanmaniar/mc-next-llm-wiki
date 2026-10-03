@@ -18,6 +18,28 @@ A data source represents an object or element from your org that contains fields
 - **Repeater components** — series of items (products, events).
 - **Dynamic content** — targeting rules for variations.
 
+### The Eight Data Providers (exam framing)
+Salesforce groups the personalization data sources into **eight data providers**, each supporting different personalization and orchestration use cases:
+
+1. **Data graph**
+2. **Event**
+3. **Activation**
+4. **Salesforce record**
+5. **Apex class**
+6. **Personalization recommender**
+7. **Lookup graph**
+8. **Offer**
+
+> **Memory hook:** the three *ways to bring data in* are **data providers**, **content variables**, and **marketing objects**. The eight providers above are the data-provider category.
+
+### ⚠️ Key Data Provider Constraints
+- **Activation + Event can't be combined.** The same message **cannot use both an activation data provider and an event data provider** — each requires a specific flow orchestration pattern, so using both creates a conflict in how data is bound to the message.
+- **Event providers expose direct attributes only.** An event data provider supports **direct attributes from the event DMO, but not related collections**. Example: an order event can provide attributes from the **Sales Order DMO**, but **not** related products from the **Sales Order Product DMO**.
+- **Activation supports Individual or Unified Individual segments.**
+- **Apex class is designed for on-demand/broadcast flows** (passing data into an email) but can be used with other flow types.
+- **Lookup graph** takes a value from the recipient's **primary data graph** and uses it as a **key** to retrieve matching information from a **second, smaller data graph** (e.g., a product identifier → product details from a catalog graph).
+- **Offer** works with **Salesforce Loyalty Management** to deliver tailored promotions; use merge fields for offer name/description/coupon code, and dynamic content rules to vary offers by attribute (e.g., loyalty tier).
+
 ### The Data Source Type Reference
 
 | Data source | Editions | Content types | Notes |
@@ -38,6 +60,7 @@ A data source represents an object or element from your org that contains fields
 ### The Data Graph (the Backbone)
 A **data graph** is a Data 360 object built from a **primary DMO** (usually the **Unified Individual**) plus its related objects, flattened into a streamlined table for common tasks. Profile data graphs contain details about people — e.g., contact record data plus attributes from related objects like a recent product purchase or service case.
 
+- **How it works:** Data 360 prepares the combined fields as a **single read-only record**, so MC Next can retrieve customer data quickly **without joining the underlying objects each time content is rendered**.
 - **Standard vs. real-time:** real-time graphs respond faster but cost more (see [[data360-billing-usage]]).
 - **Default data graph:** set up in Setup; appears with a **Default badge** in the Data Sources panel.
 - **SMS/WhatsApp:** only the default data graph is available — it doesn't appear in the panel, but its data still works in merge fields.
@@ -99,14 +122,19 @@ References a **Data 360 segmentation activation**, making segment attributes of 
 ⚠️ **Recommenders can be replaced but never removed.**
 ⚠️ **Starter/Pro Suite emails can only use Unified Individual DMO merge fields.**
 ⚠️ **Lookup data graphs can't nest, and max out at 5 per content item.**
+⚠️ **A message can't use both an activation and an event data provider** — the flow orchestration patterns conflict.
+⚠️ **Event providers expose direct attributes only** — no related collections (e.g., no Sales Order Product from a Sales Order event).
 
 ## Active Recall Questions
 1. What is a data source, and where do you manage them in Content Builder?
-2. Which data sources are limited to one per content item or message?
-3. When can't you remove or replace a data graph?
-4. What's the difference between a data graph and a lookup data graph?
-5. Which data sources are available only on landing pages and forms?
-6. What happens if you change a data source after its attributes are used in merge fields?
+2. Name the eight data providers.
+3. Which data sources are limited to one per content item or message?
+4. When can't you remove or replace a data graph?
+5. What's the difference between a data graph and a lookup data graph?
+6. Which data sources are available only on landing pages and forms?
+7. What happens if you change a data source after its attributes are used in merge fields?
+8. Why can't a message use both an activation and an event data provider?
+9. What does an event data provider *not* support?
 
 ## Related Concepts
 - [[content-and-personalization]]
@@ -117,6 +145,8 @@ References a **Data 360 segmentation activation**, making segment attributes of 
 - [[data-architecture-layers]]
 - [[data360-billing-usage]]
 - [[marketing-objects-ampscript-handlebars]]
+- [[activation-triggered-flows]]
 
 ## Source References
 - `sources/Content_Personalization_Data_Sources_Deep_Dive.txt` — "Manage Data Sources for Personalizing Content"
+- `sources/MCNext_Consultant_Exam_Masterclass_Session3.txt` — Elliot Harper, "Marketing Cloud Next Consultant Exam Masterclass" Session 3 (Salesforce, Summer '26)

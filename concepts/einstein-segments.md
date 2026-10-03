@@ -85,6 +85,8 @@ A human-in-the-loop app to improve grounding by validating/enriching metadata:
 - [[data360-segment-types]]
 - [[segment-canvas-and-filters]]
 - [[ai-features]]
+- [[marketing-agents]]
 
 ## Source References
 - `sources/Salesforce_D360_Segments.txt` — "Einstein Segments in Data 360", "Einstein Data Prism", "Metadata Studio", "Enable/Create an Einstein Segment", "How to Write a Good Prompt", "Billing Considerations for Segmentation"
+- `sources/MCNext_Consultant_Exam_Masterclass_Session4.txt` — Elliot Harper, "Marketing Cloud Next Consultant Exam Masterclass" Session 4 (Salesforce, Summer '26)

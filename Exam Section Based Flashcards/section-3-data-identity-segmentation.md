@@ -305,6 +305,50 @@
 
 ---
 
+## Data 360, CRM Integration & Contact Point Resolution
+
+## Card: Data 360 Capabilities Checklist
+**Q:** Which Data 360 capabilities should you know for the exam?
+**A:** Object model (DLO/DMO) · data streams & DLO→DMO mapping · data spaces · data kits · calculated insights · data graphs · segmentation · activations · identity resolution. (Deep unstructured-data knowledge not required.)
+
+## Card: CRM Integration Timeline
+**Q:** What did Spring '26 and Summer '26 add to CRM integration?
+**A:** **Spring '26** = CRM records as an audience source (scheduled or event). **Summer '26** = campaign members + actionable lists.
+
+## Card: Sales Data Kit
+**Q:** What does the Sales Data Kit create, and is it required?
+**A:** Pre-configured streams/mappings for **leads, contacts, accounts, prospects**. **Optional** — but skipping it means extra config for some features, and **Opportunity Influence requires it**.
+
+## Card: Actionable List Consent Gap
+**Q:** What happens to consent when you add new leads to an actionable list?
+**A:** ⚠️ **No consent records are created** — they must be loaded separately, or the audience is **suppressed at send time** (strict opt-in).
+
+## Card: Actionable List Constraint
+**Q:** What are the constraints on an actionable list?
+**A:** It holds **leads OR contacts, never both**; it's **static** (vs dynamic segments); only the **creator** can manually remove members.
+
+## Card: Contact Point Resolution vs Reconciliation
+**Q:** Do reconciliation rules decide which contact point is used?
+**A:** ⚠️ **No.** Reconciliation rules only select a single value for unified fields that can't hold multiple values (like name). **All contact points are retained** in the unified profile.
+
+## Card: Multi-Address Send Behaviour
+**Q:** If a unified individual has three records with two unique email addresses, how many emails are sent?
+**A:** **Two** — one per **unique** address; duplicate addresses are treated as a **single contact point**.
+
+## Card: Four Contact Point Selection Methods
+**Q:** Name the four ways contact point selection is determined at send time.
+**A:** 1) **Data graph** in flow automation properties. 2) **On-demand API payload** (data graph takes precedence). 3) **Activation source priority order**. 4) **Activation template**.
+
+## Card: Activation Template Requirement
+**Q:** When is an activation template required?
+**A:** ⚠️ When the segment's **segment-on object is NOT Unified Individual**.
+
+## Card: Phone Contact Point Field
+**Q:** Which DMO holds the telephone number field for phone contact point selection?
+**A:** The **Contact Point Phone DMO**.
+
+---
+
 ## Related
 
 - [[exam-revision-summary]] — Section 3 summary

@@ -8,6 +8,7 @@ Usage:
 Paths are resolved relative to this script, so it works from any directory.
 """
 import os, re, sys
+import pathlib
 
 # Repo root is the parent of this script's directory.
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -30,32 +31,51 @@ FLASHCARDS = os.path.join(ROOT, "flashcards")
 INDEX = os.path.join(ROOT, "_index")
 OUT = os.path.join(ROOT, "Marketing_Cloud_Next_Study_Guide.pdf")
 
-# Track order (page filenames, no extension)
+# Track order (page filenames, no extension).
+# Mirrors the learning tracks in _index/study-roadmap.md — keep the two in sync.
 TRACKS = [
     "Study Roadmap",
     "Track 1 — Foundations & Platform Architecture",
-    ["marketing-cloud-next-overview", "data-kits-and-data-streams", "data-architecture-layers"],
+    ["marketing-cloud-next-overview", "agentforce-marketing-portfolio",
+     "data-kits-and-data-streams", "data-architecture-layers"],
     "Track 2 — Data Foundation & Identity",
-    ["identity-resolution-rulesets", "segments-and-audiences", "data360-segment-types",
-     "segment-canvas-and-filters", "people-records-prospects"],
+    ["identity-resolution-rulesets", "identity-resolution-match-rules",
+     "identity-resolution-reconciliation-rules", "segments-and-audiences",
+     "data360-segment-types", "segment-canvas-and-filters", "people-records-prospects",
+     "crm-integration-and-actionable-lists"],
     "Track 3 — Access & Governance",
     ["user-access-and-permission-sets", "business-units"],
     "Track 4 — Channels & Deliverability",
     ["channels-overview", "email-domain-authentication", "domain-settings",
      "domain-warming-ip-infrastructure", "email-sending-setup"],
     "Track 5 — Consent & Compliance",
-    ["consent-and-compliance", "web-tracking", "contact-points-activation"],
+    ["consent-and-compliance", "consent-data-model", "consent-objects-and-models",
+     "consent-data-streams", "consent-write-paths", "consent-double-opt-in",
+     "consent-preference-pages", "consent-audit-trail", "consent-segmentation",
+     "consent-sync-hybrid", "consent-sync-3-flow", "consent-setup-billing",
+     "consent-channels-troubleshooting", "web-tracking", "contact-points-activation",
+     "contact-point-resolution", "consent-cache"],
     "Track 6 — Content & Personalization",
-    ["content-and-personalization", "email-building-personalization",
-     "marketing-objects-ampscript-handlebars"],
+    ["content-and-personalization", "marketing-workspaces-and-cms",
+     "personalization-data-sources", "merge-fields-and-expressions",
+     "dynamic-content-variations", "repeaters-and-recommenders",
+     "email-building-personalization", "email-creation-editing",
+     "dynamic-from-reply-addresses", "landing-pages", "forms-data-sources",
+     "external-forms-form-handlers", "marketing-sites",
+     "marketing-objects-ampscript-handlebars", "engagement-signals"],
     "Track 7 — Campaign Orchestration",
-    ["campaigns-and-flows", "decision-branching-path-experiments", "marketing-triggers",
-     "distributed-marketing"],
+    ["campaigns-and-flows", "marketing-flow-types", "campaign-record-workflow",
+     "flow-builder-elements", "flow-elements-deep-dive", "flow-data-operations",
+     "audience-flows", "activation-triggered-flows",
+     "decision-branching-path-experiments", "marketing-triggers",
+     "distributed-marketing", "flow-sharing", "mce-journeys-campaigns",
+     "rest-api-flow-integration", "campaign-reporting-tools"],
     "Track 8 — AI & Agentforce",
-    ["ai-features", "agentic-marketing", "conversational-marketing", "einstein-segments"],
+    ["ai-features", "marketing-agents", "agentic-marketing",
+     "conversational-marketing", "einstein-segments"],
     "Track 9 — Reporting, Scoring & Optimization",
     ["reporting-analytics-setup", "reporting-metrics-dashboards",
-     "opportunity-influence-b2b-analytics", "scoring-models"],
+     "opportunity-influence-b2b-analytics", "scoring-models", "data360-billing-usage"],
     "Track 10 — DevOps & Limits",
     ["sandbox-and-deployment", "allocations-limits-page-customization"],
 ]
@@ -66,6 +86,17 @@ FLASH_DECKS = [
     "campaigns-content-beyond",
     "agentic-conversational-data-email",
     "data360-segmentation",
+    "consent-management-deep-dive",
+    "consent-cache-and-subscription-model",
+    "consent-objects-streams-sendtime",
+    "campaigns-flows-deep-dive",
+    "personalization-data-sources-deep-dive",
+    "web-content-forms-deep-dive",
+    "identity-billing-flow-orchestration",
+    "exam-masterclass-session1",
+    "exam-masterclass-session2",
+    "exam-masterclass-session3",
+    "exam-masterclass-session4",
 ]
 
 def _find_font(*candidates):
@@ -435,7 +466,42 @@ def toc(pdf):
     pdf.set_text_color(30, 30, 30)
 
 
+def check_coverage():
+    """Fail loudly if any concept page or flashcard deck is missing from the PDF.
+
+    The track/deck lists are hardcoded, so a newly added page would otherwise be
+    silently omitted from the generated PDF.
+    """
+    listed = [n for item in TRACKS if not isinstance(item, str) for n in item]
+    on_disk = sorted(p.stem for p in pathlib.Path(CONCEPTS).glob("*.md"))
+
+    missing = sorted(set(on_disk) - set(listed))
+    stale = sorted(set(listed) - set(on_disk))
+
+    problems = []
+    if missing:
+        problems.append(
+            "Concept pages on disk but NOT in TRACKS (would be omitted from the PDF):\n  "
+            + "\n  ".join(missing)
+        )
+    if stale:
+        problems.append(
+            "Names in TRACKS with no matching file on disk:\n  " + "\n  ".join(stale)
+        )
+
+    decks_on_disk = sorted(p.stem for p in pathlib.Path(FLASHCARDS).glob("*.md"))
+    decks_missing = sorted(set(decks_on_disk) - set(FLASH_DECKS))
+    if decks_missing:
+        problems.append(
+            "Flashcard decks on disk but NOT in FLASH_DECKS:\n  " + "\n  ".join(decks_missing)
+        )
+
+    if problems:
+        sys.exit("PDF coverage check failed:\n\n" + "\n\n".join(problems) + "\n")
+
+
 def main():
+    check_coverage()
     pdf = PDF()
     pdf.set_title("Marketing Cloud Next Consultant Exam Study Guide")
     pdf.set_author("Study Notes")

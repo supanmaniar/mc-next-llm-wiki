@@ -1,7 +1,7 @@
 # Q&A Study Guide — Section 2: Consent (13%)
 
 > **Exam weight: 13%.** Scenario-driven questions with full reasoning. Cover the **Answer** and **Why** until you've committed to your own answer.
-> **Related concept pages:** [[consent-and-compliance]] · [[consent-data-model]] · [[consent-write-paths]] · [[consent-double-opt-in]] · [[consent-preference-pages]] · [[consent-audit-trail]] · [[consent-cache]] · [[consent-sync-3-flow]] · [[consent-channels-troubleshooting]]
+> **Related concept pages:** [[consent-and-compliance]] · [[consent-data-model]] · [[consent-objects-and-models]] · [[consent-data-streams]] · [[consent-write-paths]] · [[consent-double-opt-in]] · [[consent-preference-pages]] · [[consent-audit-trail]] · [[consent-cache]] · [[consent-sync-3-flow]] · [[consent-channels-troubleshooting]]
 
 ---
 
@@ -582,6 +582,162 @@
 **Answer:** **Prevent recurrence — audit flows for MessagingConsent/MessagingConsentV2 and replace with Create Consent; audit Data Streams and Batch Data Transforms targeting the Consent DLO and reroute through a Data Cloud-Triggered Flow; audit Ingestion API and custom integrations for direct Consent DMO writes.**
 
 **Why:** Repairing individual records does not fix the systemic cause. Step 5 converts a one-off fix into a durable solution by eliminating the unsupported write paths entirely. If consent still is not honoured after re-writing through a supported method, engage Salesforce Support with the contact point value, Channel Type ID, DMO value, timestamp of the most recent write, and the identified write path.
+
+---
+
+## Q52 — Three Consent Models
+
+**Question:** A client has meticulously maintained `ContactPointTypeConsent` records for GDPR proof, yet promotional emails are still blocked. What is the consultant's explanation?
+
+**Answer:** **Salesforce contains three separate consent models, and Marketing Cloud Next reads only Communication Subscription Consent (through the cache). A perfectly maintained `ContactPointTypeConsent` record has no bearing on whether an email goes out.**
+
+**Why:** The three models answer different questions: the Salesforce Consent Data Model answers "what is the legal basis for processing this person's data?", the Data 360 consent objects answer "can this contact point be used in an activation?", and Communication Subscription Consent answers "can MC Next send this specific message?". The client's records satisfy the first question but not the third.
+
+> ⚠️ **Distractor logic:** "The records are misconfigured" is the plausible-but-wrong answer — the records are fine; they simply belong to a model MC Next doesn't read.
+
+---
+
+## Q53 — Consent Object Id Prefixes
+
+**Question:** A consultant is documenting the consent objects. Which are CRM objects, and what are their Id prefixes?
+
+**Answer:** **Communication Subscription (`0Xl`), Engagement Channel Type (`0eF`) and Communication Subscription Channel Type (`0eB`) are CRM objects. The consent record itself (Communication Subscription Consent) lives in Data 360 only.**
+
+**Why:** `CommSubscription` and `CommSubscriptionConsent` have been in the API since version 48.0 (Spring '20) — roughly five years before Marketing Cloud Next existed. So "consent is all in Data 360" and "these are CRM objects" are both correct, about different halves of the same model. ⚠️ Engagement Channel Type has **no DMO at all** — the channel is a bare identifier on the Data 360 side.
+
+> ⚠️ **Distractor logic:** "All four are Data 360 objects" is the plausible-but-wrong answer — three of the four are standard CRM sObjects.
+
+---
+
+## Q54 — Subscription Governance
+
+**Question:** A client wants to change a Communication Subscription's scope from a single business unit to all business units after go-live. What should the consultant advise?
+
+**Answer:** **The scope cannot be changed after creation. With business units enabled (Advanced), a subscription is assigned either to a single business unit or to all of them, and this is fixed at creation — it also limits which channels can be added.**
+
+**Why:** Subscription governance has four rules that are much easier to get right at the start than to fix later: scope is fixed at creation; deleting a subscription deletes all its consent data (a legal exposure); a new subscription doesn't appear on the preference page by default; and there is no frequency capping (`CommSubscriptionTiming` exists but MC Next doesn't map it).
+
+> ⚠️ **Distractor logic:** "Edit the scope in the Consent tab" is the plausible-but-wrong answer — the field is not editable after creation.
+
+---
+
+## Q55 — Duplicate Consent Streams
+
+**Question:** A consultant pulls a consent export and finds duplicate rows for the same contact point and subscription, in an org that has only ever run V2. What explains this?
+
+**Answer:** **The org-ID naming quirk — Salesforce appended the org ID to the V2 stream names, both spellings stayed active, and both feed the same DMO. This is not a legacy migration artefact.**
+
+**Why:** There are two ways to get duplicates: the documented pre-Summer '25 generation switch (`MessagingConsent` → `MessagingConsentV2`), and the org-ID naming quirk that affects even V2-only orgs. Send-time behaviour is fine (latest record wins), but a naive `SELECT` returns both rows with no signal which one the platform acted on. Deduplicate on the latest record per contact point + subscription before any reporting query, Calculated Insight, or audit extract.
+
+> ⚠️ **Distractor logic:** "It's leftover V1 data" is the plausible-but-wrong answer — both streams are V2 and both are active.
+
+---
+
+## Q56 — Consent DLO Name Portability
+
+**Question:** A consultant copies a consent query from a blog post into a Data Transform and it fails. Why?
+
+**Answer:** **No consent DLO name is portable — the org ID is appended to the stream name, so it differs per org (and changes when the org ID changes). Always read the actual stream name in your own org first.**
+
+**Why:** This is the same sandbox problem the subscription Ids have, arriving from a second direction. Nothing that references the consent data lake object by name is portable: not a Data Transform, not a saved query, not a Calculated Insight definition, not a runbook, and not anything copied from a blog post.
+
+> ⚠️ **Distractor logic:** "The query syntax is wrong" is the plausible-but-wrong answer — the syntax is fine; the object name is org-specific.
+
+---
+
+## Q57 — Consent-Check Applicability
+
+**Question:** A client wants to disable consent checks entirely because consent is managed on another platform. What must they accept, and what does the change not affect?
+
+**Answer:** **They must affirm in writing that they accept responsibility for compliance problems. The change does not affect active flows — anything already running keeps checking.**
+
+**Why:** The applicability matrix is not uniform: promotional email requires a check, transactional email does not, and both promotional and transactional SMS/WhatsApp/RCS require one. The "doesn't affect active flows" detail is easy to miss and is exactly the kind of subtlety the exam tests.
+
+> ⚠️ **Distractor logic:** "Disabling it stops all consent checks immediately" is the plausible-but-wrong answer — running flows keep checking.
+
+---
+
+## Q58 — SMS/WhatsApp/RCS Granularity
+
+**Question:** A contact opts out of an SMS channel that maps to three subscriptions. What is the effect, and how does RCS differ?
+
+**Answer:** **Opting out of the channel opts the person out of every subscription mapped to it — there is no per-subscription opt-out over SMS. RCS is the one exception: Salesforce says you can reuse existing SMS consent when the messaging use case stays the same.**
+
+**Why:** SMS, WhatsApp and RCS work at a different granularity from email: each SMS code, WhatsApp number and RCS agent maps to one or more subscriptions, and the opt-out is at the channel level. This surprises people who expect the per-subscription behaviour of a preference page. The RCS exception should be checked with legal rather than assumed.
+
+> ⚠️ **Distractor logic:** "Only the subscription they opted out of is affected" is the plausible-but-wrong answer — it applies email's granularity to SMS.
+
+---
+
+## Q59 — The Party Field
+
+**Question:** A developer wants to build a segment filter on the consent DMO's `Party` field to target individuals. What should the consultant advise?
+
+**Answer:** **Don't build on the Party field — it is wired end to end from the DLO but always empty. To get from a consent record to a person, go through the Contact Point Email or Contact Point Phone DMO.**
+
+**Why:** The `Party` field is exactly as designed, just for a path Marketing Cloud Next doesn't use — the DMO is a standard object in the Data 360 Privacy subject area, designed for consent arriving from external systems that carry a person identifier. The proper join (the one the Privacy Consent Status component uses) matches the consent record's contact point value to the Contact Point Email/Phone DMO, which carries the PartyId mapping.
+
+> ⚠️ **Distractor logic:** "It will populate once identity resolution runs" is the plausible-but-wrong answer — nothing ever flows through it.
+
+---
+
+## Q60 — Four Levels of Consent Granularity
+
+**Question:** A client's compliance team asks the consultant to explain how granular Marketing Cloud Next consent can be. Which level does the platform enforce?
+
+**Answer:** **Level 4 — a specific contact point (email address or phone number) AND a specific subscription type.**
+
+**Why:** Salesforce describes four levels of attributing consent to promotional communications: **Level 1** = the entire individual record (all channels, subscriptions, contact points); **Level 2** = a communication channel as a whole (e.g., all email); **Level 3** = a specific contact point value, regardless of subscription; **Level 4** = a specific contact point **and** a specific subscription type. MC Next enforces **Level 4**, the most granular.
+
+> ⚠️ **Distractor logic:** "Level 2 (channel-level)" is the plausible-but-wrong answer — it's a real level, but MC Next operates one step more granular.
+
+---
+
+## Q61 — The Four Consent Objects
+
+**Question:** A consultant is mapping the consent data model for a client. Which four objects come together to manage Level 4 consent, and what does each represent?
+
+**Answer:** **Communication Subscription** (the type/purpose/category of communication) · **Communication Subscription Channel Type** (the channel used to deliver a subscription) · **Communication Subscription Consent** (the individual's consent status for a subscription at a specific contact point value + subscription channel type) · **Engagement Channel Type** (the channel: email, SMS, WhatsApp, RCS).
+
+**Why:** The consent record itself keys on the **contact point value combined with the Communication Subscription Channel Type ID**. The Communication Subscription defines the purpose (marketing, events, monthly newsletter); the Channel Type pairs one subscription with one channel; the Engagement Channel Type is the bare channel identifier.
+
+> ⚠️ **Distractor logic:** "The Communication Subscription Consent object in CRM is the same as the DMO" is the plausible-but-wrong answer — they are different halves of the model. The CRM object exists but has no bearing on sends.
+
+---
+
+## Q62 — Preference Page Channel Behaviour
+
+**Question:** A client wants a single preference page where subscribers can manage both email and SMS preferences. What should the consultant advise?
+
+**Answer:** **A unified cross-channel preference page isn't available out-of-the-box. The message channel automatically determines which page is used — email links to the email preference manager, SMS uses a separate SMS-specific page. A unified experience requires custom development.**
+
+**Why:** The experience remains **channel-specific**. Email messages generate a link to the email preference manager; SMS messages use a separate SMS-specific page. Building a unified cross-channel experience requires custom development. Similarly, **multilingual preference pages aren't natively supported** — that also requires custom forms or custom preference page development.
+
+> ⚠️ **Distractor logic:** "Create one page and add both channels" is the plausible-but-wrong answer — the channel determines the page type, so you can't merge them in the standard UI.
+
+---
+
+## Q63 — Preference Page Customisation Limits
+
+**Question:** A marketer wants to edit the button labels and reorder the subscription list on the standard preference page. What can they do?
+
+**Answer:** **The standard subscription block doesn't allow editing button labels, headings, subheadings, or the order of the subscription list. As a partial workaround, rename the communication subscriptions from the Consent tab. Full text customisation is planned for an upcoming release.**
+
+**Why:** The standard subscription block is deliberately constrained. The rename workaround changes the *subscription names* (which appear in the list) but not the surrounding UI text. Note also that **custom code — AMPscript, Apex, and server-side JavaScript — isn't supported** on preference pages, and you **can't pre-populate a page from URL parameters**.
+
+> ⚠️ **Distractor logic:** "Use AMPscript to override the labels" is the plausible-but-wrong answer — custom code isn't supported on preference pages at all.
+
+---
+
+## Q64 — Preference Page Releases
+
+**Question:** A client asks when custom preference pages and multiple preference pages became available. What should the consultant say?
+
+**Answer:** **Custom preference pages were introduced in the Spring release; the Summer release expanded the capability to allow multiple preference pages (for example, separate pages per brand).**
+
+**Why:** The progression matters for scoping. Multiple published pages appear in the **merge field selector**, so you can choose the appropriate one when adding a preference page link to a message. When creating a page you can apply a **brand** (colours, typography, buttons, spacing, borders), add **content blocks** (dividers, headings, lists, paragraphs), include **layouts** and **image blocks**, and designate a **default preference page** used across all marketing message sends.
+
+> ⚠️ **Distractor logic:** "Multiple pages have always been available" is the plausible-but-wrong answer — it ignores the release sequencing the exam tests.
 
 ---
 

@@ -12,6 +12,15 @@ The Consent Audit Trail is an **append-only** Data Cloud object that records a r
 ### What It Is
 The Consent Audit Trail is an object in Data Cloud that records a row for every consent change. It is **append-only**: rows are inserted, never updated. This makes it the historical record of all opt-in/opt-out events for a given Contact Point value and Communication Subscription Channel Type.
 
+⚠️ It is a **data lake object (DLO) that is not mapped to any DMO** — so Data Explorer won't show it; use **Query Editor**. It is installed by the **`UnifiedMessagingConsent`** data kit alongside the consent-records stream (see [[consent-data-streams]]).
+
+### PassedConsentStatus vs ConsentStatus
+Two fields sit next to each other and are more useful than they look:
+- **`ConsentStatus`** — the **result** (what actually landed).
+- **`PassedConsentStatus`** — the status the **calling application submitted**.
+
+When those two disagree, you are looking at a write that **didn't land the way its caller thought it did**.
+
 ### Key Fields
 
 | Field | Description |
@@ -36,7 +45,7 @@ There's **no dedicated UserId / ActorId / ModifiedById field** — by design. Th
 Consent is keyed on the Contact Point value + CSCT ID, so PartyId is written blank by design — even when the upstream record is a Lead or Contact. To stitch audit rows back to a Lead/Contact for reporting, join ContactPointValue from the audit object to the ContactPointEmail or ContactPointPhone DMOs, which carry the PartyId mapping.
 
 ### Deleting Audit Rows
-The audit object is **insert/upsert-only** — no self-service feature to delete individual rows. Options:
+The audit object is **insert/upsert-only** — no self-service feature to delete individual rows. ⚠️ **Audit trail rows cannot be deleted through any self-service route**, so undoing a bad initial import means opening a case with Salesforce Support. Plan the initial import as if you cannot undo it, because for practical purposes you can't. Options:
 
 1. **GDPR Right to be Forgotten** — use the Consent API "ShouldForget" endpoint on the Individual. Flags the individual; an async process performs deletion across the Individual DMO and related objects. Takes hours; reprocessed at 30, 60, 90 days. Permanent.
 2. **Bulk deletion** (e.g., undoing a bad import) — no UI feature; engage Salesforce Support.
@@ -66,6 +75,8 @@ The audit object is **insert/upsert-only** — no self-service feature to delete
 
 ## Related Concepts
 - [[consent-data-model]]
+- [[consent-objects-and-models]]
+- [[consent-data-streams]]
 - [[consent-write-paths]]
 - [[consent-segmentation]]
 - [[consent-cache]]
@@ -74,3 +85,4 @@ The audit object is **insert/upsert-only** — no self-service feature to delete
 ## Source References
 - User-provided "Consent Management: Audit Trail" article
 - User-provided "Consent Management: Preference Pages" article (Email Opt-Out Rate note)
+- `sources/Consent_Management_MCNext_SzymonLewandowski.md` — "Consent Management in Marketing Cloud Next" (Szymon Lewandowski, 20 Sep 2026)

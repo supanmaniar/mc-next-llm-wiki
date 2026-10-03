@@ -443,6 +443,102 @@
 
 ---
 
+## Q39 — Agentforce Marketing Portfolio
+
+**Question:** A client asks the consultant to "implement Agentforce Marketing." During discovery, the consultant learns the client needs a Data Cloud-native marketing platform, a real-time personalization engine, AI-powered analytics, and a no-code loyalty program. How should the consultant frame the recommendation?
+
+**Answer:** **Agentforce Marketing is the portfolio brand, not a single product. The client needs four products: Marketing Cloud Next, Salesforce Personalization, Marketing Intelligence, and Loyalty Management.**
+
+**Why:** Agentforce Marketing is the umbrella brand for Salesforce's next-generation marketing suite. Each product is the evolution of an existing Marketing Cloud product: **Marketing Cloud Next** (from Marketing Cloud Engagement), **Salesforce Personalization** (from MC Personalization), **Marketing Intelligence** (from MC Intelligence), and **Loyalty Management** (no-code B2B/B2C loyalty). Treating "Agentforce Marketing" as one product leads to a scoping error.
+
+> ⚠️ **Distractor logic:** "Agentforce Marketing is the new name for Marketing Cloud Next" is the plausible-but-wrong answer — it collapses the portfolio into one product. The exam tests whether you can separate the *brand* from the *product*.
+
+---
+
+## Q40 — Configuration Steps
+
+**Question:** A consultant is enabling Marketing Cloud Next in a new org. The client's admin asks how many steps are required and which are automated. What should the consultant explain?
+
+**Answer:** **At a minimum there are six key configuration steps. The first three — set up Data 360, enable Marketing Cloud, and deploy the required data streams — are driven by the Setup Assistant, each initiated with a single button click.**
+
+**Why:** Setup is best framed as **configuration, not implementation** — MC Next and Data 360 enable in a few clicks. The Setup Assistant automates the first three tasks. Two further required tasks follow: adding the company **physical address** (Company Information, for regulatory compliance in email footers) and creating an **authenticated domain**. Optional steps exist but aren't required for core functionality.
+
+> ⚠️ **Distractor logic:** "All six steps are manual" is the plausible-but-wrong answer — it ignores the Setup Assistant's automated enablement.
+
+---
+
+## Q41 — Data Cloud Architect Permission Set
+
+**Question:** A consultant needs to install data kits, deploy data streams, and configure identity resolution in a new Marketing Cloud Next org. Which permission set must be assigned, and by whom?
+
+**Answer:** **The Data Cloud Architect permission set, assigned by a user with a System Administrator profile.**
+
+**Why:** Two permission sets are required before configuration: **Data Cloud Architect** (Data 360 setup, data modelling objects, data kits, data streams, identity resolution) and **Marketing Admin** (most marketing Setup settings, publish/activate campaigns and segments). ⚠️ **Data Cloud Architect replaced the old Data Cloud Admin permission set in the Spring '26 release.** Note also that **System Administrator is a profile, not a permission set** — a classic distractor.
+
+> ⚠️ **Distractor logic:** "Data Cloud Admin" is the legacy-name trap; "System Administrator" is the profile-vs-permission-set trap. Both are engineered to catch candidates who memorised the old naming.
+
+---
+
+## Q42 — Authorized vs Authenticated Domain
+
+**Question:** A client wants to use dynamic From and Reply-to addresses in their Marketing Cloud Next emails. They have already authenticated their sending subdomain. What additional configuration is required, and what does it provide?
+
+**Answer:** **An authorized email domain. It verifies ownership with a simple verification record but does NOT provide the DKIM/DNS sending configuration that an authenticated domain establishes.**
+
+**Why:** The two are distinct. An **authenticated domain** establishes the full DKIM and DNS sending configuration. An **authorized email domain** only proves ownership and is required for **dynamic From or Reply-to addresses**. For DMARC alignment, the domain in the From address must align with the authenticated sending domain — using a personal email on the root domain can cause **DMARC alignment failures**.
+
+> ⚠️ **Distractor logic:** "The authenticated domain already covers this" is the plausible-but-wrong answer — it conflates the two concepts. *Authenticated* = you can send from it; *authorized* = you may put it in a dynamic From/Reply-to.
+
+---
+
+## Q43 — CMS Content Workspaces & Business Units
+
+**Question:** A global client runs three brands in separate business units. Where is all marketing content stored, and what is the relationship between business units and content workspaces?
+
+**Answer:** **All marketing content is stored in CMS content workspaces, and each workspace is associated with a specific business unit. A data space maps to no business unit or one; a business unit maps to one or more content workspaces.**
+
+**Why:** Business units separate **content and data** across teams, brands, or regions. The structure works alongside Data 360's data spaces. When marketers create an asset, the system shows only content available to the associated business unit — and the same filtering applies when selecting content from a campaign or flow.
+
+> ⚠️ **Distractor logic:** "A business unit maps to exactly one workspace" is the plausible-but-wrong answer — it mirrors the 1:1 data-space rule but is wrong for workspaces, which are one-to-many.
+
+---
+
+## Q44 — Common Assets
+
+**Question:** A marketer in the "North America" business unit needs to use a brand asset created in the "EMEA" business unit. What is the supported approach?
+
+**Answer:** **Post the asset as a common asset, making it available to all business units; the marketer then copies it into their own workspace.**
+
+**Why:** ⚠️ **By design, content cannot be accessed directly across business units.** Each CMS content workspace must be associated with a specific business unit in Setup. **Common assets** are the supported workaround — content posted as a common asset becomes available to all business units, and users copy it locally.
+
+> ⚠️ **Distractor logic:** "Share the workspace across business units" is the plausible-but-wrong answer — workspace sharing is a within-unit collaboration feature, not a cross-unit content bridge.
+
+---
+
+## Q45 — Business Unit Role Content Access
+
+**Question:** A sales representative needs visibility into marketing dashboards but should not be able to edit or publish CMS content. Which business unit role should be assigned, and what constraint applies?
+
+**Answer:** **Marketing Read-Only — it provides access to the data space only, not CMS content. Note that users without the Marketing Manager or Marketing Admin permission sets can only be assigned this role.**
+
+**Why:** The two business unit roles split on content access: **Marketing Standard** gets both the data space and CMS content; **Marketing Read-Only** gets the data space only. The permission-set constraint is a memorised detail — it explains why some users can't be granted Standard even if the business need seems to call for it.
+
+> ⚠️ **Distractor logic:** "Marketing Standard, then remove content permissions" is the plausible-but-wrong answer — roles are assigned whole, not trimmed.
+
+---
+
+## Q46 — Content Publishing & Form Activation
+
+**Question:** A marketer builds a form, adds it to a landing page, and saves both. They report that the form isn't creating leads. What is the most likely cause?
+
+**Answer:** **The content was saved but not published. Publishing the form also activates its associated flow — and the landing page must be published with an active URL alias for the form to be visible.**
+
+**Why:** ⚠️ **Saving content isn't enough — it must be published before it can be used.** A form must exist before it can be placed on a page, and **publishing the form activates the flow** created by the form handler (which pre-adds a Create Records element with field mappings). The landing page must also be published for the form to be reachable.
+
+> ⚠️ **Distractor logic:** "The flow needs to be activated separately" is the plausible-but-wrong answer — the form and its flow are linked, so publishing the form activates the flow.
+
+---
+
 ## Related
 
 - [[exam-revision-summary]] — Section 1 summary

@@ -325,6 +325,84 @@
 
 ---
 
+## Card: 4
+**Q:** What does 4 represent in the consent model?
+**A:** The number of **consent granularity levels** — and the level MC Next enforces (**Level 4** = contact point + subscription type).
+
+## Card: 6
+**Q:** What does 6 represent?
+**A:** The minimum number of **configuration steps**, and the number of **flow types** (audience, activation-triggered, automation event-triggered, on-demand, broadcast, Data Cloud-triggered).
+
+## Card: 5 Agents
+**Q:** What are the five out-of-the-box marketing agents?
+**A:** **Segment Creation · Campaign Creation · Content Creation · Journey Decisioning · Account Discovery.**
+
+## Card: 8 Data Providers
+**Q:** How many data providers are there, and what are they?
+**A:** **Eight:** data graph, event, activation, Salesforce record, Apex class, personalization recommender, lookup graph, offer.
+
+## Card: 4 Contact Point Selection Methods
+**Q:** How many ways can contact point selection be determined at send time?
+**A:** **Four:** data graph in flow properties, on-demand API payload, activation source priority order, activation template.
+
+## Card: 90 Days
+**Q:** What does 90 days represent (three things)?
+**A:** The **consent cache TTL**, the **View as Web Page link** validity, and the **analysis window** for all three predictive AI models.
+
+## Card: 2 Hours to 1 Week
+**Q:** What is the STO optimization window range?
+**A:** From **2 hours up to 1 week**.
+
+## Card: Activation + Event
+**Q:** ⚠️ Can a message use both an activation and an event data provider?
+**A:** **No** — each requires a specific flow orchestration pattern, creating a conflict in how data binds to the message.
+
+## Card: Reconciliation vs Contact Points
+**Q:** ⚠️ Do reconciliation rules resolve contact points?
+**A:** **No** — they only select single values for unified fields that can't hold multiple values (like name). All contact points are **retained** in the unified profile.
+
+## Card: Different Addresses
+**Q:** How many emails are sent when a unified individual has two unique email addresses across three records?
+**A:** **Two** — one per **unique** address; duplicate addresses count as a single contact point.
+
+## Card: Activation Template Trigger
+**Q:** ⚠️ When is an activation template required?
+**A:** When the segment's **segment-on object is NOT Unified Individual**.
+
+## Card: Which Flows Can't Send Email
+**Q:** ⚠️ Which two flow types cannot send email?
+**A:** **Record-triggered flows** and **Data Cloud-triggered flows**.
+
+## Card: Off-Core
+**Q:** What does "off-core" mean for marketing flows?
+**A:** They run on a **separate high-scale processing engine** outside the core Salesforce transactional runtime — so governor limits and transaction-scaling concerns don't apply the same way.
+
+## Card: Authorized ≠ Authenticated
+**Q:** ⚠️ What's the difference between an authorized and an authenticated email domain?
+**A:** **Authenticated** = full DKIM/DNS sending configuration. **Authorized** = ownership only, required for **dynamic From/Reply-to addresses**.
+
+## Card: Common Assets
+**Q:** ⚠️ How do you share content across business units?
+**A:** Post it as a **common asset**, then **copy it into the target workspace** — content can't be accessed directly across business units.
+
+## Card: Engagement Scoring Personas
+**Q:** Name the four Engagement Scoring personas with their open/click likelihoods.
+**A:** **Loyalists** (high/high) · **Selective Subscribers** (low open/high click) · **Window Shoppers** (high open/low click) · **Win Back/Dormant** (low/low).
+
+## Card: Engagement Frequency Classifications
+**Q:** What are the four Engagement Frequency classifications?
+**A:** **Saturated · Almost Saturated · On Target · Under Saturated.**
+
+## Card: Three Reporting Capabilities
+**Q:** What are the three out-of-the-box reporting capabilities?
+**A:** **Campaign Performance Dashboard · Marketing Performance Dashboard · Semantic Data Model** — all included with no extra license.
+
+## Card: Semantic Data Model
+**Q:** What powers the semantic data model, and what's its name?
+**A:** **Tableau Next** powers it; it's the **Marketing Intelligence Semantic Data Model**.
+
+---
+
 ## Related
 
 - [[exam-revision-summary]] — full cram list

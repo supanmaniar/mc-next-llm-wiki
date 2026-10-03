@@ -19,6 +19,16 @@ Marketing triggers detect key customer behaviors (abandoned carts, product views
 | **Product Low Inventory** | Stock below threshold | Threshold (1–1M units) |
 | **Product Price Drop** | Price dropped by % | % drop (1–100%) |
 
+### Event Sources for Automation Event-Triggered Flows
+Marketing triggers are one category of event that can start an **automation event-triggered flow**. The full set of event sources is:
+
+1. **Standard engagement events** — email opens, clicks, form submissions (**no additional configuration required**)
+2. **Engagement signals** — custom customer engagement events you define (website interactions, PDF downloads, other tracked activities)
+3. **CRM record-triggered events** (**Spring '26**) — fire when a **prospect, lead, contact, or any related object** record is created or updated
+4. **Marketing triggers** — the behavioral triggers in the table above (abandoned cart, price drop, etc.)
+
+See [[marketing-flow-types]] for the complete flow taxonomy.
+
 ### Common Configuration (all triggers)
 1. Turn on the trigger (Setup → Marketing Features → Triggers).
 2. Map required DMOs (checkmark = mapped).
@@ -59,6 +69,9 @@ Triggers expose **contextual data** in the flow event resource (product SKU, car
 ## Related Concepts
 - [[campaigns-and-flows]]
 - [[content-and-personalization]]
+- [[marketing-flow-types]]
+- [[engagement-signals]]
 
 ## Source References
 - `sources/Marketing Cloud Next Salesforce Help Information.txt` — "Set Up Marketing Triggers in Marketing Cloud Next", "Order Lifecycle API Automation Events"
+- `sources/MCNext_Consultant_Exam_Masterclass_Session2.txt` — Elliot Harper, "Marketing Cloud Next Consultant Exam Masterclass" Session 2 (Salesforce, Summer '26)

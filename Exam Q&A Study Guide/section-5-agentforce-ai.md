@@ -221,6 +221,126 @@
 
 ---
 
+## Q21 — The Five Out-of-the-Box Agents
+
+**Question:** A consultant is mapping Marketing Cloud Next's AI agents to a client's workflow stages. Which agents are available, and what does each do?
+
+**Answer:** **Segment Creation** (natural language → editable segment criteria) · **Campaign Creation** (campaign briefs, flows, and multi-channel content) · **Content Creation** (drafts and refines email, landing page, and SMS content) · **Journey Decisioning** (selects the most appropriate journey or flow and creates personalized content) · **Account Discovery** (account insights and potential buying group members).
+
+**Why:** The exam asks you to **identify the different agents and understand when to use each one**. The pairing is the tested skill: Segment Creation builds audiences; Campaign Creation builds briefs/flows/content; Content Creation drafts and refines content; Journey Decisioning routes and personalizes; Account Discovery finds stakeholders and guides nurturing.
+
+> ⚠️ **Distractor logic:** "Content Creation and Campaign Creation are the same agent" is the plausible-but-wrong answer — Campaign Creation builds the campaign structure; Content Creation drafts and refines the content within it.
+
+---
+
+## Q22 — Account Discovery Agent
+
+**Question:** A B2B client wants to identify potential buying group members at target accounts and guide follow-up activities. Which agent applies?
+
+**Answer:** **The Account Discovery agent — it provides account insights and identifies potential buying group members.**
+
+**Why:** Account Discovery is the B2B-oriented agent. It helps discover stakeholders and guide nurturing or follow-up activities. Distinguishing it from Journey Decisioning (which routes individuals to journeys) is the tested skill.
+
+> ⚠️ **Distractor logic:** "Journey Decisioning" is the plausible-but-wrong answer — it personalizes journeys for known individuals, not account-level discovery.
+
+---
+
+## Q23 — Draft with Agentforce
+
+**Question:** A marketer wants to turn a campaign objective into a complete brief and campaign. What is the workflow?
+
+**Answer:** **Marketing Home → New Campaign → Draft with Agentforce → describe the campaign objective → choose to draft a brief → ask Agentforce to generate a campaign → review the campaign preview (flow and content) → save as a new campaign.**
+
+**Why:** Agentforce creates a **draft** campaign brief. You open the **campaign preview** to review the proposed campaign including its flow and content, then save it as a new campaign and open the campaign record. The output is a draft — review is part of the workflow.
+
+> ⚠️ **Distractor logic:** "Agentforce publishes the campaign directly" is the plausible-but-wrong answer — it produces a draft you review and save.
+
+---
+
+## Q24 — Engagement Frequency Classifications
+
+**Question:** A client wants to reduce email fatigue. Which predictive AI feature applies, and what classifications does it produce?
+
+**Answer:** **Engagement Frequency — it determines how often each contact should receive an email. The Email Engagement Classification field in the Email Engagement Frequency DMO assigns each individual to one of four categories: Saturated, Almost Saturated, On Target, or Under Saturated.**
+
+**Why:** The goal is to **maximise engagement while reducing email fatigue and unsubscribes**. The model analyses up to **90 days** of email activity (sends, opens, clicks, bounces, unsubscribes, spam complaints, and sending patterns), compares each individual's behaviour at different frequencies with similar individuals, then calculates an **ideal frequency range**. ⚠️ It's trained **only on your organisation's data**, and scores refresh **weekly**.
+
+> ⚠️ **Distractor logic:** "Engagement Scoring" is the plausible-but-wrong answer — it predicts *likelihood to engage*, not *optimal frequency*.
+
+---
+
+## Q25 — Engagement Scoring Personas
+
+**Question:** A client wants to tailor campaign strategy by recipient behaviour. Which predictive AI feature provides personas, and what are they?
+
+**Answer:** **Engagement Scoring — it assigns individuals to four personas based on predicted likelihood to open and click: Loyalists (high open, high click), Selective Subscribers (low open, high click), Window Shoppers (high open, low click), and Win Back/Dormant (low open, low click).**
+
+**Why:** Engagement Scoring estimates **how likely each individual is to engage with future marketing communications**, analysing up to **90 days** of historical behaviour with **greater emphasis on the most recent activity**. It generates three likelihood predictions: likelihood to **open**, to **click**, and to **remain subscribed**. Each prediction is grouped into four tiers: **Most Likely, More Likely, Less Likely, Least Likely**.
+
+> ⚠️ **Distractor logic:** "Window Shoppers open but don't click" is the correct pairing — the trap is reversing it with Selective Subscribers, who click but don't open.
+
+---
+
+## Q26 — Using Engagement Scoring Personas
+
+**Question:** A client has a large group of "Selective Subscribers" (low open, high click) and "Window Shoppers" (high open, low click). How should the consultant advise them to act?
+
+**Answer:** **Send surveys to better understand Selective Subscribers, and engage Window Shoppers through alternative channels. Place dormant subscribers into a dedicated win-back campaign.**
+
+**Why:** The personas exist to drive **tailored campaign strategies**. Selective Subscribers engage by clicking but not opening — so subject lines may be the problem, and surveys can diagnose it. Window Shoppers open but don't click — so the offer or channel may need to change. Dormant subscribers warrant a dedicated win-back campaign.
+
+> ⚠️ **Distractor logic:** "Send more email to both groups" is the plausible-but-wrong answer — it ignores the behavioural diagnosis the personas provide.
+
+---
+
+## Q27 — Send Time Optimization Setup
+
+**Question:** A consultant enables Send Time Optimization. What configuration is required for it to work in a Send Email Message element?
+
+**Answer:** **Add the Send Time Optimization DMO to the data graph using the required structure, then select the Hourly Scores by Week field. The Send Email Message element uses this field to determine each recipient's optimal send time.**
+
+**Why:** STO analyses up to **90 days** of email engagement history — sends, opens, clicks, bounces, unsubscribes, spam complaints, **plus the timestamps** of those events. Predictions update **approximately once a week**. ⚠️ STO is available in **both Growth and Advanced** editions and **must be enabled in Setup**.
+
+> ⚠️ **Distractor logic:** "STO works automatically once enabled" is the plausible-but-wrong answer — the DMO must be added to the data graph with the correct field.
+
+---
+
+## Q28 — STO Optimization Window
+
+**Question:** A marketer enables Send Time Optimization on a Send Email Message element. What window can they define, and what happens within it?
+
+**Answer:** **An optimization window ranging from 2 hours up to 1 week. MC Next sends the message to each recipient at their predicted optimal time within that window.**
+
+**Why:** Rather than sending to everyone at the same time, STO times each email according to the recipient's predicted engagement pattern — one individual might receive it in the morning, another in the evening. The window bounds how far the send can be spread.
+
+> ⚠️ **Distractor logic:** "The window is fixed at 24 hours" is the plausible-but-wrong answer — it's configurable from 2 hours to 1 week.
+
+---
+
+## Q29 — Predictive AI Edition Gates
+
+**Question:** A client on the Growth edition wants to use Engagement Frequency and Engagement Scoring. What should the consultant advise?
+
+**Answer:** **Both are Advanced-only. Only Send Time Optimization is available in Growth (and Advanced).**
+
+**Why:** The three predictive AI capabilities are **Engagement Frequency**, **Engagement Scoring**, and **Send Time Optimization**. ⚠️ **Engagement Frequency and Engagement Scoring are Advanced only** — not Growth. STO is available in both editions. This edition gate is one of the most commonly tested discriminators.
+
+> ⚠️ **Distractor logic:** "All three are available in Growth" is the plausible-but-wrong answer — it ignores the Advanced gate on two of the three.
+
+---
+
+## Q30 — Using Predictive AI Insights
+
+**Question:** A consultant wants to branch a flow based on a contact's engagement score. What configuration is required?
+
+**Answer:** **Configure the required data graph first, then use fields such as Email Engagement Frequency or Engagement Score to create branches with a Decision element. Alternatively, use those DMO fields as segment criteria.**
+
+**Why:** The insights can be used for **audience segmentation** and **flow decisioning**. The data graph is the prerequisite — without it, the attributes aren't available for decisioning. The same fields can drive segment criteria instead of flow branches.
+
+> ⚠️ **Distractor logic:** "Use the score directly in the Decision element without a data graph" is the plausible-but-wrong answer — the data graph must expose the field first.
+
+---
+
 ## Related
 
 - [[exam-revision-summary]] — Section 5 summary

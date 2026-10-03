@@ -13,6 +13,30 @@ Consent is the gatekeeper of marketing: a strict, subscription-based opt-in mode
 ### The Strict Opt-In Principle
 Marketing Cloud Next is a **strict opt-in system**. If **no consent record exists** for a recipient on a given subscription, the system treats them as **opted out** and blocks the message. You don't log an explicit "No" — the *absence* of a recorded "Yes" is enough to suppress the send. This protects sender reputation and the customer's inbox.
 
+### The Four Levels of Consent Granularity
+Salesforce describes **four levels** of attributing consent to promotional communications, from broadest to most granular. Marketing Cloud Next enforces **Level 4** — the most granular:
+
+| Level | Applies to | Ignores |
+|-------|-----------|---------|
+| **Level 1** | The **entire individual record** — a person-level permission/restriction covering **all** marketing communications | Channel, subscription type, contact point value |
+| **Level 2** | A **communication channel as a whole** (e.g., all email, all SMS) | Which specific contact point is used in that channel |
+| **Level 3** | A **specific contact point value** (an email address or phone number) | The subscription type |
+| **Level 4** ✅ | A **specific contact point** *and* a **specific subscription type** | — (most precise) |
+
+> **Memory hook:** Level 1 = the *person*; Level 2 = the *channel*; Level 3 = the *address*; Level 4 = the *address + topic*. MC Next always operates at Level 4, giving customers precise control over the communications they receive.
+
+### The Four Consent Objects (Level 4)
+Four objects come together to manage Level 4 consent in Marketing Cloud Next:
+
+| Object | Role | Example |
+|--------|------|---------|
+| **Communication Subscription** (DMO) | The **type/purpose/category** of communication an org offers and an individual can opt into/out of | Marketing, Events, Monthly Newsletter |
+| **Communication Subscription Channel Type** (DMO) | The **channel used to deliver** a subscription; each subscription can map to one or more supported engagement channels | Email channel for the Marketing subscription |
+| **Communication Subscription Consent** (DMO) | Stores the individual's **consent status** for a subscription at a specific **contact point value + subscription channel type** | Someone at `example.com` opted into Marketing via email |
+| **Engagement Channel Type** | Defines the **engagement channel** | Email, SMS, WhatsApp, RCS |
+
+See [[consent-data-model]] and [[consent-objects-and-models]] for the full object inventory and Id prefixes.
+
 ### The Subscription-Based Model
 Consent is managed through **individual subscription preferences** — not a single opt-in field. Being opted into one subscription does **not** affect another (opting into "Product Updates" ≠ opted into "Newsletters").
 
@@ -42,6 +66,8 @@ Consent is stored centrally in **Data 360** as DMOs (not a checkbox on a lead/co
 | **Engagement Channel Type** | The medium (Email, SMS, WhatsApp) |
 | **Communication Subscription Channel Type** | The specific delivery method per subscription (opt in per channel) |
 | **Communication Subscription Consent** | The core record: explicit opt-in/opt-out status for a point+subscription+channel, plus consent date and source |
+
+⚠️ **Three consent models coexist in one org** — the Salesforce Consent Data Model (legal basis), the Data 360 consent objects (activation eligibility), and Communication Subscription Consent (MC Next sends). MC Next reads **only the third**, through the cache. See [[consent-objects-and-models]].
 
 ### Consent Tools & Options
 - **Preference Pages** — branded, customizable pages (built in the Content tab) where subscribers manage their own preferences; dynamic links can be embedded in email templates.
@@ -122,6 +148,9 @@ Lyn has SMS + email consent for "Product Updates" subscription. She creates **4 
 
 ## Common Pitfalls / Misconceptions
 ⚠️ Marketing Cloud Next is **strict opt-in**: absence of a "Yes" = blocked, even without an explicit "No".
+⚠️ **MC Next enforces Level 4 consent** (contact point + subscription type) — not Level 1/2/3.
+⚠️ The **Communication Subscription Consent object in CRM is NOT the same object as the Communication Subscription Consent DMO** — a common exam distractor.
+⚠️ The **Has Opted Out of Email** field on Lead/Contact records does **not** update consent in Marketing Cloud Next.
 ⚠️ "Unsubscribe from all" does **not** persist as a permanent block for future subscriptions.
 ⚠️ SMS opt-out is **per sender code**, not global per phone number.
 ⚠️ Never delete a Communication Subscription — it destroys the historical consent audit trail.
@@ -142,15 +171,20 @@ Lyn has SMS + email consent for "Product Updates" subscription. She creates **4 
 6. What's the difference between a granular subscription and "Unsubscribe from all"?
 7. Why must you never delete a Communication Subscription?
 8. What action should a flow use (and avoid) to write consent?
+9. Name the four levels of consent granularity, and which one MC Next enforces.
+10. Name the four objects that manage Level 4 consent and what each represents.
+11. Why is the CRM Communication Subscription Consent object not the same as the DMO?
 
 ## Related Concepts
 - [[channels-overview]]
 - [[web-tracking]]
 - [[data-architecture-layers]]
 - [[email-sending-setup]]
-- **Deeper consent pages:** [[consent-data-model]], [[consent-write-paths]], [[consent-audit-trail]], [[consent-double-opt-in]], [[consent-preference-pages]], [[consent-sync-hybrid]], [[consent-segmentation]], [[consent-setup-billing]], [[consent-channels-troubleshooting]], [[consent-cache]]
+- [[agentforce-marketing-portfolio]]
+- **Deeper consent pages:** [[consent-data-model]], [[consent-objects-and-models]], [[consent-data-streams]], [[consent-write-paths]], [[consent-audit-trail]], [[consent-double-opt-in]], [[consent-preference-pages]], [[consent-sync-hybrid]], [[consent-segmentation]], [[consent-setup-billing]], [[consent-channels-troubleshooting]], [[consent-cache]]
 
 ## Source References
 - `sources/mktg_implementation_guide.pdf` — "Ensure Compliance with Consent Settings", "Formatting Marketing Consent Import Files"
 - `sources/Salesforce_Trails.txt` — "Get Started with Consent Management", "Explore Consent Tools and Concepts", "Discover Channel-Specific Consent", "Get to Know Consent Best Practices and Considerations"
 - User-provided consent management articles (deep-dive: data model, write paths, audit trail, double opt-in, preference pages, sync/hybrid, segmentation, setup/billing, channels/troubleshooting)
+- `sources/MCNext_Consultant_Exam_Masterclass_Session1.txt` — Elliot Harper, "Marketing Cloud Next Consultant Exam Masterclass" Session 1 (Salesforce, Summer '26)

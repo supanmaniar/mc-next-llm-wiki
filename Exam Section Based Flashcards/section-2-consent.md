@@ -1,7 +1,7 @@
 # Flashcards — Section 2: Consent (13%)
 
 > **Exam weight: 13%.** Covers the consent model, consent DMOs, write paths, double opt-in, preference pages, audit trail, and channel rules.
-> **Related concept pages:** [[consent-and-compliance]] · [[consent-data-model]] · [[consent-write-paths]] · [[consent-double-opt-in]] · [[consent-preference-pages]] · [[consent-audit-trail]] · [[consent-cache]] · [[consent-sync-3-flow]] · [[consent-channels-troubleshooting]]
+> **Related concept pages:** [[consent-and-compliance]] · [[consent-data-model]] · [[consent-objects-and-models]] · [[consent-data-streams]] · [[consent-write-paths]] · [[consent-double-opt-in]] · [[consent-preference-pages]] · [[consent-audit-trail]] · [[consent-cache]] · [[consent-sync-3-flow]] · [[consent-channels-troubleshooting]]
 
 ---
 
@@ -55,6 +55,46 @@
 **Q:** How do you delete audit trail rows for GDPR?
 **A:** Use the Consent API **ShouldForget** endpoint on the Individual — async deletion reprocessed at **30/60/90 days**, then permanent.
 
+## Card: Three Consent Models
+**Q:** ⚠️ How many consent models exist in a Salesforce org, and which does MC Next read?
+**A:** **Three** — Salesforce Consent Data Model (legal basis), Data 360 consent objects (activation eligibility), and Communication Subscription Consent (MC Next sends). MC Next reads **only the third**, through the cache.
+
+## Card: Consent Object Id Prefixes
+**Q:** What are the Id prefixes for the three CRM consent objects?
+**A:** Communication Subscription `0Xl` · Engagement Channel Type `0eF` · Communication Subscription Channel Type `0eB`. The consent record itself lives in **Data 360 only**.
+
+## Card: Engagement Channel Type DMO
+**Q:** ⚠️ Does Engagement Channel Type have a DMO?
+**A:** **No.** Communication Subscription Channel Type carries an `ssot__EngagementChannelTypeId__c` with **no relationship attached** — the channel is a bare identifier on the Data 360 side.
+
+## Card: Subscription Governance
+**Q:** What four subscription rules must you get right at creation?
+**A:** 1) **Scope can't change** (single BU or all BUs). 2) **Deleting a subscription deletes all its consent data**. 3) A new subscription **doesn't appear on the preference page** by default. 4) **No frequency capping** (`CommSubscriptionTiming` exists but isn't mapped).
+
+## Card: The Party Field
+**Q:** ⚠️ What is the state of the `Party` field on the consent DMO?
+**A:** Wired end to end from the DLO but **always empty**. Never build on it — join to a person through the **Contact Point Email/Phone** DMO instead.
+
+---
+
+## Consent Data Streams
+
+## Card: UnifiedMessagingConsent Data Kit
+**Q:** What data kit carries consent, and how many streams does it install?
+**A:** **`UnifiedMessagingConsent`** — it installs **two** streams: consent records (`MessagingConsentV2`) and audit trail (`ConsentAuditTrailV2`).
+
+## Card: Duplicate Consent Streams
+**Q:** ⚠️ What are the two ways an org ends up with duplicate consent records for the same contact point + subscription?
+**A:** 1) The documented pre-Summer '25 **generation switch** (`MessagingConsent` → `MessagingConsentV2`). 2) The **org-ID naming quirk** — Salesforce appended the org ID to stream names, both spellings stayed active, so even a V2-only org gets duplicates.
+
+## Card: DLO Name Portability
+**Q:** ⚠️ Why is no consent DLO name portable?
+**A:** The **org ID is appended** to the stream name, so it differs per org (and changes when the org ID changes). Always read the actual stream name in your org before copying any query or transform.
+
+## Card: V2 Field Mapping
+**Q:** What are the key fields in the V2 consent stream → DMO mapping?
+**A:** `ConsentId` (primary key = contact point value + CSCT Id) · `ConsentCapturedDateTime` (when the person decided) ≠ `UpdatedTime` (when the row changed) · `PartyId` mapped to `Party` but empty.
+
 ---
 
 ## Methods to Create/Manage Consent
@@ -69,7 +109,7 @@
 
 ## Card: Create Consent Availability
 **Q:** In which flow types is Create Consent available?
-**A:** **Automation Event-Triggered** flows (and Data Cloud-Triggered / On-Demand flows). ⚠️ Never use the legacy `MessagingConsent` action.
+**A:** **Data Cloud-Triggered**, **Automation Event-Triggered**, and **On-Demand** flows (plus **Record-Triggered** from Winter '27). ⚠️ Never use the legacy `MessagingConsent` action.
 
 ## Card: CSV Import Limit
 **Q:** What is the CSV consent import limit and its intended purpose?
@@ -135,6 +175,30 @@
 **Q:** What is the opt-out scope for Email, SMS, and WhatsApp?
 **A:** Email = per subscription + channel · SMS = per **sender code** · WhatsApp = per contact point (blocked in-app).
 
+## Card: Consent-Check Applicability
+**Q:** ⚠️ Which message types require a consent check?
+**A:** Promotional email **required** · transactional email **not required** · promotional SMS/WhatsApp/RCS **required** · transactional SMS/WhatsApp/RCS **required**. Separate switches under Setup → email channel settings.
+
+## Card: Disabling Consent Checks
+**Q:** What must you accept to disable consent checks, and what does the change not affect?
+**A:** You must **affirm in writing that you accept responsibility** for compliance problems. ⚠️ The change **doesn't affect active flows** — anything already running keeps checking.
+
+## Card: SMS/WhatsApp/RCS Granularity
+**Q:** ⚠️ How does SMS/WhatsApp/RCS opt-out granularity differ from email?
+**A:** Each code/number/agent maps to **one or more subscriptions**, and opting out of the channel opts out of **all** mapped subscriptions — there is no per-subscription opt-out over SMS. **RCS exception:** can reuse existing SMS consent when the use case matches.
+
+## Card: Compliance BCC vs CC
+**Q:** How do Compliance BCC and CC recipients behave with consent checks?
+**A:** **Compliance BCC** is excluded from consent checks entirely (it doesn't represent a person). **CC recipients** are suppressed if the primary recipient lacks consent.
+
+## Card: Consent Read Latency
+**Q:** How long do consent changes take to appear in the DMO?
+**A:** **Minutes** (up to a couple of hours with Consent Changes in flows) — long enough that a test looks like it failed when it has only just started.
+
+## Card: What You Can't See
+**Q:** What four things can you currently not see about consent?
+**A:** 1) The **cache**. 2) **Who** changed a record (no actor field). 3) **Consent history** on the record. 4) Anything in the **Party** field. (Plus: the component shows only the 100 most recent records.)
+
 ## Card: Unsubscribe All
 **Q:** Does "Unsubscribe from all" create a permanent block?
 **A:** No — it does **not** persist as a permanent block.
@@ -178,6 +242,38 @@
 ## Card: Consent Segmentation
 **Q:** How do you segment on consent, and what is the cost implication?
 **A:** Use a **Calculated Insight** workaround — it is metered and consumes credits.
+
+---
+
+## Consent Granularity & Preference Pages
+
+## Card: Four Consent Granularity Levels
+**Q:** Name the four levels of consent granularity.
+**A:** **L1** = entire individual record (all channels/subscriptions/points) · **L2** = a channel as a whole (all email) · **L3** = a specific contact point value · **L4** = a specific contact point **+** a specific subscription type.
+
+## Card: Which Level MC Next Enforces
+**Q:** Which consent level does Marketing Cloud Next enforce?
+**A:** ⚠️ **Level 4** — the most granular (contact point + subscription type).
+
+## Card: The Four Consent Objects
+**Q:** Name the four objects that manage Level 4 consent.
+**A:** **Communication Subscription** (purpose/category) · **Communication Subscription Channel Type** (subscription + channel) · **Communication Subscription Consent** (the consent record) · **Engagement Channel Type** (email/SMS/WhatsApp/RCS).
+
+## Card: Preference Page Channel Rule
+**Q:** How does the message channel affect preference pages?
+**A:** The channel **automatically determines** the page: **email** → email preference manager; **SMS** → separate SMS-specific page. ⚠️ No unified cross-channel page out-of-the-box.
+
+## Card: Preference Page Limitations
+**Q:** Name four limitations of out-of-the-box preference pages.
+**A:** No **unified cross-channel** page · no **native multilingual** support · no **custom code** (AMPscript/Apex/server-side JS) · can't **pre-populate from URL parameters**.
+
+## Card: Preference Page Releases
+**Q:** What did Spring and Summer add to preference pages?
+**A:** **Spring** = custom preference pages. **Summer** = **multiple** preference pages (e.g., per brand).
+
+## Card: Standard Subscription Block Limits
+**Q:** What can't you edit in the standard subscription block?
+**A:** **Button labels, headings, subheadings**, and the **order of the subscription list**. Partial workaround: **rename the subscriptions from the Consent tab**.
 
 ---
 

@@ -34,6 +34,33 @@ Consent does **not** store a mapping to the Individual or Unified Individual. It
 ### Shared Addresses
 If two or more individuals share the same email or phone, an opt-out on that address affects **all** of them. There's no way to send to some individuals and suppress others when they share the same address — consistent with the conservative, address-level approach.
 
+### Three Consent Models Coexist in One Org
+Salesforce contains **three separate consent models**, and a single org can hold all of them. Marketing Cloud Next reads **only the third**, through the cache:
+
+| Model | Question it answers |
+|-------|---------------------|
+| **Salesforce Consent Data Model** (`Individual`, `ContactPointTypeConsent`, `ContactPointConsent`, `DataUsePurpose`, with `BusinessBrand` alongside) | What is the **legal basis** for processing this person's data? |
+| **Data 360 consent objects** (`Contact Point Consent`, `Privacy Consent Log`) | Can this contact point be used in an **activation**? |
+| **Communication Subscription Consent** | Can Marketing Cloud Next **send this specific message**? |
+
+⚠️ A perfectly maintained `ContactPointTypeConsent` record has **no bearing** on whether an email goes out. See [[consent-objects-and-models]] for the full breakdown.
+
+### The Four Consent Objects
+| Object | Id prefix | What it is |
+|--------|-----------|------------|
+| **Communication Subscription** | `0Xl` | the subscription ("Weekly Newsletter") |
+| **Engagement Channel Type** | `0eF`* | the channel (Email, SMS, WhatsApp, RCS) |
+| **Communication Subscription Channel Type** | `0eB`* | one subscription paired with one channel |
+| **Communication Subscription Consent** | – | the consent record itself |
+
+The first three are **CRM objects** (standard sObjects, all editions; `CommSubscription`/`CommSubscriptionConsent` since API 48.0, Spring '20). The fourth lives in **Data 360 only**. ⚠️ **Engagement Channel Type has no DMO at all** — the channel is a bare identifier on the Data 360 side.
+
+### Subscription Governance (fixed at creation)
+- **Scope cannot be changed** — with business units (Advanced), a subscription is assigned to a single BU or all BUs, and this cannot be edited after creation; it also limits which channels can be added.
+- **Deleting a subscription deletes all its consent data** — a legal exposure, not just an admin inconvenience.
+- **A new subscription does not appear on the preference page** by default — adding it is a separate step.
+- **No frequency capping** — `CommSubscriptionTiming` exists but MC Next doesn't map it.
+
 ### The Broader Salesforce Consent Data Model (4 Levels)
 The Salesforce Consent Data Model manages consent at multiple levels, from global preferences to granular controls. It considers the individual's entire experience, not just a single contact point. Any record relating to an individual (leads, users, person accounts, contacts) can have related consent.
 
@@ -53,8 +80,10 @@ The Consent API aggregates consent settings across Contact, Contact Point Type C
 ⚠️ A shared email/phone means an opt-out affects **everyone** sharing that address.
 ⚠️ The CSC DMO is separate from the Core CRM `CommunicationSubscriptionConsent` object — having data on the CRM object alone doesn't make records eligible for sending.
 ⚠️ Consent doesn't store a mapping to the Individual/Unified Individual.
-⚠️ Since Summer '25 the CSC DMO may map to **both** `MessagingConsent` and `MessagingConsentV2` DSOs — pre-V2 instances can hold two records per Contact Point/Subscription/Channel. **MC Next always uses the latest record as the current status.**
+⚠️ Since Summer '25 the CSC DMO may map to **both** `MessagingConsent` and `MessagingConsentV2` DSOs — pre-V2 instances can hold two records per Contact Point/Subscription/Channel. **MC Next always uses the latest record as the current status.** See [[consent-data-streams]] for the org-ID naming quirk that duplicates streams even in V2-only orgs.
 ⚠️ At send time MC Next reads a **consent cache**, not the DMO directly — see [[consent-cache]].
+⚠️ The consent DMO exists in **two namespaces** (`ssot__CommunicationSubscriptionConsent__dlm` and the newer `std__CommunicationSubscriptionConsentDmo__dlm`, API 254) with **different field lists** — see [[consent-objects-and-models]].
+⚠️ Three consent models coexist; MC Next reads only Communication Subscription Consent. The standard model is irrelevant to sends.
 
 ## Active Recall Questions
 1. What two things does Marketing Cloud Next consent key on?
@@ -65,6 +94,8 @@ The Consent API aggregates consent settings across Contact, Contact Point Type C
 
 ## Related Concepts
 - [[consent-and-compliance]]
+- [[consent-objects-and-models]]
+- [[consent-data-streams]]
 - [[consent-write-paths]]
 - [[consent-sync-3-flow]]
 - [[consent-audit-trail]]
@@ -76,3 +107,4 @@ The Consent API aggregates consent settings across Contact, Contact Point Type C
 ## Source References
 - User-provided consent management articles (Consent Management: How Consent is Stored and Written; Segmentation and the Consent Model; Working with Leads, Contacts and Individuals)
 - "Understand the Salesforce Consent Data Model" article
+- `sources/Consent_Management_MCNext_SzymonLewandowski.md` — "Consent Management in Marketing Cloud Next" (Szymon Lewandowski, 20 Sep 2026)

@@ -14,13 +14,13 @@
 
 | # | Section | Weight | Questions | Guide |
 |---|---------|--------|-----------|-------|
-| 1 | Platform Setup & Governance | 13% | 38 | [[section-1-platform-setup-governance]] |
-| 2 | Consent | 13% | 51 | [[section-2-consent]] |
-| 3 | Data Modeling, Identity Resolution & Segmentation | 25% | 60 | [[section-3-data-identity-segmentation]] |
-| 4 | Campaign Design, Flow Orchestration & Content | 30% | 104 | [[section-4-campaign-flow-content]] |
-| 5 | Agentforce & AI Innovation | 11% | 20 | [[section-5-agentforce-ai]] |
-| 6 | Analytics & Performance Insights | 8% | 19 | [[section-6-analytics-insights]] |
-| | **Total** | **100%** | **292** | |
+| 1 | Platform Setup & Governance | 13% | 46 | [[section-1-platform-setup-governance]] |
+| 2 | Consent | 13% | 64 | [[section-2-consent]] |
+| 3 | Data Modeling, Identity Resolution & Segmentation | 25% | 68 | [[section-3-data-identity-segmentation]] |
+| 4 | Campaign Design, Flow Orchestration & Content | 30% | 119 | [[section-4-campaign-flow-content]] |
+| 5 | Agentforce & AI Innovation | 11% | 30 | [[section-5-agentforce-ai]] |
+| 6 | Analytics & Performance Insights | 8% | 26 | [[section-6-analytics-insights]] |
+| | **Total** | **100%** | **353** | |
 
 **Exam facts:** 60 scored questions + up to 5 unscored · 105 minutes · **72%** to pass · Summer '26 release · no prerequisite · no reference materials.
 
@@ -42,6 +42,8 @@ Every concept page in `concepts/` is now represented by at least one question. T
 | `consent-sync-hybrid` | 2 | Q34–Q37 |
 | `consent-setup-billing` | 2 | Q38–Q43 |
 | `consent-channels-troubleshooting` | 2 | Q44–Q51 |
+| `consent-objects-and-models` | 2 | Q52–Q54, Q59 |
+| `consent-data-streams` | 2 | Q55–Q56 |
 | `segment-canvas-and-filters` | 3 | Q42–Q60 |
 | `content-and-personalization` | 4 | Q76 |
 | `merge-fields-and-expressions` | 4 | Q79–Q82 |
@@ -51,11 +53,37 @@ Every concept page in `concepts/` is now represented by at least one question. T
 | `marketing-sites` | 4 | Q97–Q100 |
 | `mce-journeys-campaigns` | 4 | Q101–Q104 |
 
+### Masterclass series additions (Sessions 1–4)
+
+The official **Marketing Cloud Next Consultant Exam Masterclass** (Elliot Harper, Salesforce) added a further **53 questions** across all six sections:
+
+| Concept page | Section | Covered by |
+|---|---|---|
+| `agentforce-marketing-portfolio` | 1 | Q39 |
+| `marketing-cloud-next-overview` (config steps) | 1 | Q40 |
+| `user-access-and-permission-sets` (Data Cloud Architect) | 1 | Q41 |
+| `email-domain-authentication` (authorized domain) | 1 | Q42 |
+| `marketing-workspaces-and-cms` | 1 | Q43–Q46 |
+| `consent-and-compliance` (4 granularity levels) | 2 | Q60–Q61 |
+| `consent-preference-pages` | 2 | Q62–Q64 |
+| `data-architecture-layers` (Data 360 checklist) | 3 | Q61 |
+| `crm-integration-and-actionable-lists` | 3 | Q62–Q65 |
+| `contact-point-resolution` | 3 | Q66–Q68 |
+| `marketing-flow-types` | 4 | Q105–Q108 |
+| `activation-triggered-flows` (personalization source) | 4 | Q109 |
+| `rest-api-flow-integration` (on-demand/broadcast) | 4 | Q110–Q111 |
+| `personalization-data-sources` (8 providers) | 4 | Q112–Q114 |
+| `content-and-personalization` (content variables, MCE vs MC Next) | 4 | Q115, Q117–Q119 |
+| `marketing-objects-ampscript-handlebars` | 4 | Q116 |
+| `marketing-agents` | 5 | Q21–Q23 |
+| `ai-features` (predictive AI deep dive) | 5 | Q24–Q30 |
+| `reporting-metrics-dashboards` (3 capabilities, semantic model) | 6 | Q20–Q26 |
+
 > **Note on placement:** `channels-overview` (SMS/WhatsApp/mobile setup) sits in Section 1 because channel provisioning is platform setup, not campaign design. No "Uncategorised" page was needed — every topic found a home.
 
 ### Known remaining gap
 
-The bank is now **topic-complete** but still **format-limited**: every question is a single-answer scenario. The real exam also uses **multi-select ("Choose 2")**, **negative stems ("EXCEPT")**, and **sequence questions ("What is the FIRST step")**. These are not yet represented.
+The bank is now **topic-complete** and **source-complete** (all four masterclass sessions ingested), but still **format-limited**: every question is a single-answer scenario. The real exam also uses **multi-select ("Choose 2")**, **negative stems ("EXCEPT")**, and **sequence questions ("What is the FIRST step")**. These are not yet represented.
 
 ---
 

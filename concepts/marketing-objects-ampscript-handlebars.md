@@ -11,9 +11,13 @@ Beyond the data graph, you can store marketer-owned data in **marketing objects*
 ## Detailed Explanation
 
 ### Marketing Objects (vs. Data Extensions)
-A **marketing object** stores data for marketing use cases. If you used Marketing Cloud Engagement, think of them as similar to **data extensions**. Create one by **importing data from a CSV file** (columns become fields; data type is inferred).
+A **marketing object** is a **flexible data store** in Marketing Cloud Next that holds information for marketing use cases. If you used Marketing Cloud Engagement, the closest comparison is a **data extension**. Create one by **importing data from a CSV file** (columns become fields; data type is inferred).
 
-**Why use them:** flexible, high-performance storage for reference data, product information, and content variations — without maintaining separate data sources or complex integrations. Marketers keep **autonomy**: no Salesforce/Data 360 admin is required; any Marketing Admin or Manager with the right permission can create/manage them.
+**Common uses:** product catalogs, reference tables, rewards balances, promotional codes, and more.
+
+**Why use them:** flexible, high-performance storage for reference data, product information, and content variations — without maintaining separate data sources or complex integrations. Marketers keep **autonomy**: an admin doesn't need to create a Salesforce object or modify the Data 360 data model; any Marketing Admin or Manager with the right permission can create/manage them.
+
+> **In summary:** a marketing object is a **marketer-managed table of data** that can be **queried at runtime** to personalize content.
 
 **Data types** (fixed max length — unlike data extensions, you can't change it):
 
@@ -91,6 +95,7 @@ An **actionable list** is a **fixed (static) collection** of audience members �
 - **Use in a campaign:** add a **list-triggered flow** to the campaign.
 - **Automate:** add/remove members with flows (Add to / Remove from Actionable List elements).
 - **Remove members manually:** only the **list's creator** can remove members from the record page.
+- ⚠️ **Consent gap:** adding new leads/contacts to an actionable list does **not** create consent records — they must be created or loaded separately, or the audience is suppressed at send time. See [[crm-integration-and-actionable-lists]].
 
 ### Enhanced CMS Workspaces (Sharing)
 Workspaces can be **shared** so one workspace (source) makes content available to others (targets):

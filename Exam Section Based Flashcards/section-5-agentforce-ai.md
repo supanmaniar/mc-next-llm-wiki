@@ -93,6 +93,62 @@
 
 ---
 
+## The Five Agents & Predictive AI Deep Dive
+
+## Card: The Five Out-of-the-Box Agents
+**Q:** Name the five marketing agents and what each does.
+**A:** **Segment Creation** (NL → editable segment criteria) · **Campaign Creation** (briefs, flows, multi-channel content) · **Content Creation** (drafts/refines email, LP, SMS) · **Journey Decisioning** (picks journey/flow + personalizes) · **Account Discovery** (account insights + buying group members).
+
+## Card: Account Discovery Agent
+**Q:** What does the Account Discovery agent do?
+**A:** Provides **account insights** and identifies potential **buying group members** — helps discover stakeholders and guide nurturing/follow-up.
+
+## Card: Draft with Agentforce
+**Q:** What is the "Draft with Agentforce" workflow?
+**A:** Marketing Home → **New Campaign** → **Draft with Agentforce** → describe objective → draft a brief → generate a campaign → review the **campaign preview** (flow + content) → **save as a new campaign**.
+
+## Card: Engagement Frequency Classifications
+**Q:** What are the four Engagement Frequency classifications?
+**A:** **Saturated · Almost Saturated · On Target · Under Saturated** (Email Engagement Classification field in the Email Engagement Frequency DMO).
+
+## Card: Engagement Frequency Training
+**Q:** How is Engagement Frequency trained and refreshed?
+**A:** Trained **only on your organisation's data**; scores refreshed **weekly**. Analyses up to **90 days** of email activity.
+
+## Card: Engagement Scoring Predictions
+**Q:** What three likelihood predictions does Engagement Scoring generate?
+**A:** Likelihood to **open**, likelihood to **click**, and likelihood to **remain subscribed**.
+
+## Card: Engagement Scoring Personas
+**Q:** Name the four Engagement Scoring personas.
+**A:** **Loyalists** (high open/high click) · **Selective Subscribers** (low open/high click) · **Window Shoppers** (high open/low click) · **Win Back/Dormant** (low/low).
+
+## Card: Engagement Scoring Tiers
+**Q:** What four tiers are the likelihood predictions grouped into?
+**A:** **Most Likely · More Likely · Less Likely · Least Likely** — usable in a Decision element.
+
+## Card: Engagement Scoring Emphasis
+**Q:** What does Engagement Scoring emphasise in its analysis?
+**A:** **The most recent activity** — it analyses up to 90 days but weights recent behaviour more heavily.
+
+## Card: STO Setup
+**Q:** What setup does Send Time Optimization require?
+**A:** Add the **Send Time Optimization DMO** to the data graph (required structure), then select the **Hourly Scores by Week** field. Must be **enabled in Setup**.
+
+## Card: STO Optimization Window
+**Q:** What is the STO optimization window range?
+**A:** **2 hours up to 1 week** — MC Next sends at each recipient's predicted optimal time within that window.
+
+## Card: STO Edition
+**Q:** Which editions support Send Time Optimization?
+**A:** **Both Growth and Advanced** (unlike Engagement Frequency and Engagement Scoring, which are Advanced only).
+
+## Card: Using Predictive AI Insights
+**Q:** What must you configure before using predictive AI insights in a flow?
+**A:** The **required data graph** — then use fields like Email Engagement Frequency or Engagement Score in a **Decision element**, or as **segment criteria**.
+
+---
+
 ## Related
 
 - [[exam-revision-summary]] — Section 5 summary

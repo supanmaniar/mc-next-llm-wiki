@@ -32,6 +32,25 @@ Use an audience flow to reach a defined group on a schedule:
 - A scheduled audience flow can run **once** or **recurring** (as often as every hour).
 - For scheduled **segment flows**, you can configure the start step to **publish the target segment immediately** before running — ensuring membership is as up-to-date as possible. If you don't republish, the segment defaults to its defined publishing schedule.
 
+### Re-entry Conditions (Journey Builder parallel)
+Audience flows feel **very familiar to anyone with Journey Builder experience** in Marketing Cloud Engagement. When you choose a **recurring schedule**, you configure both the **execution schedule** and the **re-entry conditions** for the flow.
+
+This mirrors Journey Builder's **contact entry mode**, which controls when a contact is eligible to enter a journey. Journey Builder provides **three entry options**:
+1. **No re-entry**
+2. **Re-entry at any time**
+3. **Re-entry only after exiting**
+
+The same concept applies to audience flows — you define exactly **when an individual is eligible to rejoin a scheduled flow**.
+
+### List-Triggered Flows (Summer '26)
+A key addition in the **Summer '26** release is support for **list-triggered flows**, allowing you to work seamlessly across different audience types such as **segments and actionable lists**. See [[crm-integration-and-actionable-lists]].
+
+### Flow Canvas Actions
+From the Flow canvas you can add a wide range of actions and logic, including:
+- **CRUD operations** (create, read, update, delete) on Salesforce records
+- Integration with **external platforms** using an extensive library of available actions
+- **Send Email Message** and other messaging elements (configured via the properties panel)
+
 ### Flow Types (Marketing-Oriented) — Quick Reference
 | Flow type | Trigger |
 |-----------|---------|
@@ -56,18 +75,25 @@ Use an audience flow to reach a defined group on a schedule:
 ⚠️ Broadcast flows use **dynamic** segments; membership is determined after the flow starts.
 ⚠️ For segment flows, republish the segment before running to get the freshest membership.
 ⚠️ A recurring audience flow can run as often as every hour.
+⚠️ **Re-entry conditions** apply to recurring schedules — mirror Journey Builder's three contact entry modes (no re-entry / any time / only after exiting).
+⚠️ Audience flows **unify** segment, list, CRM record, and campaign member sources — there aren't separate flow types for each.
 
 ## Active Recall Questions
 1. What are the four audience sources for an audience flow?
 2. How often can a recurring audience flow run?
 3. What's the difference between a broadcast flow and an on-demand flow?
 4. Why republish a segment before running a scheduled segment flow?
+5. What are the three re-entry options, and which MCE feature do they mirror?
+6. What did Summer '26 add to audience flows?
 
 ## Related Concepts
 - [[campaigns-and-flows]]
 - [[flow-builder-elements]]
 - [[segments-and-audiences]]
 - [[activation-triggered-flows]]
+- [[marketing-flow-types]]
+- [[crm-integration-and-actionable-lists]]
 
 ## Source References
 - User-provided "Audience Flows", "Comparison of Marketing-Oriented Flow Types", "Create a Broadcast Flow"
+- `sources/MCNext_Consultant_Exam_Masterclass_Session2.txt` — Elliot Harper, "Marketing Cloud Next Consultant Exam Masterclass" Session 2 (Salesforce, Summer '26)

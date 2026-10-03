@@ -667,6 +667,102 @@
 
 ---
 
+## Q61 — Data 360 Capabilities Checklist
+
+**Question:** A consultant is preparing for the exam and asks which Data 360 capabilities they must understand, given that Marketing Cloud Next is built on Data 360. What should they focus on?
+
+**Answer:** **The Data 360 object model (DLOs and DMOs), data streams and DLO→DMO mapping, data spaces, data kits, calculated insights, data graphs, segmentation, activations, and identity resolution.**
+
+**Why:** MC Next is a **Lightning app built on Data 360**, so you need a solid understanding of these core concepts — not deep expertise in every area, but you should know **what each feature does, where it fits, and how it's used alongside MC Next**. Deep knowledge of **unstructured data** is not required. The exam guide recommends considering the **Salesforce Certified Data 360 Consultant** certification first (not a prerequisite).
+
+> ⚠️ **Distractor logic:** "Deep expertise in every Data 360 feature" is the plausible-but-wrong answer — the exam expects working familiarity, not specialist depth.
+
+---
+
+## Q62 — CRM Integration Timeline
+
+**Question:** A client wants to use CRM records directly as an audience source without first ingesting them into Data 360. Which releases enabled this, and what did each add?
+
+**Answer:** **Spring '26 added CRM records as an audience source (scheduled or event-based). Summer '26 added campaign members and actionable lists.**
+
+**Why:** Because MC Next is built on Data 360, earlier releases required audience, decisioning, and personalization data to exist in Data 360. That dependency has been progressively reduced. The **Sales Data Kit** remains the fastest path to identity resolution and engagement features, but direct CRM audience sourcing is now supported.
+
+> ⚠️ **Distractor logic:** "CRM records have always been usable as an audience source" is the plausible-but-wrong answer — it ignores the release sequencing.
+
+---
+
+## Q63 — Sales Data Kit
+
+**Question:** A client manages customer identity outside Salesforce and wants control over which CRM data enters Data 360. Should they deploy the Sales Data Kit?
+
+**Answer:** **It's optional — they can skip it. But note that certain features (like reporting dashboards) then require extra configuration, and Opportunity Influence requires the Sales Data Kit.**
+
+**Why:** The Sales Data Kit creates **pre-configured data streams and mappings** for leads, contacts, accounts, and prospects plus related objects. It's the fastest path to building Identity Resolution rulesets and enabling engagement-tracking features because it saves you from mapping those objects yourself. Skipping it is valid when identity is managed elsewhere, but it has downstream consequences.
+
+> ⚠️ **Distractor logic:** "The Sales Data Kit is always required" is the plausible-but-wrong answer — it's optional, unlike the always-required marketing data kits.
+
+---
+
+## Q64 — Actionable List Consent Gap
+
+**Question:** A marketer imports 5,000 new trade-show leads into an actionable list and immediately runs a list-triggered flow with a promotional email. The flow runs successfully but almost nobody receives the email. What is the most likely cause?
+
+**Answer:** **Adding new leads to an actionable list does not create consent records. The leads have no consent record, so they are treated as opted out and suppressed at send time.**
+
+**Why:** MC Next is **strict opt-in** — the absence of a consent record means opted out. Actionable lists are a fixed collection of audience members, but they don't generate consent. The consent records must be **created or loaded separately** through a supported write path (CSV import, Create Consent flow action, or the Privacy Consent Status component).
+
+> ⚠️ **Distractor logic:** "The flow needs to be reactivated" is the plausible-but-wrong answer — the flow ran fine; the suppression happened at the consent check.
+
+---
+
+## Q65 — Actionable List Constraints
+
+**Question:** A client wants to build one actionable list containing both leads and contacts from a recent event. What should the consultant advise?
+
+**Answer:** **An actionable list can contain either leads or contacts, but not both. A mixed audience requires two lists or a different mechanism such as a segment.**
+
+**Why:** Actionable lists are **homogeneous by design** — a fixed collection of either leads or contacts. This is the tested detail. Actionable lists are **static**, contrasting with segments, which update **dynamically**. Only the **list's creator** can manually remove members from the record page.
+
+> ⚠️ **Distractor logic:** "Import both and let the system split them" is the plausible-but-wrong answer — the import enforces the single-object constraint.
+
+---
+
+## Q66 — Contact Point Resolution vs Reconciliation
+
+**Question:** A unified individual has three source records containing two unique email addresses. A consultant expects reconciliation rules to select one address for sending. What actually happens?
+
+**Answer:** **Reconciliation rules don't apply to contact points. All contact points are retained in the unified profile, and a separate message is sent to each unique email address — duplicate addresses are treated as a single contact point.**
+
+**Why:** A reconciliation rule determines which **single value** is selected for a unified field that **can't contain multiple values** — like an individual's name. Contact points are different: they're all retained and remain available for segmentation and activation. Which one is *used* at send time is controlled by source priority or an activation template, not reconciliation.
+
+> ⚠️ **Distractor logic:** "Reconciliation picks the most recently updated address" is the plausible-but-wrong answer — it applies the name-field logic to contact points, which is exactly the trap.
+
+---
+
+## Q67 — Contact Point Selection Methods
+
+**Question:** A consultant is configuring an audience flow that uses a segment. They need to control which contact point is used at send time. What are the available methods?
+
+**Answer:** **Four methods: (1) a data graph selected in the flow's automation properties, (2) the on-demand flow API payload, (3) the activation's source priority order, and (4) an activation template.**
+
+**Why:** The method depends on how the flow and its send message element are configured. For an **on-demand flow**, the contact point typically comes from the API payload — but if a data graph is configured in the flow's automation properties, that data graph **takes precedence**. For **activation-triggered flows**, configure the activation's source priority order. For **audience flows using a segment**, create an **activation template**.
+
+> ⚠️ **Distractor logic:** "The API payload always wins for on-demand flows" is the plausible-but-wrong answer — a configured data graph overrides it.
+
+---
+
+## Q68 — Activation Template Requirement
+
+**Question:** A consultant builds an audience flow on a segment whose segment-on object is the Individual DMO (not Unified Individual). They configure a Send Email Message element but don't select an activation template. What is the problem?
+
+**Answer:** **An activation template is required when the segment's segment-on object is NOT Unified Individual. Without it, contact point selection isn't defined for the send.**
+
+**Why:** The activation template lets you define the **source priority order** and use **rules to filter** the segment members or contact points included in the activation. You then select it when configuring the send message element. The segment-on object determines whether the template is mandatory.
+
+> ⚠️ **Distractor logic:** "The template is optional for all segments" is the plausible-but-wrong answer — it's required specifically when the segment-on object isn't Unified Individual.
+
+---
+
 ## Related
 
 - [[exam-revision-summary]] — Section 3 summary

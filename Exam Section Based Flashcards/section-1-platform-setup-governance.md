@@ -141,6 +141,54 @@
 
 ---
 
+## Agentforce Marketing Portfolio & Configuration
+
+## Card: Agentforce Marketing
+**Q:** Is Agentforce Marketing a product?
+**A:** ⚠️ **No — it's the portfolio brand.** It contains four products: **Marketing Cloud Next** (← MCE), **Salesforce Personalization** (← MC Personalization), **Marketing Intelligence** (← MC Intelligence), and **Loyalty Management** (no-code B2B/B2C loyalty).
+
+## Card: Configuration Steps
+**Q:** How many configuration steps are there, and which are automated?
+**A:** **Six** minimum. The **Setup Assistant** automates the first three: set up Data 360, enable Marketing Cloud, deploy required data streams. Then add the **physical address** and create an **authenticated domain**.
+
+## Card: Two Permission Sets Before Configuration
+**Q:** Which two permission sets must be assigned before configuring MC Next?
+**A:** **Data Cloud Architect** (Data 360 setup, data modelling, data kits, streams, identity resolution) + **Marketing Admin** (most marketing Setup settings, publish/activate campaigns & segments).
+
+## Card: Data Cloud Architect Rename
+**Q:** What replaced the Data Cloud Admin permission set?
+**A:** **Data Cloud Architect** — renamed in the **Spring '26 release**. ⚠️ System Administrator is a **profile**, not a permission set.
+
+## Card: Authorized vs Authenticated Domain
+**Q:** What's the difference between an authorized and an authenticated email domain?
+**A:** **Authenticated** = full DKIM/DNS sending configuration. **Authorized** = ownership only (one verification record, no sending config), required for **dynamic From/Reply-to addresses**.
+
+## Card: DMARC Alignment Failure
+**Q:** What causes a DMARC alignment failure?
+**A:** Using a **personal email address on the root domain** as the From address — the From domain must align with the **authenticated sending domain**.
+
+## Card: CMS Content Workspaces
+**Q:** Where is all marketing content stored, and what is each workspace tied to?
+**A:** In **CMS content workspaces**, each associated with a **specific business unit**.
+
+## Card: Content Cardinalities
+**Q:** What are the cardinalities between data spaces, business units, and content workspaces?
+**A:** Data space → **no business unit or one**. Business unit → **one or more content workspaces**.
+
+## Card: Cross-Business-Unit Content
+**Q:** How do you share content across business units?
+**A:** ⚠️ Content **can't be accessed directly across business units**. Post it as a **common asset** (available to all units), then **copy it into the target workspace**.
+
+## Card: Business Unit Role Content Access
+**Q:** Which business unit role gets CMS content access?
+**A:** **Marketing Standard** = data space + CMS content. **Marketing Read-Only** = data space only. ⚠️ Users without Marketing Manager/Admin permission sets can **only** be Read-Only.
+
+## Card: Content Must Be Published
+**Q:** What must happen before content can be used, and what does publishing a form do?
+**A:** Content must be **published** (saving isn't enough). Publishing a **form activates its associated flow**.
+
+---
+
 ## Related
 
 - [[exam-revision-summary]] — Section 1 summary

@@ -15,6 +15,19 @@ An activation-triggered flow runs when an activation is published. Example: if a
 
 Records are added based on the **segment publishing schedule** — refresh can be as often as every **10 minutes** (incremental) to every **24 hours** (standard), or triggered manually.
 
+### Activation as the Personalization Source (key capability)
+Conceptually these flows function like segment-based flows, but there's an important difference. When creating an activation you can:
+- Add **filters to the activation membership**
+- Add **contact point filters**
+- **Limit audience size** based on attributes
+- **Append additional attributes from related objects** associated with a segment member
+
+**Why this matters:** messages can use the **activation directly as the personalization source**, allowing email **merge fields and repeaters** to reference **enriched Data 360 activation attributes** — **without requiring additional lookups at send time**.
+
+In Email Builder you add an **activation data provider** and then use those activation attributes to personalize the message. See [[personalization-data-sources]].
+
+**Demo pattern:** a segment of individuals who registered for a back-in-stock notification → data streams import the product catalog into a Goods Product DMO and registrations into a custom DMO (related to the Individual) → an activation uses the segment with a **Data 360 DMO target** and appends related attributes from the Goods Product DMO → an activation-triggered flow selects the activation and adds a Send Email Message element. When the segment refreshes, the activation publishes automatically and qualifying members enter the flow per the **re-entry rules**.
+
 ### Connecting to External Systems
 Two ways to connect to an external destination:
 1. **MuleSoft Connectors** — available within Flow Builder (select from supported third-party connectors).
@@ -62,6 +75,7 @@ Rate limits depend on license, measured in **actions per hour** (a flow run path
 ⚠️ Rate limits are actions/hour + concurrency; error rates >2.5% throttle the flow.
 ⚠️ Real-time-response flows get a 50% concurrency allowance.
 ⚠️ Data 360 metadata can't be packaged with non-Data 360 metadata.
+⚠️ The activation can serve as the **personalization source** — no extra send-time lookups needed for enriched activation attributes.
 
 ## Active Recall Questions
 1. What triggers an activation-triggered flow?
@@ -69,12 +83,17 @@ Rate limits depend on license, measured in **actions per hour** (a flow run path
 3. Which activation target type is supported?
 4. What's the concurrency limit for Marketing Cloud/Data 360?
 5. What's the error-rate threshold that triggers rate limiting?
+6. What four things can you configure when creating an activation?
+7. Why can an activation be used as the personalization source?
 
 ## Related Concepts
 - [[campaigns-and-flows]]
 - [[flow-builder-elements]]
 - [[data360-segment-types]]
 - [[data360-billing-usage]]
+- [[marketing-flow-types]]
+- [[personalization-data-sources]]
 
 ## Source References
 - User-provided "Automate Data Delivery with Activation-Triggered Flows", "Comparison of Marketing-Oriented Flow Types"
+- `sources/MCNext_Consultant_Exam_Masterclass_Session2.txt` — Elliot Harper, "Marketing Cloud Next Consultant Exam Masterclass" Session 2 (Salesforce, Summer '26)

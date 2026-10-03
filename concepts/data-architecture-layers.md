@@ -18,6 +18,23 @@ Data doesn't automatically become available everywhere just because it's in Data
 
 **Key:** Segmentation is built on **Unified Individuals**, so each person appears once (no duplicates, no double-sends).
 
+### Data 360 Capabilities the Exam Expects You to Know
+MC Next is a **Lightning app built on Data 360**, so you need a solid understanding of core Data 360 concepts — not deep expertise in every area, but you should know **what each feature does, where it fits, and how it's used alongside MC Next**. The exam guide recommends considering the **Salesforce Certified Data 360 Consultant** certification first (not a prerequisite).
+
+| Capability | What it does |
+|-----------|--------------|
+| **Data 360 object model** | DLOs and DMOs (deep unstructured-data knowledge not required) |
+| **Data streams** | How to create them and how data is **mapped from DLOs into DMOs** |
+| **Data spaces** | Logical partitions of data (1:1 with business units) |
+| **Data kits** | Pre-built packages of DMOs, fields, and connections |
+| **Calculated insights** | Computed metrics/attributes derived from data |
+| **Data graphs** | Which DMO objects/fields are exposed for personalization |
+| **Segmentation** | Building audiences from DMO data |
+| **Activations** | Publishing segment data to targets |
+| **Identity resolution** | Unifying records into a single profile |
+
+> **Study tip:** the **Data 360 Learning Journey** on Trailhead is a progressive, multi-part experience designed to build this foundation step by step.
+
 ### Data Graphs: The Access "Map"
 Even when data exists in Data 360, it isn't automatically available in Marketing Cloud Next. A **data graph** defines *which* DMO objects and fields are exposed for personalization and decisioning — a map of what Marketing Cloud Next can access.
 
@@ -93,6 +110,8 @@ A purchase made Saturday morning typically becomes a flow-eligible, personalized
 - [[identity-resolution-rulesets]]
 - [[segments-and-audiences]]
 - [[campaigns-and-flows]]
+- [[crm-integration-and-actionable-lists]]
 
 ## Source References
 - `sources/Salesforce_Trails.txt` — "Explore the Underlying Data Architecture", "Configure Segments and Data Graphs", "Navigate Data Lags"
+- `sources/MCNext_Consultant_Exam_Masterclass_Session2.txt` — Elliot Harper, "Marketing Cloud Next Consultant Exam Masterclass" Session 2 (Salesforce, Summer '26)
