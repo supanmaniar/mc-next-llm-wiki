@@ -533,10 +533,14 @@ function build() {
 
   // GitHub Pages caches assets aggressively, so stamp a content hash into the
   // HTML asset URLs. Without this, returning visitors keep running old JS.
+  // Hash the data files too — a content-only change (e.g. a rename) must also
+  // bust the cache, otherwise new code pairs with a stale payload.
   const hash = crypto
     .createHash('sha256')
     .update(fs.readFileSync(path.join(SITE_DIR, 'assets', 'app.js')))
     .update(fs.readFileSync(path.join(SITE_DIR, 'assets', 'app.css')))
+    .update(fs.readFileSync(path.join(OUT_DIR, 'content.json')))
+    .update(fs.readFileSync(path.join(OUT_DIR, 'search-index.json')))
     .digest('hex')
     .slice(0, 10);
 

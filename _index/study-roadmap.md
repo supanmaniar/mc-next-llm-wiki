@@ -30,7 +30,7 @@ A learning track for the **Salesforce Marketing Cloud Next Consultant exam** (Su
 
 ### Track 1 — Foundations & Platform Architecture
 1. [[marketing-cloud-next-overview]] — what MC Next is, editions (Growth/Advanced), admin roles
-2. [[agentforce-marketing-portfolio]] — the four-product portfolio, editions, exam logistics
+2. [[marketing-cloud-portfolio]] — the four-product portfolio, editions, exam logistics
 3. [[data-kits-and-data-streams]] — the data plumbing (DMOs, data kits, streams)
 4. [[data-architecture-layers]] — DLO → DMO → data graph, ingestion lags
 
@@ -172,7 +172,7 @@ A learning track for the **Salesforce Marketing Cloud Next Consultant exam** (Su
 | Concept Page                              | Status | Notes |
 | ----------------------------------------- | ------ | ----- |
 | [[marketing-cloud-next-overview]]         | ☐      |       |
-| [[agentforce-marketing-portfolio]]        | ☐      |       |
+| [[marketing-cloud-portfolio]]        | ☐      |       |
 | [[data-kits-and-data-streams]]            | ☐      |       |
 | [[data-architecture-layers]]              | ☐      |       |
 | [[identity-resolution-rulesets]]          | ☐      |       |
@@ -285,7 +285,7 @@ A learning track for the **Salesforce Marketing Cloud Next Consultant exam** (Su
 - `sources/Email_Deep_Dive.txt` (user-provided Salesforce Help articles — Email overview, Create an Email, Code View, Email Templates, Consent Details, Conversational Email, Dynamic From/Reply Addresses, Distributed Marketing and Alerts)
 - `sources/Web_Content_Deep_Dive.txt` (user-provided Salesforce Help articles — LinkedIn Posts, Landing Pages, Landing Page Templates, SEO Page Properties, URL Details, Forms, Form Data Sources, Hidden Fields, reCAPTCHA, Progressive Profiling, External Forms, Form Handlers, Marketing Sites)
 - `sources/Campaigns_Flows_Deep_Dive.txt` (user-provided Salesforce Help articles — Get Started with Campaigns/Flows, Campaign Record vs. Flow Canvas, Work with Campaigns, Send a Message, Signup Form, Automate Tasks, Work with Marketing Flows, Add Structure/Logic, Pause/Edit, Share Standalone Flows, Flow Types Comparison, Activation-Triggered, Automation Event-Triggered, Engagement Signals, Broadcast, Subflow, Audience Flows, Flow Status, Flow Builder Features/Elements, Embedded Analytics, Path Experiment, Assign to Queue/User, Assignment, Collection Filter/Sort, Create Campaign Member, Create Consent, Create/Get/Update/Delete Records, Decision, Notify User, Send Email/SMS/RCS/Mobile/In-App, Send to Journey, Transform, Flow Operators, Wait Elements, Campaign Reporting Tools, Marketing Calendar, MCE Journeys, AI in MC Next)
-- `sources/MCNext_Consultant_Exam_Masterclass_Session1.txt` (Elliot Harper, Salesforce — Marketing Cloud Next Consultant Exam Masterclass Session 1: exam logistics, Agentforce Marketing portfolio, six-step configuration, Data Cloud Architect permission set, authorized vs. authenticated domains, four consent granularity levels, preference pages)
+- `sources/MCNext_Consultant_Exam_Masterclass_Session1.txt` (Elliot Harper, Salesforce — Marketing Cloud Next Consultant Exam Masterclass Session 1: exam logistics, Marketing Cloud portfolio, six-step configuration, Data Cloud Architect permission set, authorized vs. authenticated domains, four consent granularity levels, preference pages)
 - `sources/MCNext_Consultant_Exam_Masterclass_Session2.txt` (Elliot Harper, Salesforce — Marketing Cloud Next Consultant Exam Masterclass Session 2: Data 360 capabilities checklist, CRM integration & actionable lists, complete marketing flow taxonomy, off-core high-scale flows, on-demand/broadcast REST patterns)
 - `sources/MCNext_Consultant_Exam_Masterclass_Session3.txt` (Elliot Harper, Salesforce — Marketing Cloud Next Consultant Exam Masterclass Session 3: business units + Salesforce CMS, marketing workspaces, common assets, eight data providers, content variables, marketing objects, personalization methods)
 - `sources/MCNext_Consultant_Exam_Masterclass_Session4.txt` (Elliot Harper, Salesforce — Marketing Cloud Next Consultant Exam Masterclass Session 4, final: contact point resolution at send time, activation templates, five AI agents, predictive AI deep dive, semantic data model & reporting dashboards)

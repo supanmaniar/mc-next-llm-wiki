@@ -59,7 +59,7 @@ The official **Marketing Cloud Next Consultant Exam Masterclass** (Elliot Harper
 
 | Concept page | Section | Covered by |
 |---|---|---|
-| `agentforce-marketing-portfolio` | 1 | Q39 |
+| `marketing-cloud-portfolio` | 1 | Q39 |
 | `marketing-cloud-next-overview` (config steps) | 1 | Q40 |
 | `user-access-and-permission-sets` (Data Cloud Architect) | 1 | Q41 |
 | `email-domain-authentication` (authorized domain) | 1 | Q42 |

@@ -328,8 +328,8 @@ MC Next is a **Lightning app built on Data 360**. Know **what each does and wher
 
 ## Section 1 — Platform Setup & Governance (13%)
 
-### The Agentforce Marketing Portfolio
-- **Agentforce Marketing is a portfolio, not a product.** It contains four products: **Marketing Cloud Next** (evolution of Marketing Cloud Engagement) · **Salesforce Personalization** (real-time, evolution of MC Personalization) · **Marketing Intelligence** (AI analytics, evolution of MC Intelligence) · **Loyalty Management** (no-code B2B/B2C loyalty). → [[agentforce-marketing-portfolio]]
+### The Marketing Cloud Portfolio
+- **Marketing Cloud is a portfolio, not a product.** It contains four products: **Marketing Cloud Next** (evolution of Marketing Cloud Engagement) · **Salesforce Personalization** (real-time, evolution of MC Personalization) · **Marketing Intelligence** (AI analytics, evolution of MC Intelligence) · **Loyalty Management** (no-code B2B/B2C loyalty). → [[marketing-cloud-portfolio]]
 - **Editions:** Growth vs. Advanced (Advanced = all of Growth + extras). ⚠️ **Account scoring, Engagement Scoring, Engagement Frequency, Business Units, Path Experiments, On-Canvas Insights** are **Advanced only**; **people scoring** is in both.
 
 ### Environment Setup
@@ -500,7 +500,7 @@ All included with **no additional license or SKU**:
 ## High-Frequency "Gotcha" Facts (cram list)
 
 - **60 / 105 / 72% / 44** — scored questions / minutes / pass mark / minimum correct (plus up to **5 unscored**; **1 min 45 s** per question; **Summer '26** release).
-- **4 products** — Agentforce Marketing portfolio = MC Next + Salesforce Personalization + Marketing Intelligence + Loyalty Management.
+- **4 products** — Marketing Cloud portfolio = MC Next + Salesforce Personalization + Marketing Intelligence + Loyalty Management.
 - **6 configuration steps** — Setup Assistant does the first three (Data 360, enable Marketing Cloud, deploy streams).
 - **Data Cloud Architect** — permission set renamed from Data Cloud Admin in Spring '26 (System Administrator is a *profile*).
 - **Authorized ≠ authenticated domain** — authorized = ownership only (dynamic From/Reply); authenticated = DKIM/DNS sending.

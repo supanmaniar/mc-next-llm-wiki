@@ -36,7 +36,7 @@ OUT = os.path.join(ROOT, "Marketing_Cloud_Next_Study_Guide.pdf")
 TRACKS = [
     "Study Roadmap",
     "Track 1 — Foundations & Platform Architecture",
-    ["marketing-cloud-next-overview", "agentforce-marketing-portfolio",
+    ["marketing-cloud-next-overview", "marketing-cloud-portfolio",
      "data-kits-and-data-streams", "data-architecture-layers"],
     "Track 2 — Data Foundation & Identity",
     ["identity-resolution-rulesets", "identity-resolution-match-rules",

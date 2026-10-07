@@ -54,7 +54,7 @@ The official **Marketing Cloud Next Consultant Exam Masterclass** (Elliot Harper
 
 | Deck | Masterclass additions |
 |------|----------------------|
-| Section 1 | Agentforce Marketing portfolio, six configuration steps, Data Cloud Architect, authorized vs authenticated domain, CMS workspaces, common assets, business unit role access |
+| Section 1 | Marketing Cloud portfolio, six configuration steps, Data Cloud Architect, authorized vs authenticated domain, CMS workspaces, common assets, business unit role access |
 | Section 2 | Four consent granularity levels, four consent objects, preference page channel rule/limits/releases |
 | Section 3 | Data 360 capabilities checklist, CRM integration timeline, Sales Data Kit, actionable list consent gap, contact point resolution, activation templates |
 | Section 4 | Flow taxonomy (six types), off-core engine, which flows can't send email, audience flow re-entry, eight data providers, activation+event conflict, content variables, marketing objects |

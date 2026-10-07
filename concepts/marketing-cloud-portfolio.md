@@ -1,7 +1,7 @@
-# Agentforce Marketing Portfolio
+# Marketing Cloud Portfolio
 
 ## Core Idea
-**Agentforce Marketing is not a product — it's the brand name for Salesforce's whole next-generation marketing portfolio**, and Marketing Cloud Next is just one product inside it (alongside Salesforce Personalization, Marketing Intelligence, and Loyalty Management).
+**Marketing Cloud is not a product — it's the brand name for Salesforce's whole next-generation marketing portfolio**, and Marketing Cloud Next is just one product inside it (alongside Salesforce Personalization, Marketing Intelligence, and Loyalty Management).
 
 ## Prerequisites
 - [[marketing-cloud-next-overview]]
@@ -9,7 +9,7 @@
 ## Detailed Explanation
 
 ### The Portfolio, Not a Product
-A common exam trap is treating "Agentforce Marketing" as a single platform. It isn't. It's the **umbrella brand** for Salesforce's next-generation marketing suite. Each product in the portfolio is the **evolution of an existing Marketing Cloud product**, rebuilt on the modern data and AI foundation.
+A common exam trap is treating "Marketing Cloud" as a single platform. It isn't. It's the **umbrella brand** for Salesforce's next-generation marketing suite. Each product in the portfolio is the **evolution of an existing Marketing Cloud product**, rebuilt on the modern data and AI foundation.
 
 | Product | What it is | Evolved from |
 |---------|-----------|--------------|
@@ -18,7 +18,7 @@ A common exam trap is treating "Agentforce Marketing" as a single platform. It i
 | **Marketing Intelligence** | **AI-powered analytics** solution | Marketing Cloud Intelligence |
 | **Loyalty Management** | Flexible **B2B and B2C loyalty & rewards** programs via a **no-code** interface | (new capability) |
 
-> **Memory hook:** the portfolio is the *brand*; Marketing Cloud Next is the *product*. When a question asks "which product does X?", the answer is almost never "Agentforce Marketing" — it's one of the four products above.
+> **Memory hook:** the portfolio is the *brand*; Marketing Cloud Next is the *product*. When a question asks "which product does X?", the answer is almost never "Marketing Cloud" — it's one of the four products above.
 
 ### Where Marketing Cloud Next Sits
 Marketing Cloud Next is the **marketing platform** in the portfolio — the thing you configure, build campaigns and flows in, and send messages from. It is the successor to **Marketing Cloud Engagement (MCE)**, but it is **not** the same product: MC Next is Data Cloud-native, while MCE is the legacy platform. See [[marketing-cloud-next-overview]] and [[mce-journeys-campaigns]].
@@ -48,14 +48,14 @@ The masterclass sample question tests exactly this distinction:
 The distractors typically swap "Growth" and "Advanced" or imply account scoring is available in Growth. See [[scoring-models]] and [[ai-features]].
 
 ## Common Pitfalls / Misconceptions
-⚠️ **Agentforce Marketing ≠ Marketing Cloud Next.** The former is the portfolio brand; the latter is one product in it.
+⚠️ **Marketing Cloud ≠ Marketing Cloud Next.** The former is the portfolio brand; the latter is one product in it.
 ⚠️ **Marketing Cloud Next ≠ Marketing Cloud Engagement.** MC Next is the Data Cloud-native successor, not a rename.
 ⚠️ **Account scoring is Advanced only** — people scoring is in both editions.
 ⚠️ **Engagement Scoring / Engagement Frequency are Advanced only.**
 ⚠️ Don't assume the edition feature list is complete — it grows each release.
 
 ## Active Recall Questions
-1. Is Agentforce Marketing a product or a portfolio? Name the four products in it.
+1. Is Marketing Cloud a product or a portfolio? Name the four products in it.
 2. Which legacy product does Marketing Cloud Next evolve from?
 3. Which scoring type is Advanced-only, and which is available in both editions?
 4. Name three Advanced-only capabilities besides account scoring.

@@ -141,10 +141,10 @@
 
 ---
 
-## Agentforce Marketing Portfolio & Configuration
+## Marketing Cloud Portfolio & Configuration
 
-## Card: Agentforce Marketing
-**Q:** Is Agentforce Marketing a product?
+## Card: Marketing Cloud
+**Q:** Is Marketing Cloud a product?
 **A:** ⚠️ **No — it's the portfolio brand.** It contains four products: **Marketing Cloud Next** (← MCE), **Salesforce Personalization** (← MC Personalization), **Marketing Intelligence** (← MC Intelligence), and **Loyalty Management** (no-code B2B/B2C loyalty).
 
 ## Card: Configuration Steps

@@ -1,6 +1,6 @@
 # Flashcards — Exam Masterclass Session 1 (Elliot Harper)
 
-> Source: `sources/MCNext_Consultant_Exam_Masterclass_Session1.txt` — the official Salesforce exam-prep masterclass, Session 1. Covers exam logistics, the Agentforce Marketing portfolio, setup/configuration, and consent management.
+> Source: `sources/MCNext_Consultant_Exam_Masterclass_Session1.txt` — the official Salesforce exam-prep masterclass, Session 1. Covers exam logistics, the Marketing Cloud portfolio, setup/configuration, and consent management.
 
 ## Card: Exam Logistics
 **Q:** How many questions, how long, and what's the pass mark for the Marketing Cloud Next Consultant exam?
@@ -14,12 +14,12 @@
 **Q:** How many key areas does the exam cover, and what does each percentage represent?
 **A:** **Six** key areas. Each percentage is the **weighting** — approximately how many questions you can expect from that category.
 
-## Card: Agentforce Marketing — Product or Portfolio?
-**Q:** Is Agentforce Marketing a product? What is it?
+## Card: Marketing Cloud — Product or Portfolio?
+**Q:** Is Marketing Cloud a product? What is it?
 **A:** It's **not a single product** — it's the **broader brand** of Salesforce's next-generation marketing portfolio. Marketing Cloud Next is just **one product** inside it.
 
 ## Card: The Four Portfolio Products
-**Q:** Name the four products in the Agentforce Marketing portfolio and what each evolved from.
+**Q:** Name the four products in the Marketing Cloud portfolio and what each evolved from.
 **A:** **Marketing Cloud Next** (evolution of Marketing Cloud Engagement) · **Salesforce Personalization** (evolution of Marketing Cloud Personalization, real-time) · **Marketing Intelligence** (evolution of Marketing Cloud Intelligence, AI-powered analytics) · **Loyalty Management** (no-code B2B/B2C loyalty & rewards).
 
 ## Card: MC Next Editions
@@ -171,5 +171,5 @@
 **A:** **No** — it does not update consent in Marketing Cloud Next. It's a common exam distractor.
 
 ## Related
-- [[marketing-cloud-next-overview]] · [[agentforce-marketing-portfolio]] · [[user-access-and-permission-sets]] · [[email-domain-authentication]] · [[consent-and-compliance]] · [[consent-preference-pages]] · [[consent-cache]] · [[consent-write-paths]] · [[scoring-models]]
+- [[marketing-cloud-next-overview]] · [[marketing-cloud-portfolio]] · [[user-access-and-permission-sets]] · [[email-domain-authentication]] · [[consent-and-compliance]] · [[consent-preference-pages]] · [[consent-cache]] · [[consent-write-paths]] · [[scoring-models]]
 - Deck index: [[study-roadmap]]

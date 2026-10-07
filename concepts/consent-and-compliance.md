@@ -180,7 +180,7 @@ Lyn has SMS + email consent for "Product Updates" subscription. She creates **4 
 - [[web-tracking]]
 - [[data-architecture-layers]]
 - [[email-sending-setup]]
-- [[agentforce-marketing-portfolio]]
+- [[marketing-cloud-portfolio]]
 - **Deeper consent pages:** [[consent-data-model]], [[consent-objects-and-models]], [[consent-data-streams]], [[consent-write-paths]], [[consent-audit-trail]], [[consent-double-opt-in]], [[consent-preference-pages]], [[consent-sync-hybrid]], [[consent-segmentation]], [[consent-setup-billing]], [[consent-channels-troubleshooting]], [[consent-cache]]
 
 ## Source References

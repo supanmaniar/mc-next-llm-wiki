@@ -443,15 +443,15 @@
 
 ---
 
-## Q39 — Agentforce Marketing Portfolio
+## Q39 — Marketing Cloud Portfolio
 
-**Question:** A client asks the consultant to "implement Agentforce Marketing." During discovery, the consultant learns the client needs a Data Cloud-native marketing platform, a real-time personalization engine, AI-powered analytics, and a no-code loyalty program. How should the consultant frame the recommendation?
+**Question:** A client asks the consultant to "implement Marketing Cloud." During discovery, the consultant learns the client needs a Data Cloud-native marketing platform, a real-time personalization engine, AI-powered analytics, and a no-code loyalty program. How should the consultant frame the recommendation?
 
-**Answer:** **Agentforce Marketing is the portfolio brand, not a single product. The client needs four products: Marketing Cloud Next, Salesforce Personalization, Marketing Intelligence, and Loyalty Management.**
+**Answer:** **Marketing Cloud is the portfolio brand, not a single product. The client needs four products: Marketing Cloud Next, Salesforce Personalization, Marketing Intelligence, and Loyalty Management.**
 
-**Why:** Agentforce Marketing is the umbrella brand for Salesforce's next-generation marketing suite. Each product is the evolution of an existing Marketing Cloud product: **Marketing Cloud Next** (from Marketing Cloud Engagement), **Salesforce Personalization** (from MC Personalization), **Marketing Intelligence** (from MC Intelligence), and **Loyalty Management** (no-code B2B/B2C loyalty). Treating "Agentforce Marketing" as one product leads to a scoping error.
+**Why:** Marketing Cloud is the umbrella brand for Salesforce's next-generation marketing suite. Each product is the evolution of an existing Marketing Cloud product: **Marketing Cloud Next** (from Marketing Cloud Engagement), **Salesforce Personalization** (from MC Personalization), **Marketing Intelligence** (from MC Intelligence), and **Loyalty Management** (no-code B2B/B2C loyalty). Treating "Marketing Cloud" as one product leads to a scoping error.
 
-> ⚠️ **Distractor logic:** "Agentforce Marketing is the new name for Marketing Cloud Next" is the plausible-but-wrong answer — it collapses the portfolio into one product. The exam tests whether you can separate the *brand* from the *product*.
+> ⚠️ **Distractor logic:** "Marketing Cloud is the new name for Marketing Cloud Next" is the plausible-but-wrong answer — it collapses the portfolio into one product. The exam tests whether you can separate the *brand* from the *product*.
 
 ---
 

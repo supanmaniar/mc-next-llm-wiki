@@ -73,7 +73,7 @@ Turn on the **Privacy Preference Manager** tab (Default On) in the Standard User
 ## Related Concepts
 - [[marketing-cloud-next-overview]]
 - [[consent-and-compliance]]
-- [[agentforce-marketing-portfolio]]
+- [[marketing-cloud-portfolio]]
 
 ## Source References
 - `sources/mktg_implementation_guide.pdf` — "Manage User Access", "User Permissions in Marketing Cloud Next"

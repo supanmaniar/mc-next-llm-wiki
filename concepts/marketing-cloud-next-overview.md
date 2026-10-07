@@ -15,8 +15,8 @@ Marketing Cloud Next (Spring '26) is available in **Salesforce Enterprise and Un
 
 The defining trait is its relationship to **Data Cloud**: it's not a standalone email tool. Data Cloud provides the unified data model that powers segments, identity, scoring, and AI.
 
-### Where It Sits: The Agentforce Marketing Portfolio
-Marketing Cloud Next is **one product** inside the broader **Agentforce Marketing** portfolio (the brand, not a product). The portfolio also includes **Salesforce Personalization** (real-time personalization), **Marketing Intelligence** (AI-powered analytics), and **Loyalty Management** (no-code B2B/B2C loyalty). MC Next is the evolution of **Marketing Cloud Engagement**. See [[agentforce-marketing-portfolio]].
+### Where It Sits: The Marketing Cloud Portfolio
+Marketing Cloud Next is **one product** inside the broader **Marketing Cloud** portfolio (the brand, not a product). The portfolio also includes **Salesforce Personalization** (real-time personalization), **Marketing Intelligence** (AI-powered analytics), and **Loyalty Management** (no-code B2B/B2C loyalty). MC Next is the evolution of **Marketing Cloud Engagement**. See [[marketing-cloud-portfolio]].
 
 ### The Six Configuration Steps
 Setup is best thought of as **configuration, not implementation** — MC Next and Data 360 can be enabled in a few clicks with a guided interface. At a minimum there are **six key configuration steps** (plus optional steps not required for core functionality):
@@ -77,7 +77,7 @@ Before you can access required/additional settings you must first enable Marketi
 
 ## Common Pitfalls / Misconceptions
 ⚠️ **Marketing Cloud Next ≠ Marketing Cloud Engagement.** It's a new, Data Cloud-native product — don't assume legacy Marketing Cloud steps apply.
-⚠️ **Agentforce Marketing is a portfolio, not a product** — MC Next is one of four products in it. See [[agentforce-marketing-portfolio]].
+⚠️ **Marketing Cloud is a portfolio, not a product** — MC Next is one of four products in it. See [[marketing-cloud-portfolio]].
 ⚠️ **Skipping Basic Settings.** You cannot access required/additional settings until you enable Marketing Cloud Next and Data Cloud.
 ⚠️ Assuming a single person does everything — the roles are often split across Salesforce admin, Data Cloud admin, and marketing admin.
 ⚠️ **Data Cloud Architect** (not Data Cloud Admin) is the current permission set name — renamed in Spring '26.
@@ -89,13 +89,13 @@ Before you can access required/additional settings you must first enable Marketi
 2. What is the fundamental difference between Marketing Cloud Next and a traditional email marketing tool?
 3. What two things must you enable before accessing required and additional settings?
 4. Which editions include Marketing Cloud Next?
-5. Name the four products in the Agentforce Marketing portfolio.
+5. Name the four products in the Marketing Cloud portfolio.
 6. What are the three tasks the Setup Assistant guides you through?
 7. Which two permission sets must be assigned before configuration, and which replaced Data Cloud Admin?
 8. What are the two additional required tasks after enablement?
 
 ## Related Concepts
-- [[agentforce-marketing-portfolio]]
+- [[marketing-cloud-portfolio]]
 - [[data-kits-and-data-streams]]
 - [[identity-resolution-rulesets]]
 - [[user-access-and-permission-sets]]
