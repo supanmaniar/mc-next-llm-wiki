@@ -19,6 +19,7 @@ It is not a dump of documentation. Every page is **synthesized for learning**: e
 
 | You are… | Start here |
 |---|---|
+| 🌐 **Wanting the interactive site** | **[supanmaniar.github.io/mc-next-llm-wiki](https://supanmaniar.github.io/mc-next-llm-wiki/)** — dashboard, wiki, flashcards, and quizzes |
 | 🧑‍🎓 **Studying for the exam** | [`_index/study-roadmap.md`](_index/study-roadmap.md) — 10 sequential tracks, basic → advanced |
 | ⏰ **Cramming** | [`_index/exam-revision-summary.md`](_index/exam-revision-summary.md) — organized by exam weight |
 | 🤖 **An LLM / RAG pipeline** | [`llms.txt`](llms.txt) — a machine-readable index of the whole vault |
@@ -65,11 +66,24 @@ mc-next-llm-wiki/
 
 ## Quick Start
 
-### Option 1 — Read it on GitHub
+### Option 1 — Use the interactive study site (easiest)
+
+**[supanmaniar.github.io/mc-next-llm-wiki](https://supanmaniar.github.io/mc-next-llm-wiki/)**
+
+A zero-dependency web app generated from this vault. It gives you:
+
+- **Dashboard** — the exam blueprint, your readiness, and per-section progress
+- **Concept wiki** — all 78 pages with working `[[wiki link]]` navigation
+- **Flashcards** — all 1,113 cards with flip, keyboard shortcuts, and spaced repetition
+- **Quiz** — all 353 scenario questions with reveal-and-self-grade, rationale, and the documented distractor logic
+- **Roadmap & revision summary** — the `_index/` material, rendered
+- **Progress tracking** — saved locally in your browser, no account needed
+
+### Option 2 — Read it on GitHub
 
 Just browse. GitHub renders the Markdown, though `[[wiki links]]` won't be clickable. Start with [`_index/study-roadmap.md`](_index/study-roadmap.md).
 
-### Option 2 — Open it as an Obsidian vault (recommended)
+### Option 3 — Open it as an Obsidian vault (recommended for editing)
 
 ```bash
 git clone https://github.com/supanmaniar/mc-next-llm-wiki.git
@@ -77,16 +91,42 @@ git clone https://github.com/supanmaniar/mc-next-llm-wiki.git
 
 Then in Obsidian: **Open folder as vault** → select the cloned folder. The `[[wiki links]]` become clickable, and the graph view shows how concepts connect.
 
-### Option 3 — Feed it to an LLM
+### Option 4 — Feed it to an LLM
 
 Point your tool at [`llms.txt`](llms.txt) for a structured index, or ingest the `concepts/` folder directly. Each page is self-contained and front-loads its core idea, which makes it well-suited to chunked retrieval.
 
-### Option 4 — Generate a PDF study guide
+### Option 5 — Generate a PDF study guide
 
 ```bash
 pip install -r _scripts/requirements.txt
 python _scripts/generate_pdf.py
 ```
+
+---
+
+## Building the Site
+
+The site is a static bundle in [`docs/`](docs/), served by GitHub Pages. There is no framework and no runtime dependency — just a Node build script and vanilla HTML/CSS/JS.
+
+```bash
+node site/build.js
+```
+
+That parses the vault Markdown and writes `docs/data/content.json` and `docs/data/search-index.json`. To preview locally:
+
+```bash
+cd docs && python3 -m http.server 8777
+```
+
+| Path | Role |
+|---|---|
+| [`site/build.js`](site/build.js) | Parses the vault into JSON. Edit this when the vault's format changes. |
+| [`site/lib/markdown.js`](site/lib/markdown.js) | Dependency-free Markdown → HTML renderer, tuned to the vault's subset. |
+| [`docs/assets/app.js`](docs/assets/app.js) | The single-page app: router, views, flashcard runner, quiz engine, search. |
+| [`docs/assets/app.css`](docs/assets/app.css) | Theme and layout. Dark by default, light mode available. |
+| [`docs/data/`](docs/data/) | Generated. Do not edit by hand — rerun the build instead. |
+
+**Deployment:** GitHub Pages serves `docs/` from `main`. Push to `main` and the site updates.
 
 ---
 

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marketing Cloud Next — Certification Instructor</title>
+<meta name="description" content="An interactive instructor for the Salesforce Certified Marketing Cloud Next Consultant exam: 78 concept pages, 1,113 flashcards with spaced repetition, and 353 scenario questions.">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f8cff'/><text y='68' x='50' text-anchor='middle' font-size='46' font-family='sans-serif' font-weight='bold' fill='white'>MC</text></svg>">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">☰</button>
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input class="search-input" id="search-input" type="search" placeholder="Search concepts, questions, flashcards…" autocomplete="off" aria-label="Search">
+        <div class="search-results" id="search-results" style="display:none"></div>
+      </div>
+      <a class="btn btn-sm btn-ghost" href="https://github.com/supanmaniar/mc-next-llm-wiki" target="_blank" rel="noopener noreferrer" title="View the source vault on GitHub">GitHub ↗</a>
+    </header>
+
+    <main class="content" id="content">
+      <div class="empty"><div class="empty-icon">◈</div><p>Loading…</p></div>
+    </main>
+  </div>
+</div>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
