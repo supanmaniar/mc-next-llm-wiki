@@ -16,6 +16,18 @@ const state = {
 
 const STORAGE_KEY = 'mcnext-instructor-progress-v1';
 
+// The build stamps a content hash into this script's URL (?v=…). Reuse it so
+// the data files are cache-busted in lockstep with the code that reads them.
+const ASSET_VERSION = (() => {
+  const el = document.querySelector('script[src*="app.js"]');
+  if (!el) return '';
+  try {
+    return new URL(el.src, location.href).searchParams.get('v') || '';
+  } catch {
+    return '';
+  }
+})();
+
 /* ---------- Progress store ---------- */
 
 const DEFAULT_PROGRESS = {
@@ -1352,9 +1364,13 @@ async function boot() {
   document.documentElement.dataset.theme = state.progress.theme;
 
   try {
+    // The build stamps a hash into this script's own URL, so reuse it to bust
+    // the CDN cache on the data files too — otherwise a deploy can pair new
+    // code with a stale payload.
+    const suffix = ASSET_VERSION ? `?v=${ASSET_VERSION}` : '';
     const [content, searchIndex] = await Promise.all([
-      fetch('data/content.json').then((r) => r.json()),
-      fetch('data/search-index.json').then((r) => r.json()),
+      fetch(`data/content.json${suffix}`).then((r) => r.json()),
+      fetch(`data/search-index.json${suffix}`).then((r) => r.json()),
     ]);
     state.content = content;
     state.searchIndex = searchIndex;
