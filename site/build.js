@@ -9,10 +9,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { renderMarkdown, renderInline, toPlainText } = require('./lib/markdown');
 
 const ROOT = path.resolve(__dirname, '..');
-const OUT_DIR = path.join(ROOT, 'docs', 'data');
+const SITE_DIR = path.join(ROOT, 'docs');
+const OUT_DIR = path.join(SITE_DIR, 'data');
 
 const CONCEPTS_DIR = path.join(ROOT, 'concepts');
 const FLASHCARDS_DIR = path.join(ROOT, 'flashcards');
@@ -529,12 +531,29 @@ function build() {
   ];
   fs.writeFileSync(path.join(OUT_DIR, 'search-index.json'), JSON.stringify(searchIndex));
 
+  // GitHub Pages caches assets aggressively, so stamp a content hash into the
+  // HTML asset URLs. Without this, returning visitors keep running old JS.
+  const hash = crypto
+    .createHash('sha256')
+    .update(fs.readFileSync(path.join(SITE_DIR, 'assets', 'app.js')))
+    .update(fs.readFileSync(path.join(SITE_DIR, 'assets', 'app.css')))
+    .digest('hex')
+    .slice(0, 10);
+
+  const indexPath = path.join(SITE_DIR, 'index.html');
+  const html = fs
+    .readFileSync(indexPath, 'utf8')
+    // Match the placeholder on a fresh checkout, or a previously stamped hash.
+    .replace(/(\?v=)(?:__BUILD__|[a-f0-9]{10})/g, `$1${hash}`);
+  fs.writeFileSync(indexPath, html);
+
   console.log('Built site data:');
   console.log(`  concepts   ${content.stats.concepts}`);
   console.log(`  decks      ${content.stats.decks}`);
   console.log(`  cards      ${content.stats.cards}`);
   console.log(`  questions  ${content.stats.questions}`);
   console.log(`  tracks     ${content.stats.tracks}`);
+  console.log(`  asset hash ${hash}`);
   console.log(`  output     ${path.relative(ROOT, OUT_DIR)}`);
 }
 
