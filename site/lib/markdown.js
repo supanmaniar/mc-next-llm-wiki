@@ -66,10 +66,11 @@ function renderInline(text, ctx) {
     return `<a href="${escapeHtml(url)}"${attrs}>${label}</a>`;
   });
 
-  // Bold, italic, strikethrough
-  out = out.replace(/\*\*\*([^*]+)\*\*\*/g, '<strong><em>$1</em></strong>');
-  out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  out = out.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+  // Bold, italic, strikethrough. The bold patterns match lazily so they can
+  // span nested emphasis, e.g. **text with *italic* inside**.
+  out = out.replace(/\*\*\*([\s\S]+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+  out = out.replace(/\*\*([\s\S]+?)\*\*/g, '<strong>$1</strong>');
+  out = out.replace(/(^|[^*])\*([^\s*](?:[^*\n]*[^\s*])?)\*/g, '$1<em>$2</em>');
   out = out.replace(/~~([^~]+)~~/g, '<del>$1</del>');
 
   out = out.replace(/\u0000CODE(\d+)\u0000/g, (_m, i) => `<code>${escapeHtml(codeSpans[Number(i)])}</code>`);

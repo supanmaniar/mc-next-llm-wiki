@@ -9,7 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { renderMarkdown, toPlainText } = require('./lib/markdown');
+const { renderMarkdown, renderInline, toPlainText } = require('./lib/markdown');
 
 const ROOT = path.resolve(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'docs', 'data');
@@ -180,10 +180,12 @@ function parseConcept(file) {
     related,
     recallQuestions,
     pitfalls,
+    pitfallsHtml: pitfalls.map((p) => renderInline(p)),
     sources,
+    sourcesHtml: sources.map((s) => renderInline(s)),
+    recallQuestionsHtml: recallQuestions.map((q) => renderInline(q)),
     explanationHtml: renderMarkdown(explanation, { headingOffset: 1 }),
     coreIdeaHtml: renderMarkdown(coreIdea),
-    pitfallsHtml: renderMarkdown(body('Common Pitfalls / Misconceptions')),
   };
 }
 

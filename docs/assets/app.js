@@ -404,21 +404,21 @@ function viewConcept(slug) {
     ${c.pitfalls.length ? `
       <div class="callout callout-warn">
         <div class="callout-title">⚠ Common pitfalls</div>
-        <ul>${c.pitfalls.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>
+        <ul>${c.pitfallsHtml.map((p) => `<li>${p}</li>`).join('')}</ul>
       </div>` : ''}
 
     ${c.recallQuestions.length ? `
       <h2>Active recall</h2>
       <p class="small muted" style="margin-top:-6px">Answer these out loud before moving on. If you can't, re-read the explanation.</p>
       <div class="card">
-        <ol style="margin:0;padding-left:20px">${c.recallQuestions.map((q) => `<li style="margin-bottom:7px">${esc(q)}</li>`).join('')}</ol>
+        <ol style="margin:0;padding-left:20px">${c.recallQuestionsHtml.map((q) => `<li style="margin-bottom:7px">${q}</li>`).join('')}</ol>
       </div>` : ''}
 
     ${related ? `<h2>Related concepts</h2><div class="chips">${related}</div>` : ''}
 
     ${c.sources.length ? `
       <h2>Sources</h2>
-      <ul class="small muted">${c.sources.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>` : ''}
+      <ul class="small muted">${c.sourcesHtml.map((s) => `<li>${s}</li>`).join('')}</ul>` : ''}
   `;
 }
 
