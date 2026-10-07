@@ -272,15 +272,18 @@ function viewDashboard() {
         (state.content.conceptSections[s.id] || []).includes(c.slug)
       ).length;
       return `
-      <a class="section-row" href="#/section/${s.id}">
-        <div class="section-num" style="background:${s.color}">${s.id}</div>
-        <div>
-          <div class="section-name">${esc(s.name)}</div>
-          <div class="section-meta">${qa ? qa.questionCount : 0} questions · ${conceptsInSection} concepts</div>
-          <div class="bar"><div class="bar-fill" style="width:${s.weight}%;background:${s.color}"></div></div>
-        </div>
-        <div class="section-weight" style="color:${s.color}">${s.weight}%</div>
-      </a>`;
+      <div class="section-row">
+        <a class="section-row-main" href="#/section/${s.id}">
+          <div class="section-num" style="background:${s.color}">${s.id}</div>
+          <div>
+            <div class="section-name">${esc(s.name)}</div>
+            <div class="section-meta">${qa ? qa.questionCount : 0} questions · ${conceptsInSection} concepts</div>
+            <div class="bar"><div class="bar-fill" style="width:${s.weight}%;background:${s.color}"></div></div>
+          </div>
+          <div class="section-weight" style="color:${s.color}">${s.weight}%</div>
+        </a>
+        ${qa ? `<button class="btn btn-sm section-quiz-btn" data-quiz-section="${s.id}">✓ Quiz</button>` : ''}
+      </div>`;
     })
     .join('');
 
@@ -384,7 +387,7 @@ function viewDashboard() {
     </div>
 
     <h2>Exam blueprint</h2>
-    <p class="small muted" style="margin-top:-6px;margin-bottom:14px">Weighted exactly as the real exam. Section 4 is worth more than Sections 1, 2 and 6 combined.</p>
+    <p class="small muted" style="margin-top:-6px;margin-bottom:14px">Weighted exactly as the real exam. Click a section to see its concepts, or hit <strong>Quiz</strong> to jump straight into that section's practice questions.</p>
     <div class="grid" style="gap:9px">${sectionRows}</div>
 
     <h2>Exam facts</h2>
