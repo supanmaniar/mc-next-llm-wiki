@@ -265,24 +265,52 @@ function viewDashboard() {
       ? { slug: firstUnread.slug, title: conceptBySlug(firstUnread.slug)?.title || firstUnread.label, label: 'Start studying' }
       : null;
 
-  const sectionRows = sections
+  // An instructor-style one-liner that adapts to where the learner is.
+  const pctRead = Math.round((readCount / stats.concepts) * 100);
+  let guidance;
+  if (readCount === 0) {
+    guidance = `You're at the start. Begin with the roadmap below — it walks you through all ${stats.concepts} concepts in the right order.`;
+  } else if (pctRead < 50) {
+    guidance = `You've read ${readCount} of ${stats.concepts} concepts. Keep going through the roadmap — you're building the foundation.`;
+  } else if (pctRead < 100) {
+    guidance = `You're ${pctRead}% through the concepts. Start mixing in practice questions and flashcards to lock it in.`;
+  } else {
+    guidance = `You've read every concept. Now drill the flashcards and take mock exams until you're comfortably above ${examFacts.passMark}%.`;
+  }
+
+  const sectionCards = sections
     .map((s) => {
       const qa = state.content.qa.find((f) => f.sectionId === s.id);
+      const deck = state.content.decks.find((d) => d.sectionId === s.id);
       const conceptsInSection = state.content.concepts.filter((c) =>
         (state.content.conceptSections[s.id] || []).includes(c.slug)
       ).length;
       return `
-      <div class="section-row">
-        <a class="section-row-main" href="#/section/${s.id}">
+      <div class="section-card">
+        <div class="section-card-head">
           <div class="section-num" style="background:${s.color}">${s.id}</div>
-          <div>
+          <div class="section-card-title">
             <div class="section-name">${esc(s.name)}</div>
-            <div class="section-meta">${qa ? qa.questionCount : 0} questions · ${conceptsInSection} concepts</div>
-            <div class="bar"><div class="bar-fill" style="width:${s.weight}%;background:${s.color}"></div></div>
+            <div class="section-blurb">${esc(s.blurb || '')}</div>
           </div>
           <div class="section-weight" style="color:${s.color}">${s.weight}%</div>
-        </a>
-        ${qa ? `<button class="btn btn-sm section-quiz-btn" data-quiz-section="${s.id}">✓ Quiz</button>` : ''}
+        </div>
+        <div class="bar"><div class="bar-fill" style="width:${s.weight}%;background:${s.color}"></div></div>
+        <div class="section-card-resources">
+          <a class="resource-chip" href="#/section/${s.id}" title="Read the concept pages for this section">
+            <span class="resource-ico">▤</span> ${conceptsInSection} concepts
+          </a>
+          <a class="resource-chip" href="#/qa/${encodeURIComponent(qa ? qa.slug : '')}" title="Read every question with full reasoning">
+            <span class="resource-ico">✓</span> ${qa ? qa.questionCount : 0} questions
+          </a>
+          ${deck ? `<a class="resource-chip" href="#/deck/${encodeURIComponent(deck.slug)}" title="Drill the recall cards for this section">
+            <span class="resource-ico">⧉</span> ${deck.cardCount} flashcards
+          </a>` : ''}
+        </div>
+        <div class="section-card-actions">
+          <a class="btn btn-sm" href="#/section/${s.id}">Study this section</a>
+          ${qa ? `<button class="btn btn-sm btn-primary" data-quiz-section="${s.id}">✓ Quiz me</button>` : ''}
+        </div>
       </div>`;
     })
     .join('');
@@ -292,6 +320,21 @@ function viewDashboard() {
       <div class="eyebrow">Salesforce Certified</div>
       <h1>Marketing Cloud Next Consultant</h1>
       <p class="page-sub">Your instructor for the ${esc(examFacts.release)} release exam — ${examFacts.scoredQuestions} scored questions, ${examFacts.minutes} minutes, ${examFacts.passMark}% to pass.</p>
+    </div>
+
+    ${resumeTarget ? `
+      <a class="resume-card" href="#/concept/${encodeURIComponent(resumeTarget.slug)}">
+        <div class="resume-icon">▶</div>
+        <div class="resume-body">
+          <div class="resume-label">${esc(resumeTarget.label)}</div>
+          <div class="resume-title">${esc(resumeTarget.title)}</div>
+        </div>
+        <div class="resume-arrow">→</div>
+      </a>` : ''}
+
+    <div class="instructor-note">
+      <div class="instructor-avatar">MC</div>
+      <div class="instructor-text">${esc(guidance)}</div>
     </div>
 
     <div class="study-path">
@@ -346,49 +389,20 @@ function viewDashboard() {
       </ol>
     </div>
 
-    ${resumeTarget ? `
-      <a class="resume-card" href="#/concept/${encodeURIComponent(resumeTarget.slug)}">
-        <div class="resume-icon">▶</div>
-        <div class="resume-body">
-          <div class="resume-label">${esc(resumeTarget.label)}</div>
-          <div class="resume-title">${esc(resumeTarget.title)}</div>
-        </div>
-        <div class="resume-arrow">→</div>
-      </a>` : ''}
-
-    <div class="grid grid-4" style="margin-bottom:22px">
-      <div class="stat"><div class="stat-value">${stats.concepts}</div><div class="stat-label">Concept pages</div></div>
-      <div class="stat"><div class="stat-value">${stats.cards.toLocaleString()}</div><div class="stat-label">Flashcards</div></div>
-      <div class="stat"><div class="stat-value">${stats.questions}</div><div class="stat-label">Practice questions</div></div>
-      <div class="stat"><div class="stat-value">${stats.tracks}</div><div class="stat-label">Learning tracks</div></div>
+    <div class="card" style="margin-bottom:26px">
+      <div class="eyebrow">Your progress</div>
+      <div class="flex-between" style="margin-bottom:12px">
+        <div><div class="stat-value">${readCount}<span class="faint" style="font-size:15px">/${stats.concepts}</span></div><div class="stat-label">Concepts read</div></div>
+        <div><div class="stat-value">${quizCount}</div><div class="stat-label">Quizzes taken</div></div>
+        <div><div class="stat-value" style="color:${avgScore >= examFacts.passMark ? 'var(--good)' : 'var(--text)'}">${avgScore}%</div><div class="stat-label">Avg score</div></div>
+      </div>
+      <div class="bar"><div class="bar-fill" style="width:${pctRead}%;background:linear-gradient(90deg,var(--accent),var(--accent-2))"></div></div>
+      <div class="small faint" style="margin-top:8px">Pass mark is ${examFacts.passMark}% — aim for 85%+ before booking.</div>
     </div>
 
-    <div class="grid grid-2" style="margin-bottom:26px">
-      <div class="card">
-        <div class="eyebrow">Your progress</div>
-        <div class="flex-between" style="margin-bottom:12px">
-          <div><div class="stat-value">${readCount}<span class="faint" style="font-size:15px">/${stats.concepts}</span></div><div class="stat-label">Concepts read</div></div>
-          <div><div class="stat-value">${quizCount}</div><div class="stat-label">Quizzes taken</div></div>
-          <div><div class="stat-value" style="color:${avgScore >= examFacts.passMark ? 'var(--good)' : 'var(--text)'}">${avgScore}%</div><div class="stat-label">Avg score</div></div>
-        </div>
-        <div class="bar"><div class="bar-fill" style="width:${Math.round((readCount / stats.concepts) * 100)}%;background:linear-gradient(90deg,var(--accent),var(--accent-2))"></div></div>
-        <div class="small faint" style="margin-top:8px">Pass mark is ${examFacts.passMark}% — aim for 85%+ before booking.</div>
-      </div>
-
-      <div class="card">
-        <div class="eyebrow">Start here</div>
-        <div class="grid" style="gap:9px">
-          <button class="btn btn-primary" data-nav="quiz" style="justify-content:center">✓ Take a practice quiz</button>
-          <button class="btn" data-nav="flashcards" style="justify-content:center">⧉ Drill flashcards</button>
-          <button class="btn" data-nav="roadmap" style="justify-content:center">⌘ Follow the study roadmap</button>
-          <button class="btn" data-nav="revision" style="justify-content:center">⚡ Cram with the revision summary</button>
-        </div>
-      </div>
-    </div>
-
-    <h2>Exam blueprint</h2>
-    <p class="small muted" style="margin-top:-6px;margin-bottom:14px">Weighted exactly as the real exam. Click a section to see its concepts, or hit <strong>Quiz</strong> to jump straight into that section's practice questions.</p>
-    <div class="grid" style="gap:9px">${sectionRows}</div>
+    <h2>Exam sections</h2>
+    <p class="small muted" style="margin-top:-6px;margin-bottom:14px">The exam is split into six sections, weighted by how many questions each contributes. Each section has concept pages to read, practice questions to test yourself, and flashcards to drill.</p>
+    <div class="section-grid">${sectionCards}</div>
 
     <h2>Exam facts</h2>
     <div class="grid grid-3">
