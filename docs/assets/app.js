@@ -35,6 +35,7 @@ const DEFAULT_PROGRESS = {
   cards: {},
   quizHistory: [],
   theme: 'dark',
+  lastVisited: null, // { slug, title, at }
 };
 
 function loadProgress() {
@@ -232,6 +233,19 @@ function viewDashboard() {
     ? Math.round(state.progress.quizHistory.reduce((s, q) => s + q.percent, 0) / quizCount)
     : 0;
 
+  // "Continue where you left off" — the most recently opened concept, or the
+  // first unread concept in the roadmap if the learner is just starting.
+  const lastVisited = state.progress.lastVisited;
+  const lastConcept = lastVisited ? conceptBySlug(lastVisited.slug) : null;
+  const firstUnread = roadmap.tracks
+    .flatMap((t) => t.steps)
+    .find((s) => !state.progress.conceptsRead[s.slug]);
+  const resumeTarget = lastConcept
+    ? { slug: lastConcept.slug, title: lastConcept.title, label: 'Continue reading' }
+    : firstUnread
+      ? { slug: firstUnread.slug, title: conceptBySlug(firstUnread.slug)?.title || firstUnread.label, label: 'Start studying' }
+      : null;
+
   const sectionRows = sections
     .map((s) => {
       const qa = state.content.qa.find((f) => f.sectionId === s.id);
@@ -309,6 +323,16 @@ function viewDashboard() {
         </li>
       </ol>
     </div>
+
+    ${resumeTarget ? `
+      <a class="resume-card" href="#/concept/${encodeURIComponent(resumeTarget.slug)}">
+        <div class="resume-icon">▶</div>
+        <div class="resume-body">
+          <div class="resume-label">${esc(resumeTarget.label)}</div>
+          <div class="resume-title">${esc(resumeTarget.title)}</div>
+        </div>
+        <div class="resume-arrow">→</div>
+      </a>` : ''}
 
     <div class="grid grid-4" style="margin-bottom:22px">
       <div class="stat"><div class="stat-value">${stats.concepts}</div><div class="stat-label">Concept pages</div></div>
@@ -1140,6 +1164,16 @@ function render() {
   $('#content').innerHTML = html;
   $('#sidebar').classList.remove('open');
   window.scrollTo(0, 0);
+
+  // Remember the last concept the learner opened, so the dashboard can offer a
+  // "continue where you left off" shortcut.
+  if (view === 'concept' && param) {
+    const c = conceptBySlug(param);
+    if (c) {
+      state.progress.lastVisited = { slug: c.slug, title: c.title, at: Date.now() };
+      saveProgress();
+    }
+  }
 
   // Deck runner is rendered into its own host after the view is in the DOM.
   if (view === 'deck' && state.deck && state.deck.deck.slug === param) {

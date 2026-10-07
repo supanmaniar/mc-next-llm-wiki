@@ -24,12 +24,12 @@ const INDEX_DIR = path.join(ROOT, '_index');
 
 /** Canonical exam blueprint — the spine of the whole site. */
 const EXAM_SECTIONS = [
-  { id: 1, slug: 'section-1-platform-setup-governance', name: 'Platform Setup & Governance', weight: 13, color: '#0ea5e9' },
-  { id: 2, slug: 'section-2-consent', name: 'Consent', weight: 13, color: '#8b5cf6' },
-  { id: 3, slug: 'section-3-data-identity-segmentation', name: 'Data Modeling, Identity Resolution & Segmentation', weight: 25, color: '#10b981' },
-  { id: 4, slug: 'section-4-campaign-flow-content', name: 'Campaign Design, Flow Orchestration & Content', weight: 30, color: '#f59e0b' },
-  { id: 5, slug: 'section-5-agentforce-ai', name: 'Agentforce & AI Innovation', weight: 11, color: '#ef4444' },
-  { id: 6, slug: 'section-6-analytics-insights', name: 'Analytics & Performance Insights', weight: 8, color: '#ec4899' },
+  { id: 1, slug: 'section-1-platform-setup-governance', name: 'Platform Setup & Governance', weight: 13, color: '#0176d3' },
+  { id: 2, slug: 'section-2-consent', name: 'Consent', weight: 13, color: '#9050e9' },
+  { id: 3, slug: 'section-3-data-identity-segmentation', name: 'Data Modeling, Identity Resolution & Segmentation', weight: 25, color: '#2e844a' },
+  { id: 4, slug: 'section-4-campaign-flow-content', name: 'Campaign Design, Flow Orchestration & Content', weight: 30, color: '#dd7a01' },
+  { id: 5, slug: 'section-5-agentforce-ai', name: 'Agentforce & AI Innovation', weight: 11, color: '#04b4c4' },
+  { id: 6, slug: 'section-6-analytics-insights', name: 'Analytics & Performance Insights', weight: 8, color: '#8e4a9f' },
 ];
 
 const EXAM_FACTS = {

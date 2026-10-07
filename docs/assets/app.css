@@ -3,24 +3,25 @@
    ========================================================================== */
 
 :root {
-  --bg: #0b1020;
-  --bg-elev: #131a2e;
-  --bg-elev-2: #1a2340;
-  --bg-hover: #202b4d;
-  --border: #26304f;
-  --border-soft: #1e2740;
-  --text: #e8ecf7;
-  --text-dim: #9aa6c4;
-  --text-faint: #6b7796;
-  --accent: #5b8cff;
-  --accent-soft: rgba(91, 140, 255, 0.16);
-  --accent-2: #38d6e8;
-  --good: #34d399;
-  --good-soft: rgba(52, 211, 153, 0.14);
-  --bad: #f87171;
-  --bad-soft: rgba(248, 113, 113, 0.14);
-  --warn: #fbbf24;
-  --warn-soft: rgba(251, 191, 36, 0.14);
+  /* Salesforce brand palette, dark theme */
+  --bg: #0a1a2f;
+  --bg-elev: #10233c;
+  --bg-elev-2: #162c4a;
+  --bg-hover: #1d3657;
+  --border: #24405f;
+  --border-soft: #1b3350;
+  --text: #eef4fb;
+  --text-dim: #a8bcd4;
+  --text-faint: #7d93ad;
+  --accent: #1b96ff;          /* Cloud Blue */
+  --accent-soft: rgba(27, 150, 255, 0.16);
+  --accent-2: #04b4c4;        /* Teal */
+  --good: #2e844a;            /* Salesforce Green */
+  --good-soft: rgba(46, 132, 74, 0.18);
+  --bad: #ea001e;             /* Salesforce Red */
+  --bad-soft: rgba(234, 0, 30, 0.16);
+  --warn: #fcc003;            /* Salesforce Yellow */
+  --warn-soft: rgba(252, 192, 3, 0.16);
   --radius: 16px;
   --radius-sm: 10px;
   --shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
@@ -32,26 +33,27 @@
 }
 
 [data-theme="light"] {
-  --bg: #f5f7fc;
+  /* Salesforce brand palette, light theme */
+  --bg: #f3f6fb;
   --bg-elev: #ffffff;
-  --bg-elev-2: #eef2fa;
-  --bg-hover: #e6ecf8;
-  --border: #dbe2f0;
-  --border-soft: #e8edf7;
-  --text: #131a2e;
-  --text-dim: #5a6785;
-  --text-faint: #8b96b0;
-  --accent: #2f6bff;
-  --accent-soft: rgba(47, 107, 255, 0.1);
-  --accent-2: #0aa8c4;
-  --good: #059669;
-  --good-soft: rgba(5, 150, 105, 0.1);
-  --bad: #dc2626;
-  --bad-soft: rgba(220, 38, 38, 0.1);
-  --warn: #d97706;
-  --warn-soft: rgba(217, 119, 6, 0.1);
-  --shadow: 0 10px 30px rgba(19, 26, 46, 0.12);
-  --shadow-sm: 0 1px 4px rgba(19, 26, 46, 0.08);
+  --bg-elev-2: #eef3fa;
+  --bg-hover: #e6eef8;
+  --border: #d8e2f0;
+  --border-soft: #e6edf7;
+  --text: #032d60;            /* Salesforce Navy */
+  --text-dim: #4a5f7d;
+  --text-faint: #7d93ad;
+  --accent: #0176d3;          /* Salesforce Blue */
+  --accent-soft: rgba(1, 118, 211, 0.1);
+  --accent-2: #04b4c4;        /* Teal */
+  --good: #2e844a;
+  --good-soft: rgba(46, 132, 74, 0.1);
+  --bad: #ea001e;
+  --bad-soft: rgba(234, 0, 30, 0.08);
+  --warn: #dd7a01;            /* Salesforce Orange (readable on light) */
+  --warn-soft: rgba(221, 122, 1, 0.1);
+  --shadow: 0 10px 30px rgba(3, 45, 96, 0.12);
+  --shadow-sm: 0 1px 4px rgba(3, 45, 96, 0.08);
 }
 
 * { box-sizing: border-box; }
@@ -63,7 +65,7 @@ html, body { margin: 0; padding: 0; height: 100%; }
 body {
   background:
     radial-gradient(1200px 600px at 85% -10%, var(--accent-soft), transparent 60%),
-    radial-gradient(900px 500px at -10% 110%, rgba(56, 214, 232, 0.06), transparent 55%),
+    radial-gradient(900px 500px at -10% 110%, rgba(4, 180, 196, 0.07), transparent 55%),
     var(--bg);
   background-attachment: fixed;
   color: var(--text);
@@ -495,6 +497,39 @@ h4 { font-size: 14.5px; font-weight: 650; margin: 18px 0 6px; }
 .study-step-desc { font-size: 13.5px; color: var(--text-dim); line-height: 1.6; margin: 0 0 12px; }
 
 .study-step-actions { display: flex; gap: 9px; flex-wrap: wrap; }
+
+/* ---------- Resume card (dashboard) ---------- */
+
+.resume-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  margin-bottom: 22px;
+  background: linear-gradient(135deg, var(--accent-soft), transparent 60%), var(--bg-elev);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.resume-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); text-decoration: none; }
+
+.resume-icon {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  display: grid; place-items: center;
+  font-size: 15px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px var(--accent-soft);
+}
+
+.resume-body { flex: 1; min-width: 0; }
+.resume-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--accent); margin-bottom: 2px; }
+.resume-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; color: var(--text); }
+.resume-arrow { font-size: 18px; color: var(--accent); flex-shrink: 0; }
 
 /* ---------- Flashcards ---------- */
 
