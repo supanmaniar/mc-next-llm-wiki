@@ -492,6 +492,54 @@ function build() {
     }
   }
 
+  // A curated supplement: concepts whose questions exist in the bank but were
+  // never listed in the README coverage table. Each entry maps a concept slug
+  // to the question numbers (within its section) that genuinely cover it.
+  // Kept explicit rather than keyword-matched so mappings stay auditable.
+  const CURATED_CONCEPT_QUESTIONS = {
+    'business-units': [3, 4, 43, 45],
+    'domain-warming-ip-infrastructure': [9, 10, 11, 12],
+    'consent-audit-trail': [5, 6, 7],
+    'consent-cache': [14, 15],
+    'consent-data-model': [1, 2, 3, 4, 52, 53, 59],
+    'consent-double-opt-in': [16, 17],
+    'consent-segmentation': [26],
+    'consent-sync-3-flow': [25],
+    'consent-write-paths': [8, 9, 10, 11, 12, 13],
+    'contact-points-activation': [40, 41],
+    'data360-billing-usage': [35, 36, 37, 38, 39, 40, 41],
+    'data360-segment-types': [15, 16, 17, 18, 19, 20],
+    'identity-resolution-match-rules': [4, 5, 6, 7, 8, 9, 10],
+    'identity-resolution-reconciliation-rules': [11, 12, 13, 14],
+    'identity-resolution-rulesets': [3, 4],
+    'people-records-prospects': [21, 22, 23, 24, 25, 26, 27, 28, 29],
+    'segments-and-audiences': [15, 53],
+    'dynamic-content-variations': [17, 18, 19, 20, 21],
+    'email-creation-editing': [42, 43, 44, 45, 46, 47],
+    'external-forms-form-handlers': [66, 67, 68, 69, 70],
+    'flow-builder-elements': [26, 27, 28, 30, 35],
+    'flow-data-operations': [31, 32, 33, 34, 35, 36, 37],
+    'flow-elements-deep-dive': [26, 27, 28, 29, 30],
+    'forms-data-sources': [55, 58, 59, 60, 61, 62, 63, 64, 65],
+    'landing-pages': [53, 54, 56, 57],
+    'agentic-marketing': [18, 19],
+    'conversational-marketing': [5, 6, 7, 8, 9],
+    'einstein-segments': [2, 3, 4],
+    'scoring-models': [13, 14],
+    'opportunity-influence-b2b-analytics': [5, 11, 12],
+    'reporting-analytics-setup': [1, 2, 3, 4],
+    'audience-flows': [120, 121, 122],
+    'campaign-reporting-tools': [143, 144, 145],
+    'campaigns-and-flows': [123, 124, 146],
+    'decision-branching-path-experiments': [125, 126, 127],
+    'distributed-marketing': [128, 129, 130],
+    'dynamic-from-reply-addresses': [131, 132, 133],
+    'email-building-personalization': [134, 135, 147],
+    'engagement-signals': [136, 137, 148],
+    'flow-sharing': [138, 139, 149],
+    'repeaters-and-recommenders': [140, 141, 142],
+  };
+
   // Finally, fall back to the roadmap track a concept belongs to, so every page
   // is reachable from a section even if the vault never states the mapping.
   const trackToSection = { 1: 1, 2: 3, 3: 1, 4: 1, 5: 2, 6: 4, 7: 4, 8: 5, 9: 6, 10: 1 };
@@ -504,6 +552,20 @@ function build() {
         claimed.add(step.slug);
       }
     }
+  }
+
+  // Map each curated entry to the concept's section and expand question numbers
+  // into full ids. Only apply when the concept has no README mapping yet.
+  // Runs after the roadmap fallback so every concept has a section by now.
+  for (const [slug, numbers] of Object.entries(CURATED_CONCEPT_QUESTIONS)) {
+    if (conceptQuestions[slug]) continue;
+    const sectionId = Object.keys(conceptSections).find((sid) =>
+      conceptSections[sid].includes(slug)
+    );
+    if (!sectionId) continue;
+    const section = EXAM_SECTIONS.find((s) => s.id === Number(sectionId));
+    if (!section) continue;
+    conceptQuestions[slug] = numbers.map((n) => `${section.slug}-q${n}`);
   }
 
   const content = {

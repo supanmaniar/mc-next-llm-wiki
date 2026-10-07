@@ -1333,6 +1333,366 @@
 
 ---
 
+## Q120 — Audience Flow Sources
+
+**Question:** A marketer needs to send a promotional email to everyone who purchased in the last 30 days, on a recurring schedule. Which audience flow source should they use, and how often can it run?
+
+**Answer:** **A Segment source, running as often as every hour.**
+
+**Why:** Audience flows unify four sources — Segment, List, Record, and Campaign — and run on a schedule or immediately. A recurring audience flow can run as often as every hour. Segment is the right source for reaching people based on profile data and attributes (like a 30-day purchase window).
+
+> ⚠️ **Distractor logic:** "A List source" is the plausible-but-wrong answer — lists are for a specific, user-managed group, not attribute-based membership.
+
+---
+
+## Q121 — Audience Flow Re-entry
+
+**Question:** A marketer configures a recurring audience flow and wants to control when an individual can rejoin it. What must they configure, and what does it mirror?
+
+**Answer:** **Re-entry conditions, which mirror Journey Builder's three contact entry modes: no re-entry, re-entry at any time, or re-entry only after exiting.**
+
+**Why:** Recurring audience flows require both an execution schedule and re-entry conditions. This directly parallels Journey Builder's contact entry mode in Marketing Cloud Engagement, so the concept is familiar to anyone with MCE experience.
+
+> ⚠️ **Distractor logic:** "Re-entry is automatic for recurring flows" is the plausible-but-wrong answer — re-entry must be explicitly configured.
+
+---
+
+## Q122 — Segment Republish Before Run
+
+**Question:** A consultant configures a scheduled segment flow. Why should they republish the segment immediately before the flow runs?
+
+**Answer:** **To ensure membership is as up-to-date as possible; otherwise the segment defaults to its defined publishing schedule.**
+
+**Why:** For scheduled segment flows, the start step can publish the target segment immediately before running. Without republishing, the segment uses its own publishing cadence, which may be stale relative to the flow's run time.
+
+> ⚠️ **Distractor logic:** "Segments always refresh automatically at flow start" is the plausible-but-wrong answer — republishing is an explicit configuration, not automatic.
+
+---
+
+## Q123 — Campaign vs Flow Cardinality
+
+**Question:** A consultant is designing a campaign with multiple email journeys. What is the cardinality between campaigns and flows?
+
+**Answer:** **One campaign can contain many flows, but each flow belongs to exactly one campaign.**
+
+**Why:** A campaign organizes assets, audience, and metrics; a flow is the automation engine that distributes content. The one-to-many relationship means performance rolls up to the campaign, but a flow can only ever relate to a single campaign.
+
+> ⚠️ **Distractor logic:** "A flow can span multiple campaigns" is the plausible-but-wrong answer — it inverts the cardinality.
+
+---
+
+## Q124 — Flow Status Reference
+
+**Question:** A marketer pauses a flow to make edits. Which status does a paused flow hold, and what is the correct way to edit it?
+
+**Answer:** **Paused flows are still considered active. To edit, deactivate (complete or cancel work), then Edit As New Version, then activate.**
+
+**Why:** A paused flow counts as active, so you can't simply edit it in place. The correct sequence is deactivate → edit as a new version → activate. Only one version can be active at a time.
+
+> ⚠️ **Distractor logic:** "Pause, then edit directly" is the plausible-but-wrong answer — pausing doesn't unlock editing; you must deactivate and create a new version.
+
+---
+
+## Q125 — Decision Element Ordering
+
+**Question:** A consultant builds a Decision element with a broad condition first and a specific condition second. What will happen, and how should they fix it?
+
+**Answer:** **The broad condition will match first and the specific path may never trigger. Outcomes are evaluated in order with first-match-wins, so order most-specific to least-specific.**
+
+**Why:** Decision elements evaluate outcomes in order and the first match wins. A broad condition placed first captures contacts that should have gone down a more specific path. The fix is to order outcomes from most restrictive to least, leaving the broadest as the default.
+
+> ⚠️ **Distractor logic:** "All matching outcomes run" is the plausible-but-wrong answer — only the first matching outcome runs.
+
+---
+
+## Q126 — Flow Data Graph
+
+**Question:** A consultant adds a Decision element but can't see the fields they need. What is the most likely cause?
+
+**Answer:** **The flow's data graph isn't connected — the flow data graph is separate from the org default data graph.**
+
+**Why:** The org default data graph powers message personalization, but the flow data graph is what the flow evaluates for decisioning. Connect the data graph directly to the flow (View Properties → Data Graph) to make fields available in the Decision element.
+
+> ⚠️ **Distractor logic:** "The org default data graph covers decisioning too" is the plausible-but-wrong answer — the two graphs serve different purposes.
+
+---
+
+## Q127 — Path Experiment Winner Selection
+
+**Question:** A marketer runs a Path Experiment and wants the winner selected automatically. At what confidence level does the system declare a winner?
+
+**Answer:** **95% confidence against all other paths, after which the delayed group is sent down the winning path automatically.**
+
+**Why:** Automatic selection tracks the success metric and declares a winner when a path reaches 95% confidence against all others. The remaining (delayed) contacts then follow the winning path. If no path hits 95% before the test ends, fallback behavior applies.
+
+> ⚠️ **Distractor logic:** "The winner is always the path with the most sends" is the plausible-but-wrong answer — selection is based on the configured success metric and confidence, not raw volume.
+
+---
+
+## Q128 — Distributed Marketing Template Limits
+
+**Question:** A marketer configures an approved Distributed Marketing template. What are the limits on approved images and phrases?
+
+**Answer:** **Up to 30 approved images and 30 approved phrases, with only one default image. Only phrases can be marked required (locked).**
+
+**Why:** Distributed Marketing templates cap at 30 images and 30 phrases. Images can't be required — only phrases can be locked. One image can be the default. These are memorised limits the exam tests directly.
+
+> ⚠️ **Distractor logic:** "Images can be marked required" is the plausible-but-wrong answer — only phrases support the required/locked state.
+
+---
+
+## Q129 — Distributed Marketing Sender Permissions
+
+**Question:** A sales representative needs to send emails using an approved Distributed Marketing template. Which permission sets are required?
+
+**Answer:** **Both the Send Distributed Marketing Messages permission set AND the Marketing Cloud Manager permission set.**
+
+**Why:** Non-marketing senders need two permission sets: Send Distributed Marketing Messages (to send templated emails) and Marketing Cloud Manager. Missing either one blocks the send capability.
+
+> ⚠️ **Distractor logic:** "Send Distributed Marketing Messages alone is sufficient" is the plausible-but-wrong answer — it omits the required Marketing Cloud Manager permission set.
+
+---
+
+## Q130 — Distributed Marketing Unschedule
+
+**Question:** A sales rep schedules an email from an approved template, then unschedules it. What is the consequence?
+
+**Answer:** **Unscheduling cancels the email — and any emails scheduled with it in the same campaign. To send on a new schedule, recreate it.**
+
+**Why:** Unscheduling is destructive: it cancels the email and any others scheduled together in the campaign. There's no "reschedule" — the user must recreate the send.
+
+> ⚠️ **Distractor logic:** "Unscheduling just moves it back to draft" is the plausible-but-wrong answer — it cancels the send outright.
+
+---
+
+## Q131 — Dynamic From Address and DMARC
+
+**Question:** A client sends from an authenticated subdomain and wants a personalized From address. What should the consultant recommend?
+
+**Answer:** **Use a static authenticated From address with a dynamic display name — a personal root-domain address would break DMARC alignment.**
+
+**Why:** When sending from a subdomain, a dynamic From address on the root domain breaks DMARC alignment. The correct pattern is a static authenticated From address plus a dynamic display name. Dynamic From is only safe for root-domain authenticators.
+
+> ⚠️ **Distractor logic:** "Use a dynamic From address for subdomain senders" is the plausible-but-wrong answer — it causes DMARC alignment failures.
+
+---
+
+## Q132 — Dynamic Reply and RMM
+
+**Question:** A client wants auto-replies and out-of-office processing on replies. Should they use direct reply or RMM routing?
+
+**Answer:** **RMM routing — direct reply bypasses RMM, so there's no auto-reply management, out-of-office handling, or unsubscribe processing.**
+
+**Why:** Direct reply sends replies straight to the resolved mailbox, bypassing RMM. RMM routing is required for centralized handling: auto-replies, out-of-office, and unsubscribe processing.
+
+> ⚠️ **Distractor logic:** "Direct reply includes RMM processing" is the plausible-but-wrong answer — direct reply explicitly bypasses RMM.
+
+---
+
+## Q133 — Dynamic Reply Domain Authorization
+
+**Question:** A marketer configures a dynamic reply address, but the resolved domain isn't authorized. What happens?
+
+**Answer:** **The fallback address is used — reply domains must be authorized, or MC Next falls back.**
+
+**Why:** MC Next validates each resolved reply address's domain against the authorized list. If the domain isn't authorized, the configured fallback address is used instead.
+
+> ⚠️ **Distractor logic:** "The reply is sent anyway" is the plausible-but-wrong answer — unauthorized domains trigger the fallback, not a direct send.
+
+---
+
+## Q134 — Promotional vs Transactional Purpose
+
+**Question:** A marketer builds an email for a password reset. Which message purpose should they select, and why does it matter?
+
+**Answer:** **Transactional — it relates to something the customer did and does not require a promotional subscription. The choice changes compliance elements and consent rules.**
+
+**Why:** Transactional messages (receipts, account updates, password resets) don't require promotional opt-in. The purpose selection determines which compliance elements the editor prompts for and which consent rules apply at send time.
+
+> ⚠️ **Distractor logic:** "Promotional, because it's still an email" is the plausible-but-wrong answer — it would apply the wrong consent and compliance rules.
+
+---
+
+## Q135 — Linking vs Cloning Personalization Points
+
+**Question:** A marketer wants the same personalization rules to apply to a heading, hero image, and CTA button. Should they link or clone the personalization point?
+
+**Answer:** **Link — linking shares one point so all components update together; cloning creates a separate copy with its own rules.**
+
+**Why:** Linking multiple components to the same personalization point means updates to rules, priorities, or names apply everywhere that point is used. Cloning creates an independent copy, which is the wrong choice when you want shared behavior.
+
+> ⚠️ **Distractor logic:** "Clone so each component is independent" is the plausible-but-wrong answer — it defeats the purpose of shared rules.
+
+---
+
+## Q136 — Engagement Signal Identifiers
+
+**Question:** A consultant configures an engagement signal for a custom recommender objective. Which identifier is required, and what are the four identifier types?
+
+**Answer:** **The item identifier is required for custom objective-based recommenders. The four types are User, Timestamp, Item, and Event identifiers.**
+
+**Why:** Engagement signals use four identifier types: User Identifier (who), Timestamp Identifier (when), Item Identifier (what), and Event Identifier (unique event to deduplicate). The item identifier is mandatory when the signal feeds a custom objective-based recommender.
+
+> ⚠️ **Distractor logic:** "Only the user identifier is required" is the plausible-but-wrong answer — item identifier is required for objective-based recommenders.
+
+---
+
+## Q137 — Engagement Signal DMO Category
+
+**Question:** A consultant tries to configure an engagement signal but can't select their preferred DMO. What is the most likely cause?
+
+**Answer:** **The DMO isn't categorized as Engagement — engagement signals can only use Engagement-category DMOs that are mapped.**
+
+**Why:** Engagement signals are restricted to mapped DMOs categorized as Engagement. A DMO outside that category won't appear in the selection list.
+
+> ⚠️ **Distractor logic:** "Any mapped DMO works" is the plausible-but-wrong answer — the Engagement category is a hard requirement.
+
+---
+
+## Q138 — Flow Sharing on Campaign Delete
+
+**Question:** A consultant deletes a campaign that had several related flows. What happens to the flows' sharing settings?
+
+**Answer:** **Sharing reverts to each flow's own defined rules; if none are defined, the flow becomes private.**
+
+**Why:** Flows related to a campaign inherit the campaign's sharing settings. Deleting the campaign removes that inheritance, so each flow falls back to its own sharing rules — or private if none exist.
+
+> ⚠️ **Distractor logic:** "The flows are deleted too" is the plausible-but-wrong answer — deleting a campaign removes the relationship, not the flow records.
+
+---
+
+## Q139 — Standalone Flow Sharing
+
+**Question:** A consultant creates a standalone flow and expects the marketing team to see it, but they can't. Why?
+
+**Answer:** **Standalone flows are private by default — they must be shared explicitly, either dynamically (categories + sharing rules) or manually (per user/group).**
+
+**Why:** Unlike campaign-related flows (which inherit sharing), standalone flows are private by default. Sharing requires either criteria-based sharing rules with categories, or manual sharing to specific users/groups.
+
+> ⚠️ **Distractor logic:** "Standalone flows inherit org-wide sharing" is the plausible-but-wrong answer — they're private until shared.
+
+---
+
+## Q140 — Repeater Layout Change
+
+**Question:** A designer changes the layout of a repeater that already has content and styling. What happens?
+
+**Answer:** **The content, data, and style settings within the repeater are removed.**
+
+**Why:** Changing a repeater's layout is destructive — it wipes the content, data, and style settings inside the repeater. This is a favourite exam trap because it's an easy mistake to make mid-build.
+
+> ⚠️ **Distractor logic:** "The content is preserved and reflowed" is the plausible-but-wrong answer — it assumes a non-destructive reflow that doesn't occur.
+
+---
+
+## Q141 — Recommender Data Placement
+
+**Question:** A marketer wants to show personalized product recommendations in an email. Where must recommender data be placed?
+
+**Answer:** **Inside a repeater component — recommender data only works in a repeater and its merge fields.**
+
+**Why:** Personalization recommender data is restricted to repeater components. You add the recommender as a data source, set the repeater source to it, and use recommendation merge fields in nested components.
+
+> ⚠️ **Distractor logic:** "Recommender data can go in any component" is the plausible-but-wrong answer — it's repeater-only.
+
+---
+
+## Q142 — Recommender Training Requirement
+
+**Question:** A marketer adds a new recommender but it isn't selectable in the email. What is the most likely cause?
+
+**Answer:** **The recommender hasn't completed its training period with at least one successful refresh.**
+
+**Why:** New recommenders need a training period with at least one successful refresh before they're usable. Until then, they won't appear as selectable data sources.
+
+> ⚠️ **Distractor logic:** "The recommender needs a data graph added first" is the plausible-but-wrong answer — while a data graph is required, the specific blocker here is the missing successful refresh.
+
+---
+
+## Q143 — Campaign Stage Derivation
+
+**Question:** A campaign has five flows; four completed successfully and one errored. What does the Campaign Stage field show?
+
+**Answer:** **Error — the Campaign Stage is derived from all flows, and one Error flow makes the whole campaign Error.**
+
+**Why:** Campaign Stage is computed from every flow in the campaign. The presence of an Error flow (with no Draft/Scheduled/Preparing/In Progress/Finishing) sets the campaign to Error, regardless of the other four completing successfully.
+
+> ⚠️ **Distractor logic:** "Completed, because most flows finished" is the plausible-but-wrong answer — a single Error flow overrides the others.
+
+---
+
+## Q144 — Marketing Calendar Permissions
+
+**Question:** A sales user needs to view the Marketing Calendar but isn't a marketer. Which permission grants access?
+
+**Answer:** **The Access Marketing Calendar user permission — in addition to Marketing Cloud Admin or Marketing Cloud Manager.**
+
+**Why:** The Marketing Calendar is accessible to Marketing Cloud Admin, Marketing Cloud Manager, or users with the Access Marketing Calendar permission (for Sales users). This is the path for non-marketing roles.
+
+> ⚠️ **Distractor logic:** "Only Marketing Cloud Admin can access it" is the plausible-but-wrong answer — the Access Marketing Calendar permission opens it to Sales users.
+
+---
+
+## Q145 — NotSentReason Mapping
+
+**Question:** A consultant wants to understand why emails weren't sent. Which field should they inspect, and what does it map to?
+
+**Answer:** **The NotSentReason field, which maps to the Engagement Action Reason field of the Email Engagement DMO.**
+
+**Why:** The NotSentReason field explains send failures (consent issues, hard bounces, missing recipient email, etc.) and maps to the Email Engagement DMO's Engagement Action Reason field, viewable in Data Explorer.
+
+> ⚠️ **Distractor logic:** "Check the flow's error log" is the plausible-but-wrong answer — the NotSentReason field is the canonical source for send-failure reasons.
+
+---
+
+## Q146 — Campaign Flow Cardinality
+
+**Question:** A consultant needs to relate a flow to a campaign for reporting. What is the correct relationship?
+
+**Answer:** **Each flow relates to exactly one campaign, while a campaign can relate to many flows.**
+
+**Why:** Marketing flows should always relate to a campaign for reporting, and the relationship is one-flow-to-one-campaign. This is what lets performance roll up to the campaign record.
+
+> ⚠️ **Distractor logic:** "A flow can relate to multiple campaigns" is the plausible-but-wrong answer — it inverts the cardinality.
+
+---
+
+## Q147 — Saved Expressions
+
+**Question:** A marketer wants to show a customer's most recent purchase across multiple emails. What should they create?
+
+**Answer:** **A saved expression — it defines which single value to return when multiple are possible, using filters and sorting, and is reusable across emails and channels.**
+
+**Why:** Saved expressions resolve ambiguity (which of many values to show) via filters and sorting, and because they're saved, they're reusable. Creating one requires a data graph plus Marketing Cloud/CMS permissions.
+
+> ⚠️ **Distractor logic:** "A merge field with a fallback" is the plausible-but-wrong answer — a merge field pulls a single value but doesn't resolve which of many to pick.
+
+---
+
+## Q148 — Engagement Signal Counting
+
+**Question:** A consultant wants to count unique email clicks rather than total clicks. How should they configure the engagement signal?
+
+**Answer:** **Group repeat events using added fields (e.g., individual ID + bulk message ID + click event) and count them as one signal.**
+
+**Why:** Engagement signals can count each event as discrete, or group repeat events using added fields to deduplicate. Grouping by individual + message + event yields unique clicks rather than total clicks.
+
+> ⚠️ **Distractor logic:** "Count each event as discrete" is the plausible-but-wrong answer — that counts total clicks, not unique ones.
+
+---
+
+## Q149 — Flow Sharing Categories
+
+**Question:** A consultant configures dynamic sharing for a standalone flow using the Equals operator. What must be true for the sharing rule to apply?
+
+**Answer:** **The category/subcategory entered on the flow must match the sharing rule's value exactly.**
+
+**Why:** With the Equals operator, the flow's category/subcategory must match the sharing rule exactly. With Contains, the flow category only has to include the rule's category. Exact matching is a common source of silent sharing failures.
+
+> ⚠️ **Distractor logic:** "A partial match is sufficient" is the plausible-but-wrong answer — Equals requires an exact match.
+
+---
+
 ## Related
 
 - [[exam-revision-summary]] — Section 4 summary
