@@ -258,6 +258,58 @@ function viewDashboard() {
       <p class="page-sub">Your instructor for the ${esc(examFacts.release)} release exam — ${examFacts.scoredQuestions} scored questions, ${examFacts.minutes} minutes, ${examFacts.passMark}% to pass.</p>
     </div>
 
+    <div class="study-path">
+      <div class="study-path-head">
+        <div class="eyebrow">How to study</div>
+        <h2>Four steps, in order</h2>
+        <p class="page-sub">Work top to bottom. Each step builds on the one before it — don't skip ahead.</p>
+      </div>
+      <ol class="study-steps">
+        <li class="study-step">
+          <span class="study-step-num">1</span>
+          <div class="study-step-body">
+            <div class="study-step-title">Read the roadmap, then every concept</div>
+            <p class="study-step-desc">Follow the ${stats.tracks} learning tracks through all ${stats.concepts} concept pages. Each page states its core idea, explains the mechanism, and flags the traps.</p>
+            <div class="study-step-actions">
+              <a class="btn btn-primary" href="#/roadmap">⌘ Open the study roadmap</a>
+              <a class="btn" href="#/concepts">▤ Browse all concepts</a>
+            </div>
+          </div>
+        </li>
+        <li class="study-step">
+          <span class="study-step-num">2</span>
+          <div class="study-step-body">
+            <div class="study-step-title">Test yourself with practice questions</div>
+            <p class="study-step-desc">After each concept, hit "Quiz me on this" for questions on that exact topic — or take the full ${stats.questions}-question bank as one mock exam.</p>
+            <div class="study-step-actions">
+              <a class="btn btn-primary" href="#/quiz">✓ Take a practice quiz</a>
+              <button class="btn" data-quiz-mock="1">🎯 Full mock exam (60)</button>
+            </div>
+          </div>
+        </li>
+        <li class="study-step">
+          <span class="study-step-num">3</span>
+          <div class="study-step-body">
+            <div class="study-step-title">Drill the flashcards</div>
+            <p class="study-step-desc">${stats.cards.toLocaleString()} cards across ${stats.decks} decks, with spaced repetition. Drill daily to lock in the facts and limits the exam loves to test.</p>
+            <div class="study-step-actions">
+              <a class="btn btn-primary" href="#/flashcards">⧉ Drill flashcards</a>
+            </div>
+          </div>
+        </li>
+        <li class="study-step">
+          <span class="study-step-num">4</span>
+          <div class="study-step-body">
+            <div class="study-step-title">Cram with the revision summary</div>
+            <p class="study-step-desc">In the final days before the exam, work through the revision summary — organized by exam weight, so you spend time where the marks are.</p>
+            <div class="study-step-actions">
+              <a class="btn btn-primary" href="#/revision">⚡ Open the revision summary</a>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
     <div class="grid grid-4" style="margin-bottom:22px">
       <div class="stat"><div class="stat-value">${stats.concepts}</div><div class="stat-label">Concept pages</div></div>
       <div class="stat"><div class="stat-value">${stats.cards.toLocaleString()}</div><div class="stat-label">Flashcards</div></div>
@@ -1179,8 +1231,15 @@ function bindEvents() {
         const pool = shuffle(all.filter((q) => q.id.startsWith(s.slug)));
         picked.push(...pool.slice(0, count));
       }
-      startQuiz(shuffle(picked).slice(0, 60), 'Full mock exam', null);
-      scrollToRunner();
+      const run = () => {
+        startQuiz(shuffle(picked).slice(0, 60), 'Full mock exam', null);
+        scrollToRunner();
+      };
+      if (state.route.view === 'quiz') run();
+      else {
+        navigate('quiz');
+        setTimeout(run, 60);
+      }
       return;
     }
 
