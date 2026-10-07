@@ -396,12 +396,6 @@ function viewConcept(slug) {
 
     <div class="page-head">
       <h1>${esc(c.title)}</h1>
-      <div class="toolbar" style="margin-top:10px;margin-bottom:0">
-        <button class="btn btn-sm ${read ? '' : 'btn-primary'}" id="mark-read" data-slug="${esc(c.slug)}">
-          ${read ? '✓ Read' : 'Mark as read'}
-        </button>
-        <button class="btn btn-sm" data-nav="quiz" data-quiz-concept="${esc(c.slug)}">✓ Quiz me on this</button>
-      </div>
     </div>
 
     <div class="callout callout-accent">
@@ -431,6 +425,13 @@ function viewConcept(slug) {
     ${c.sources.length ? `
       <h2>Sources</h2>
       <ul class="small muted">${c.sourcesHtml.map((s) => `<li>${s}</li>`).join('')}</ul>` : ''}
+
+    <div class="concept-actions">
+      <button class="btn ${read ? '' : 'btn-primary'}" id="mark-read" data-slug="${esc(c.slug)}">
+        ${read ? '✓ Marked as read' : 'Mark as read'}
+      </button>
+      <button class="btn" data-quiz-concept="${esc(c.slug)}">✓ Quiz me on this</button>
+    </div>
   `;
 }
 
@@ -1129,16 +1130,31 @@ function bindEvents() {
     if (quizConcept) {
       const slug = quizConcept.dataset.quizConcept;
       const concept = conceptBySlug(slug);
-      const related = state.content.qa
-        .flatMap((f) => f.questions)
-        .filter((q) => q.question.toLowerCase().includes(concept.title.toLowerCase().split(' ')[0].toLowerCase()));
-      const pool = related.length >= 4 ? related : state.content.qa.flatMap((f) => f.questions);
+      const all = state.content.qa.flatMap((f) => f.questions);
+      const byId = new Map(all.map((q) => [q.id, q]));
+
+      // Prefer the exact questions the vault maps to this concept. Fall back to
+      // the concept's exam section so the quiz stays on-topic, never the whole
+      // repo.
+      const mapped = (state.content.conceptQuestions[slug] || [])
+        .map((id) => byId.get(id))
+        .filter(Boolean);
+      const sectionId = state.content.conceptSections
+        ? Object.keys(state.content.conceptSections).find((sid) =>
+            state.content.conceptSections[sid].includes(slug)
+          )
+        : null;
+      const sectionPool = sectionId
+        ? state.content.qa.find((f) => f.sectionId === Number(sectionId))?.questions || []
+        : [];
+      const pool = mapped.length ? mapped : sectionPool.length ? sectionPool : all;
+
       navigate('quiz');
       setTimeout(() => {
         const host = $('#quiz-runner');
         if (host) {
           host.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          startQuiz(shuffle(pool).slice(0, 10), `Quiz: ${concept.title}`, null);
+          startQuiz(shuffle(pool).slice(0, 10), `Quiz: ${concept.title}`, sectionId ? Number(sectionId) : null);
         }
       }, 60);
       return;

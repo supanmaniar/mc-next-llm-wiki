@@ -470,6 +470,28 @@ function build() {
     }
   }
 
+  // The same README table also lists the exact questions that cover each
+  // concept ("Covered by: Q39", "Q43–Q46", "Q115, Q117–Q119"). Parse those so
+  // "Quiz me on this" can pull the precise questions instead of guessing.
+  const conceptQuestions = {};
+  if (fs.existsSync(qaReadme)) {
+    const rows = read(qaReadme).matchAll(/^\|\s*`([a-z0-9-]+)`[^|]*\|\s*(\d)\s*\|\s*([^|]+)\s*\|/gm);
+    for (const match of rows) {
+      const slug = match[1];
+      const section = EXAM_SECTIONS.find((s) => s.id === Number(match[2]));
+      if (!section) continue;
+      const ids = [];
+      for (const part of match[3].split(',')) {
+        const range = part.trim().match(/^Q(\d+)(?:\s*[–—-]\s*Q?(\d+))?$/i);
+        if (!range) continue;
+        const start = Number(range[1]);
+        const end = range[2] ? Number(range[2]) : start;
+        for (let n = start; n <= end; n++) ids.push(`${section.slug}-q${n}`);
+      }
+      if (ids.length) conceptQuestions[slug] = ids;
+    }
+  }
+
   // Finally, fall back to the roadmap track a concept belongs to, so every page
   // is reachable from a section even if the vault never states the mapping.
   const trackToSection = { 1: 1, 2: 3, 3: 1, 4: 1, 5: 2, 6: 4, 7: 4, 8: 5, 9: 6, 10: 1 };
@@ -502,6 +524,7 @@ function build() {
     decks: [...sectionDecks, ...topicDecks],
     qa: qaFiles,
     conceptSections,
+    conceptQuestions,
   };
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
