@@ -531,6 +531,62 @@ h4 { font-size: 14.5px; font-weight: 650; margin: 18px 0 6px; }
 .resume-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; color: var(--text); }
 .resume-arrow { font-size: 18px; color: var(--accent); flex-shrink: 0; }
 
+/* ---------- Inline concept quiz ---------- */
+
+.inline-quiz-progress { margin-bottom: 14px; }
+.inline-quiz-progress .bar { margin-top: 6px; }
+
+.inline-quiz-q { margin-bottom: 14px; }
+
+.inline-quiz-done {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 6px 0;
+}
+
+.inline-quiz-score {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  font-weight: 750;
+  font-size: 16px;
+  display: grid; place-items: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px var(--accent-soft);
+}
+
+.inline-quiz-done-text { font-size: 14px; color: var(--text-dim); }
+
+/* ---------- Concept navigation ---------- */
+
+.concept-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.concept-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 14px 16px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease), transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.concept-nav-link:hover { border-color: var(--accent); background: var(--bg-hover); text-decoration: none; transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.concept-nav-next { text-align: right; align-items: flex-end; }
+
+.concept-nav-dir { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--accent); }
+.concept-nav-title { font-size: 14px; font-weight: 650; color: var(--text); }
+
 /* ---------- Flashcards ---------- */
 
 .flashcard { perspective: 1600px; height: 340px; cursor: pointer; margin-bottom: 16px; }

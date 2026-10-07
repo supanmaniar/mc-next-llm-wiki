@@ -12,6 +12,7 @@ const state = {
   progress: null,
   quiz: null,
   deck: null,
+  inlineQuiz: null,
 };
 
 const STORAGE_KEY = 'mcnext-instructor-progress-v1';
@@ -150,6 +151,24 @@ function sectionById(id) {
 
 function conceptBySlug(slug) {
   return state.content.concepts.find((c) => c.slug === slug);
+}
+
+// The roadmap is a clean, ordered sequence of all 78 concepts. Use it to give
+// every concept page a "previous" and "next" so learners can move linearly.
+function roadmapOrder() {
+  return state.content.roadmap.tracks.flatMap((t) => t.steps.map((s) => s.slug));
+}
+
+function conceptNeighbors(slug) {
+  const order = roadmapOrder();
+  const i = order.indexOf(slug);
+  if (i === -1) return { prev: null, next: null, position: null, total: order.length };
+  return {
+    prev: i > 0 ? order[i - 1] : null,
+    next: i < order.length - 1 ? order[i + 1] : null,
+    position: i + 1,
+    total: order.length,
+  };
 }
 
 function deckBySlug(slug) {
@@ -453,6 +472,11 @@ function viewConcept(slug) {
   if (!c) return notFound();
 
   const read = !!state.progress.conceptsRead[c.slug];
+  const neighbors = conceptNeighbors(c.slug);
+  const prevConcept = neighbors.prev ? conceptBySlug(neighbors.prev) : null;
+  const nextConcept = neighbors.next ? conceptBySlug(neighbors.next) : null;
+  const hasInlineQuiz = (state.content.conceptQuestions[c.slug] || []).length > 0;
+
   const related = c.related.map((r) => {
     const target = conceptBySlug(r.slug);
     return target
@@ -472,6 +496,7 @@ function viewConcept(slug) {
 
     <div class="page-head">
       <h1>${esc(c.title)}</h1>
+      ${neighbors.position ? `<p class="page-sub">Concept ${neighbors.position} of ${neighbors.total} in the study roadmap</p>` : ''}
     </div>
 
     <div class="callout callout-accent">
@@ -496,6 +521,11 @@ function viewConcept(slug) {
         <ol style="margin:0;padding-left:20px">${c.recallQuestionsHtml.map((q) => `<li style="margin-bottom:7px">${q}</li>`).join('')}</ol>
       </div>` : ''}
 
+    ${hasInlineQuiz ? `
+      <h2>Check yourself</h2>
+      <p class="small muted" style="margin-top:-6px">A few exam-style questions on this exact topic — answer, reveal, and grade yourself without leaving the page.</p>
+      <div class="card" id="inline-quiz"></div>` : ''}
+
     ${related ? `<h2>Related concepts</h2><div class="chips">${related}</div>` : ''}
 
     ${c.sources.length ? `
@@ -508,6 +538,15 @@ function viewConcept(slug) {
       </button>
       <button class="btn" data-quiz-concept="${esc(c.slug)}">✓ Quiz me on this</button>
     </div>
+
+    <nav class="concept-nav">
+      ${prevConcept
+        ? `<a class="concept-nav-link" href="#/concept/${encodeURIComponent(prevConcept.slug)}"><span class="concept-nav-dir">← Previous</span><span class="concept-nav-title">${esc(prevConcept.title)}</span></a>`
+        : `<span></span>`}
+      ${nextConcept
+        ? `<a class="concept-nav-link concept-nav-next" href="#/concept/${encodeURIComponent(nextConcept.slug)}"><span class="concept-nav-dir">Next →</span><span class="concept-nav-title">${esc(nextConcept.title)}</span></a>`
+        : `<span></span>`}
+    </nav>
   `;
 }
 
@@ -1088,6 +1127,107 @@ function nextQuizQuestion() {
   renderQuizRunner();
 }
 
+/* ---------- Inline concept quiz ---------- */
+
+// A lightweight, self-contained quiz rendered directly on the concept page, so
+// learners can check themselves without navigating away. Uses the scenario
+// questions the vault maps to this concept (up to 4), falling back to nothing
+// when the concept has no mapped questions.
+function startInlineQuiz(slug) {
+  const all = state.content.qa.flatMap((f) => f.questions);
+  const byId = new Map(all.map((q) => [q.id, q]));
+  const ids = (state.content.conceptQuestions[slug] || [])
+    .map((id) => byId.get(id))
+    .filter(Boolean)
+    .slice(0, 4);
+
+  if (!ids.length) return;
+
+  state.inlineQuiz = {
+    slug,
+    questions: ids.map((q) => ({ q })),
+    index: 0,
+    revealed: false,
+    grade: null,
+    correct: 0,
+    done: false,
+  };
+  renderInlineQuiz();
+}
+
+function renderInlineQuiz() {
+  const host = $('#inline-quiz');
+  if (!host || !state.inlineQuiz) return;
+
+  const { questions, index, revealed, grade, correct, done } = state.inlineQuiz;
+
+  if (done) {
+    const total = questions.length;
+    host.innerHTML = `
+      <div class="inline-quiz-done">
+        <div class="inline-quiz-score">${correct}/${total}</div>
+        <div class="inline-quiz-done-text">${correct === total ? 'Perfect — you know this page.' : 'Review the ones you missed, then move on.'}</div>
+      </div>`;
+    return;
+  }
+
+  const item = questions[index];
+  host.innerHTML = `
+    <div class="inline-quiz-progress">
+      <span class="small faint">Question ${index + 1} of ${questions.length}</span>
+      <div class="bar"><div class="bar-fill" style="width:${Math.round((index / questions.length) * 100)}%;background:linear-gradient(90deg,var(--accent),var(--accent-2))"></div></div>
+    </div>
+
+    <div class="inline-quiz-q">
+      <span class="chip chip-accent">${esc(item.q.topic)}</span>
+      <div class="prose" style="margin-top:8px">${item.q.questionHtml}</div>
+    </div>
+
+    ${!revealed ? `
+      <button class="btn btn-primary" id="inline-reveal">Reveal answer</button>` : `
+      <div class="callout callout-good" style="margin-top:12px">
+        <div class="callout-title">✓ Answer</div>
+        <div class="prose">${item.q.answerHtml}</div>
+      </div>
+      ${item.q.whyHtml ? `<div class="callout" style="margin-top:8px"><div class="callout-title">Why</div><div class="prose">${item.q.whyHtml}</div></div>` : ''}
+      ${item.q.distractorHtml ? `<div class="callout callout-warn" style="margin-top:8px"><div class="callout-title">⚠️ Distractor logic</div><div class="prose">${item.q.distractorHtml}</div></div>` : ''}
+
+      ${grade === null ? `
+        <div class="toolbar" style="margin-top:12px">
+          <button class="btn btn-good" data-inline-grade="correct">✓ I got it right</button>
+          <button class="btn btn-bad" data-inline-grade="wrong">✗ I got it wrong</button>
+        </div>` : `
+        <button class="btn btn-primary" id="inline-next" style="margin-top:12px">${index + 1 === questions.length ? 'Finish' : 'Next question →'}</button>`}
+    `}
+  `;
+}
+
+function revealInlineAnswer() {
+  if (!state.inlineQuiz || state.inlineQuiz.revealed) return;
+  state.inlineQuiz.revealed = true;
+  renderInlineQuiz();
+}
+
+function gradeInlineAnswer(correct) {
+  if (!state.inlineQuiz || !state.inlineQuiz.revealed || state.inlineQuiz.grade !== null) return;
+  state.inlineQuiz.grade = correct;
+  if (correct) state.inlineQuiz.correct += 1;
+  renderInlineQuiz();
+}
+
+function nextInlineQuestion() {
+  if (!state.inlineQuiz) return;
+  const q = state.inlineQuiz;
+  if (q.index + 1 >= q.questions.length) {
+    q.done = true;
+  } else {
+    q.index += 1;
+    q.revealed = false;
+    q.grade = null;
+  }
+  renderInlineQuiz();
+}
+
 /* ---------- Search ---------- */
 
 function runSearch(query) {
@@ -1181,6 +1321,13 @@ function render() {
   }
   if (view === 'quiz' && state.quiz) {
     renderQuizRunner();
+  }
+  // Inline quiz on concept pages: start fresh when navigating to a concept.
+  if (view === 'concept' && param) {
+    state.inlineQuiz = null;
+    if ((state.content.conceptQuestions[param] || []).length) {
+      startInlineQuiz(param);
+    }
   }
 }
 
@@ -1342,6 +1489,24 @@ function bindEvents() {
     const next = e.target.closest('#quiz-next');
     if (next) {
       nextQuizQuestion();
+      return;
+    }
+
+    const inlineReveal = e.target.closest('#inline-reveal');
+    if (inlineReveal) {
+      revealInlineAnswer();
+      return;
+    }
+
+    const inlineGrade = e.target.closest('[data-inline-grade]');
+    if (inlineGrade) {
+      gradeInlineAnswer(inlineGrade.dataset.inlineGrade === 'correct');
+      return;
+    }
+
+    const inlineNext = e.target.closest('#inline-next');
+    if (inlineNext) {
+      nextInlineQuestion();
       return;
     }
 
